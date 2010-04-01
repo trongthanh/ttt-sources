@@ -1,0 +1,5 @@
+This demo requires 
+- Papervision3D 2.1
+- AS3DMod 0.2 (http://code.google.com/p/as3dmod/)
+- APE physics engine (http://www.cove.org/ape/)
+- Box2D physics engine (http://box2dflash.sourceforge.net/)

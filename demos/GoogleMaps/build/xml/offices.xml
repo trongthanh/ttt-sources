@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark>
+    <name>PYRAMID CONSULTING VIETNAM</name>
+    <description>
+		Address: Ho chi Minh City
+		Working hour: 09:00-12:00 | 13:00-18:00
+	</description>
+    <Point>
+      <coordinates>10.772392307117563,106.6981029510498</coordinates>
+    </Point>
+  </Placemark>
+  
+  <Placemark>
+    <name>PYRAMID CONSULTING BELGIUM - HQ</name>
+    <description>
+		Address: Brussels
+		Working hour: 09:00-12:00 | 13:00-18:00
+	</description>
+    <Point>
+      <coordinates>50.0833,4.03333</coordinates>
+    </Point>
+  </Placemark>
+  
+  <Placemark>
+    <name>PYRAMID CONSULTING USA INC.</name>
+    <description>
+		Address: New York
+		Working hour: 09:00-12:00 | 13:00-18:00
+	</description>
+    <Point>
+      <coordinates>40.7167,-74.0167</coordinates>
+    </Point>
+  </Placemark>
+  
+  <Placemark>
+    <name>PYRAMID CONSULTING UK</name>
+    <description>
+		Address: London
+		Working hour: 09:00-12:00 | 13:00-18:00
+	</description>
+    <Point>
+      <coordinates>51.05,0</coordinates>
+    </Point>
+  </Placemark>
+  
+  <Placemark>
+    <name>PYRAMID CONSULTING ASIA</name>
+    <description>
+		Address: Hong Kong
+		Working hour: 09:00-12:00 | 13:00-18:00
+	</description>
+    <Point>
+      <coordinates>22.3,114.167</coordinates>
+    </Point>
+  </Placemark>
+  
+</kml>
