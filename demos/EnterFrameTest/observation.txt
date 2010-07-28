@@ -1,0 +1,18 @@
+- 5000 objects
+- after 70 seconds
+
++ Singleton, use 2 frame movie:
+- FPS: 23-24
+- Max Memory: ~ 20.900 MB
+
++ Singleton, use event:
+- FPS: 24
+- Max Memory: ~ 20.900 B
+
++ Multi-instances, use 2 frame movie:
+- FPS: 18
+- Max Memory: ~24.300 KB
+
++ Multi-instances, use event:
+- FPS: 13
+- Max Memory: ~24.000 KB
