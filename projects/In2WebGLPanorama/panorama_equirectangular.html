@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>In2Ideas Labs - equirectangular panorama demo with three.js webgl</title>
+		<meta charset="utf-8">
+    <meta name="title" content="In2Ideas office in 360°"/>
+    <meta name="description" content="Equirectangular panorama demo with HTML5 Canvas, WebGL and three.js library by Thanh Tran - Creative Dept. - in2ideas. A modern browser like Firefox, Google Chrome is required. The example is based on a three.js example.
+    http://www.in2ideas.com"/>
+    <meta name="keywords" content=""/>
+    <script type="text/javascript" src="js/info.js"></script>
+
+    <link rel="image_src"
+          href="http://in2ideas.com/labs/html5/webgl/img/In2Ideas_Labs_equirectangular_panorama_demo.jpg"/>
+    <link rel="stylesheet" type="text/css" href="css/global.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+    <div id="infobutton">
+          <a href="javascript:toggleInfo()"><img src="img/i.png" border="0"></a>
+    </div>
+    <div id="info">
+      <p>Equirectangular Panorama - An experiment by <a href="http://www.in2ideas.com" target="_blank">Thanh Tran - in2ideas</a><br/>
+      		The example is based on <a href="http://github.com/mrdoob/three.js" target="_blank" >a three.js example</a>.</p>
+      <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
+        For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
+      <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
+    </div>
+		<div id="container"></div>
+
+		<script type="text/javascript" src="js/Three.js"></script>
+    <script type="text/javascript" src="js/Detector.js"></script>
+		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+
+		<script type="text/javascript">
+
+			var camera, scene, renderer;
+
+			var fov = 70,
+			texture_placeholder,
+			isUserInteracting = false,
+			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+			lon = 0, onMouseDownLon = 0,
+			lat = 0, onMouseDownLat = 0,
+			phi = 0, theta = 0,
+      isWebGL = false;
+
+			init();
+			animate();
+
+			function init() {
+
+				var container, mesh;
+
+				container = document.getElementById( 'container' );
+
+				camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 1, 1100 );
+
+				camera.target = new THREE.Vector3( 0, 0, 0 );
+
+				scene = new THREE.Scene();
+
+        var rendererInfo = document.getElementById('renderer-info');
+        if (Detector.webgl) {
+           renderer = new THREE.WebGLRenderer();
+           //work around some webgl bug rendering inner face
+           rendererInfo.innerHTML = "WebGL Renderer (Fast)";
+           isWebGL = true;
+        } else {
+          renderer = new THREE.CanvasRenderer();
+           rendererInfo.innerHTML = "2D Canvas Renderer (Slow)";
+        }
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        container.appendChild( renderer.domElement );
+
+				//mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2294472375_24a3b8ef46_o.jpg' ) } ) );
+				if(isWebGL) {
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
+          mesh.doubleSided = true;
+        } else {
+          //reduce number of poligons to improve performance
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 30, 20 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
+          mesh.overdraw = true;
+        }
+
+				mesh.scale.x = -1;
+				scene.add( mesh );
+
+
+				container.appendChild( renderer.domElement );
+
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
+				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
+
+			}
+
+			function onDocumentMouseDown( event ) {
+
+				event.preventDefault();
+
+				isUserInteracting = true;
+
+				onPointerDownPointerX = event.clientX;
+				onPointerDownPointerY = event.clientY;
+
+				onPointerDownLon = lon;
+				onPointerDownLat = lat;
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				if ( isUserInteracting ) {
+
+					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+
+				}
+			}
+
+			function onDocumentMouseUp( event ) {
+
+				isUserInteracting = false;
+
+			}
+
+			function onDocumentMouseWheel( event ) {
+
+				// WebKit
+
+				if ( event.wheelDeltaY ) {
+
+					fov -= event.wheelDeltaY * 0.05;
+
+				// Opera / Explorer 9
+
+				} else if ( event.wheelDelta ) {
+
+					fov -= event.wheelDelta * 0.05;
+
+				// Firefox
+
+				} else if ( event.detail ) {
+
+					fov += event.detail * 1.0;
+
+				}
+
+				camera.projectionMatrix = THREE.Matrix4.makePerspective( fov, window.innerWidth / window.innerHeight, 1, 1100 );
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+
+			}
+
+			function render() {
+
+				lat = Math.max( - 85, Math.min( 85, lat ) );
+				phi = ( 90 - lat ) * Math.PI / 180;
+				theta = lon * Math.PI / 180;
+
+				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+				camera.target.y = 500 * Math.cos( phi );
+				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+				camera.lookAt( camera.target );
+
+				/*
+				// distortion
+				camera.position.x = - camera.target.x;
+				camera.position.y = - camera.target.y;
+				camera.position.z = - camera.target.z;
+				*/
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+	</body>
+</html>
