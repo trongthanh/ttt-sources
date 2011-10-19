@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flex-config>
+  <compiler>
+    <define append="true">
+      <name>CONFIG::LOGGING</name>
+      <value>false</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::FLASH_10_1</name>
+      <value>true</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::PLATFORM</name>
+      <value>true</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::MOCK</name>
+      <value>false</value>
+    </define>
+    <source-path append="true">
+      <path-element>../src</path-element>
+      <path-element>../lib</path-element>
+    </source-path>
+    <library-path append="true">
+      <path-element>../lib</path-element>
+      <!-- path-element>../assets/swc</path-element -->
+    </library-path>
+    <!-- debug or release -->
+    <debug>false</debug>
+    <!-- build incremental (non-fcsh will generate cache file -->
+    <incremental>false</incremental>
+  </compiler>
+  <!-- specify target (should target in each mxmlc call) 
+  <file-specs>
+    <path-element>src\AppDoc.as</path-element>
+  </file-specs>
+  -->
+  <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
+  <default-background-color>#FFFFFF</default-background-color>
+  <default-frame-rate>30</default-frame-rate>
+  <!-- leave default size for [SWF] tag and specific mxmlc argument -->
+  <default-size>
+    <width>800</width>
+    <height>600</height>
+  </default-size>
+</flex-config>

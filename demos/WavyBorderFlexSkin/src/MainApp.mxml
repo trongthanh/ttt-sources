@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" accentColor="#52A456">
+	<fx:Script>
+		<![CDATA[
+			import com.int3ractive.flex.demos.WavyBorderSkin;
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		.BlueContainer {
+			borderColor: #0000FF;
+			borderAlpha: 0.5;
+			borderThickness: 2;
+			waveHeight: 5;
+		}
+	</fx:Style>
+	<s:SkinnableContainer x="68" y="65" width="147" height="110" skinClass="com.int3ractive.flex.demos.WavyBorderSkin" backgroundColor="#6CD5D1" styleName="BlueContainer">
+		<s:Button x="28" y="55" label="Button" />
+		<s:CheckBox label="Check Box"  x="32" y="19"/>
+	</s:SkinnableContainer>
+	<s:BorderContainer x="294" y="102" width="200" height="261" skinClass="com.int3ractive.flex.demos.WavyBorderSkin"  borderColor="#341010" borderVisible="true">
+		<mx:Image x="10" y="10" width="179" height="239" source="../bin-debug/images/photo.jpg"/>
+	</s:BorderContainer>
+</s:Application>

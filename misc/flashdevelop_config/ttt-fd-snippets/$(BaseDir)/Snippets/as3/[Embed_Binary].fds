@@ -1,0 +1,6 @@
+[Embed(source='$(EntryPoint)path/to/binaryfile$(ExitPoint)', mimeType='application/octet-stream')]
+public var Bin: Class; //subclass of ByteArray
+
+
+
+

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flex-config>
+  <output>../../doc/</output>
+  <compiler>
+	<source-path>
+	  <path-element>../src</path-element>
+	  <path-element>../lib</path-element>
+	</source-path>
+    <library-path append="true">
+      <path-element>../lib</path-element>
+      <path-element>../assets/swc</path-element>
+    </library-path>
+  </compiler>
+  <!-- exclude-classes>
+	<class>br.com.stimuli.string.printf</class>
+  </exclude-classes -->
+  <doc-sources>
+	<path-element>../src/vn</path-element>
+  </doc-sources>
+  <!-- templates-path>asdoc\templates</templates-path -->
+  <window-title>AS3 Karaoke Player</window-title>
+  <main-title>AS3 Karaoke Player - Language Reference</main-title>
+  <footer>&#169; 2010 Tran Trong Thanh - trongthanh@gmail.com</footer>
+  <packages>
+	<package>
+		<string>vn.karaokeplayer.lyrics</string>
+		<string>Lyric text rendering classes</string>
+	</package>
+	<package>
+		<string>vn.karaokeplayer.data</string>
+		<string>Data classes</string>
+	</package>
+	<package>
+		<string>vn.karaokeplayer.audio</string>
+		<string>Audio player</string>
+	</package>
+	<package>
+		<string>vn.karaokeplayer.parsers</string>
+		<string>Lyrics file parsers</string>
+	</package>
+	<package>
+		<string>vn.karaokeplayer</string>
+		<string>Contains core classes</string>
+	</package>
+	<package>
+		<string>vn.karaokeplayer.utils</string>
+		<string>Utilities</string>
+	</package>
+  </packages>
+</flex-config>

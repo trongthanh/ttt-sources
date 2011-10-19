@@ -1,0 +1,3 @@
+- Google Map API for Flash: http://code.google.com/apis/maps/documentation/flash/
+- TweenLite/TweenMax (AS3)
+- Papervision 3D (2.0): http://blog.papervision3D.org

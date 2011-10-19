@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BUILT WITH FLEX SDK 3.5 -->
+<project name="Flash/Flex Ant Builder" basedir="." default="run">
+	<!-- set your own path to Flex SDK home folder -->
+	<condition property="FLEX_HOME" value="C:\flex_sdk" else="${user.home}/flex_sdk">
+		<os family="windows" />
+	</condition>
+	<condition property="FLASH_PLAYER" 
+		value="${FLEX_HOME}\runtimes\player\10\win\FlashPlayer.exe"
+		else="${FLEX_HOME}/runtimes/player/10/lnx/flashplayer">
+		<os family="windows" />
+	</condition>
+	<property name="FLASH_HOME" value="C:/Program Files/Adobe/Adobe Flash CS5"/>
+	
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	
+	<property name="SRC" value="${basedir}/../src"/>
+	<property name="OUTPUT" value="${basedir}/../bin"/>
+	<property name="SWC_OUTPUT" value="${basedir}/../../bin"/>
+	<property name="DOC_OUTPUT" value="${basedir}/../../doc"/>
+	<property name="DEPLOY" value="${basedir}/deploy"/>
+	
+	<target name="build">
+		<mxmlc file="${SRC}/Demo.as"
+			   output="${OUTPUT}/main.swf" >
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
+			<load-config filename="${basedir}/build_config.xml" />
+		</mxmlc>
+	</target>
+	<target name="run" depends="build">
+			<exec executable="${FLASH_PLAYER}">
+				<arg line="${OUTPUT}/main.swf" />
+			</exec>
+		</target>
+	<target name="run-tests">
+		<mxmlc file="${basedir}/../unit_test/TestRunner.mxml"
+			output="${OUTPUT}/TestRunner.swf" >	
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
+			<load-config filename="${basedir}/build_config.xml" />
+			<default-size width="1024" height="768" />
+		</mxmlc>
+		<exec executable="${FLASH_PLAYER}">
+			<arg line="${OUTPUT}/TestRunner.swf" />
+		</exec>
+	</target>
+	<target name="gen-swc">
+		<compc output="${SWC_OUTPUT}/karplayer.swc">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
+			<load-config filename="${basedir}/compc_config.xml" />
+		</compc>
+	</target>
+	<target name="gen-doc">
+		<exec executable="${FLEX_HOME}/bin/asdoc" spawn="no">
+			<arg line="-load-config+=${basedir}/asdoc_config.xml" />
+		</exec>
+	</target>
+
+	<!-- sample Flex Unit 
+	<target name="test" depends="compile">
+		<mkdir dir="${REPORT}" />
+		<flexunit 
+		    toDir="${REPORT}" 
+			haltonfailure="false" 
+			verbose="true" 
+			localTrusted="true"
+			swf="${OUTPUT}/TestRunner.swf">
+		</flexunit>
+		<junitreport todir="${REPORT}">
+			<fileset dir="${REPORT}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${REPORT}/html" />
+		</junitreport>
+	</target> -->
+	
+	<!-- copy & deploy example -->
+	<target name="deploy-all" description="Deploy to //net-build/pfd$/" >
+		<!-- Copying SWF  -->
+		<copy file="${OUTPUT}/main.swf" todir="${DEPLOY}/swf"/>
+		<copy file="${OUTPUT}/expressInstall.swf" todir="${DEPLOY}/swf"/>
+		<copy file="${OUTPUT}/preloader.swf" todir="${DEPLOY}/swf"/>
+		<copy todir="${DEPLOY}/swf">
+			<fileset dir="${OUTPUT}/swf" includes="*.swf"/>
+		</copy>
+		<!-- Copying Styles  -->
+		<copy todir="${DEPLOY}/styles">
+			<fileset dir="${OUTPUT}/styles" includes="*.swf"/>
+		</copy>
+		<!-- Copying Images -->
+		<copy todir="${DEPLOY}/images">
+			<fileset dir="${OUTPUT}/images" includes="**/*.jpeg **/*.jpg"/>
+		</copy>
+		<!-- Copying html & js -->
+		<copy file="${OUTPUT}/index.htm.deploy" tofile="${DEPLOY}/index.htm"/>
+		<copy file="${OUTPUT}/main.html.deploy" tofile="${DEPLOY}/main.html"/>
+		<copy todir="${DEPLOY}/js">
+			<fileset dir="${OUTPUT}/js" includes="**/*.js"/>
+		</copy>
+		<!-- Copying XML -->
+		<copy todir="${DEPLOY}/xml">
+			<fileset dir="${OUTPUT}/xml" includes="*.xml"/>
+		</copy>
+	</target>
+	
+	<target name="deploy-ftp" depends="deploy-all" description="Deploy to demo.pyramid-consulting.com" >
+		<ftp action="mkdir"
+			server="demo.pyramid-consulting.com"
+			userid="u_mattel3dvirtualworld"
+			password="Nu8^nb3o"
+			remotedir="pfd"/>
+		<ftp server="demo.pyramid-consulting.com"
+			remotedir="pfd"
+			userid="u_mattel3dvirtualworld"
+			password="Nu8^nb3o"
+			depends="yes">
+			<fileset dir="${DEPLOY}"/>
+		</ftp>
+	</target>
+	<!-- build fla example 
+	<target name="build-fla" description="Build fla files using Flash CS5" >
+		<exec executable="${FLASH_HOME}/flash.exe">
+			<arg value="${basedir}/flabuild.jsfl"/>
+		</exec>
+	</target> -->
+	
+</project>

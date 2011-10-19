@@ -1,0 +1,19 @@
+/*
+Simple Command - PureMVC
+ */
+package $(Package) $(CSLB){
+    import org.puremvc.as3.interfaces.INotification;
+    import org.puremvc.as3.patterns.command.SimpleCommand;
+    import org.puremvc.as3.patterns.observer.Notification;
+    
+    /**
+     * SimpleCommand
+	 * @author	$(DefaultUser)
+     */
+    public class $(FileName) extends SimpleCommand $(CSLB){
+        
+		override public function execute(note: INotification): void $(CSLB){
+            $(EntryPoint)
+        }
+    }
+}

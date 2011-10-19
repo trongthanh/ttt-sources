@@ -1,0 +1,20 @@
+/*
+Macro Command - PureMVC
+ */
+package $(Package) $(CSLB){
+    import org.puremvc.as3.patterns.command.MacroCommand;
+
+    /**
+     * A MacroCommand
+	 * @author	$(DefaultUser)
+     */
+    public class $(FileName) extends MacroCommand $(CSLB){
+        /**
+         * Initialize the MacroCommand by adding its SubCommands.
+         * 
+         */
+        override protected function initializeMacroCommand(): void $(CSLB){
+            addSubCommand($(EntryPoint));
+        }
+    }
+}

@@ -1,0 +1,80 @@
+﻿2011-08-22
+- Finish first version of WineMod installer
+- Update FDWineMod with FD4 beta 2 2044
+- Projects need to rebuild: PluginCore, FlashDevelop, Project Manager
+
+2011-08-19
+- Download AIR SDK 2.6 for Linux, able to run native AIR application via FD:
+/home/thanh/Apps/flex_sdk_4.5.1.21328/bin/adl application.xml bin
+- Associate .bat file with cmd, able to package .air file by removing a validation step with find.exe
+
+
+﻿2011-08-16
+- Checked out r2039, and do merging
+- Created a patch to merge OutputPanel try catch to trunk
+- Fixed FileHelper bug and created a patch
+- Cleaned up some code in RichToolTip.cs
+- Create winemod for r2039
+
+2011-08-10
+- Find a way to downgrade Wine 1.3.26 to 1.3.15
+sudo apt-get install wine1.3=1.3.15_0ubuntu5
+
+2011-08-08
+- Checked out latest R2014 to find that the command line & explorer ToolBar is changed:
+FileExplorer.PromptHere;$(WorkingDir)
+- Revert ProjectManager.PluginMain to original since it now uses FileExplorer.Explore command
+- Build and run FD4 2014 against Wine 1.3.26 to encounter an exception. This exception also happen to old build. 
+May be a Wine issue.
+- Tried turn on the Bridge, there seem to be errors to the project manager. Will revisit it later
+- To do: 
+	. Check all modification if original has been adapted.
+	. Rebuild modified plugins
+	. Create Config.ini for File Explorer plugin
+	. Test new FD4 with Mod
+
+2011-06-21
+- Trying building projects with mono & fdbuild
+/usr/bin/mono "C:\Program Files\FlashDevelop\Tools\fdbuild\fdbuild.exe" "Z:\home\thanh\Documents\TestFlashDevelop\TestFlashDevelop.as3proj" -ipc 2e3ac096-bb42-4dc8-9c92-7fbfe0749fe5 -version "4.5.0; 2.5" -compiler "C:\users\thanh\My Documents\flex_sdk_4.5.0.19786" -library "C:\Program Files\FlashDevelop\Library"
+- There seems to be a lot of Windows path to convert...
+
+2011-06-18
+- Merge patch with latest FD4 build 1944
+- Projects need to rebuild: PluginCore, FlashDevelop, Output Panel, Project Manager
+- Fixed 
+	. FD crash when start build: fixed in FDbuild solution
+	. Debug/Release combobox disappear when resize/minimized: fixed in ProjectManager.Controls.FDMenus
+
+2011-06-14
+- Package for the first release 
+- Write tutorial for the first release
+
+2011-06-01
+- Fix resize issue of Scintilla control by forcing new ClientSize from TabbedDocument when it is resized.
+- Up to date winetricks: dotnet20 gdiplus corefonts tahoma
+- It appear that installed JRE doesn't work. Look back at standalone solution.
+- Prepare swf.reg to assign native FlashPlayer to play swf.
+
+2011-05-31
+- Try install JRE download, it works OK on wine now, no need to use standalone folder.
+- Edit Project Manager plugin to allow explore with native command
+
+2011-05-29
+- Find out how to display MenuStrip & ToolStrip at the same time. The most important things is to set ToolStripPanel with fixed height
+- Intent to copy LayoutData.fdl together with patch to have Dockable panels float by default. (Is there anyway to edit from source code?)
+- Remove textLog.scrollToCaret() in OutputManager to avoid not-implement exception
+- Edit Toolbar command: 
+	Command Line: /usr/bin/gnome-terminal
+	Windows Explorer: winebrowser;$(Quote)$(WorkingDir)$(Quote)
+
+2011-05-28
+- Checking on ToolStrip on MainForm.cs, and found some thing. (To continue...)
+
+2011-05-26
+- Fixed tool tip issue
+- Considering about making tooltip text doesn't switch to small, anti-alias font <= later findings: FD4 uses Segoe UI font 
+which doesn't exist in Linux/Wine <- change to Tahoma
+
+2011-05-25
+- Do not install riched20 as the function RTB.GetPositionFromCharIndex() always return 0.
+- Investigate WinFormUtils.MeasureRichTextBox() to fix the autosize issue of toolti

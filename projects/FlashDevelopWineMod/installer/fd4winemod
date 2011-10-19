@@ -1,0 +1,296 @@
+#!/bin/sh
+
+#DEFINE VARIABLES AND CONSTANTS
+tempdir="./~fd4winemod"
+export WINEPREFIX="$HOME/.winefdtest"
+
+fd4_ver="4.0.0 Beta2 R2044"
+fd4_exe="FlashDevelop-4.0.0-Beta2.exe"
+#fd4_base_url="http://www.flashdevelop.org/downloads/releases/"
+fd4_base_url="http://localhost:8080/projects/fd4winemod/"
+
+fd4mod_tar="fd4r2044_winemod.tar.bz2"
+#fd4mod_base_url="http://thanhtran-sources.googlecode.com/files/"
+fd4mod_base_url="http://localhost:8080/projects/fd4winemod/"
+fd4mod_dir="$tempdir/mod"
+
+fd4_w_dir="C:\\Program Files\\FlashDevelop"
+fd4_x_dir="$WINEPREFIX/dosdevices/c:/Program Files/FlashDevelop"
+
+#jre_url="http://thanhtran-sources.googlecode.com/files/jre_portable.zip"
+jre_url="http://localhost:8080/projects/fd4winemod/jre_portable.zip"
+
+#FUNCTIONS
+
+# Convert a Windows path to a Unix path quickly.
+# $1 is an absolute Windows path starting with c:\ or C:/
+# with no funny business, so we can use the simplest possible
+# algorithm.
+# This function is copied from winetricks
+winetricks_wintounix()
+{
+    _W_winp_="$1"
+    # Remove drive letter and colon
+    _W_winp="${_W_winp_#??}"
+    # Prepend the location of drive c
+    printf %s "$WINEPREFIX"/dosdevices/c:
+    # Change backslashes to slashes
+    echo $_W_winp | sed 's,\\,/,g' 
+}
+
+prepare_dirs() 
+{
+	#------------------------------------------------------
+	#remove old temp dir and create new one
+	if [ -d "$tempdir" ]
+	then
+		rm -f -R "$tempdir"
+		echo "Removed old $tempdir"
+	fi
+
+	mkdir -v -p $tempdir
+
+	echo "- The WINEPREFIX used for this program is $WINEPREFIX"
+	echo "(To change the WINEPREFIX, edit this installer with gedit)"
+	echo ""
+
+	if [ -d "$WINEPREFIX" ]
+	then
+		#rm -f -R $WINEPREFIX	
+		echo "Warning: wineprefix $WINEPREFIX already exists. Conflict may occurs.";
+	fi
+
+	#TODO: prompt user to let them copy the FD4 installer and JRE zip in temp folder to skipp download
+}
+
+prepare_wine() 
+{
+	echo "- Installing .NET2.0 and turn on native gdiplus via winetricks"
+	echo -n "Enter to continue..."
+	read n;
+	#assumming winetricks and wine 1.3 are already installed
+	winetricks dotnet20 gdiplus
+}
+
+download_fd4() 
+{
+
+	
+	echo "- Downloading FlashDevelop $fd4_ver ..."
+
+	wget -P "$tempdir" "$fd4_base_url$fd4_exe"
+}
+
+install_fd4() 
+{
+	echo ""
+	echo "- Installing FlashDevelop"
+	echo "  What you should do during FD installer:"
+	echo "    - Ignore Flash Player ActiveX warning"
+ 	echo "    - Ignore Java Runtime warning (you'll have option to install later)"
+	echo "    - Install FD as stand-alone/portable is recommended" 
+	echo "    - If you want FD's file type association, then check Registry modification"
+	echo -n "Enter to continue..."
+	read n;
+	echo ""
+
+	wine "$tempdir/$fd4_exe"
+}
+
+download_fd4mod() 
+{
+	echo "- Downloading FlashDevelop WineMod..."
+
+	wget -P "$tempdir" "$fd4mod_base_url$fd4mod_tar"
+}
+
+install_fd4mod() 
+{
+	echo ""
+	echo "- Installing FlashDevelop WineMod..."
+	echo ""
+
+	if [ -d "$fd4mod_dir" ]
+	then
+		rm -f -R "$fd4mod_dir"
+	fi
+	
+	mkdir $fd4mod_dir
+
+	#unzip -o -q -d "$tempdir" "$tempdir/$fd4mod_zip"
+	tar -xj -C "$fd4mod_dir" -f "$tempdir/$fd4mod_tar"
+
+	echo -n "Did you installed FD4 to default folder ($fd4_w_dir)? (y/n) "
+	read is_default
+
+	if [ $is_default != "y" ]
+	then	
+		echo "Then please type in the Windows path to your FD (start with C:\\) then Enter:"
+		read -r fd4_w_dir
+	fi
+	
+	# for testing
+	echo "FD4 installation folder: $fd4_w_dir"
+
+	fd4_x_dir="`winetricks_wintounix "$fd4_w_dir"`"
+
+	#echo "FD4 'nix folder: $fd4_x_dir"
+	#check if really FD folder
+	if [ ! -f "$fd4_x_dir/FlashDevelop.exe" ]; then
+		echo "Cannot find FlashDevelop excutables at $fd4_w_dir."
+		echo "FD4 WineMod installation FAILED"
+		return 0
+	fi
+	
+	#copy mod content to overwrite
+	cp -rf "$fd4mod_dir/FlashDevelop/"* "$fd4_x_dir"
+	
+	echo "FD4 WineMod is successfully installed"
+	return 1
+}
+
+config_jre()
+{
+	echo ""
+	echo "- Download and config JRE"
+	echo ""
+	echo -n "Do you want to download and configure Java Runtime automatically? (y/n) "
+	read conf_jre;
+	
+	if [ ! $conf_jre = "y" ]
+	then
+		return
+	fi
+
+	echo "Downloading JRE"
+
+	wget -P "$tempdir" "$jre_url" -O "$tempdir/jre.zip"
+	unzip -oq -d "$tempdir" "$tempdir/jre.zip"	
+
+	echo "Copying JRE contents to C:\jre"
+
+	cp -rf "$tempdir/jre" "`winetricks_wintounix C:\\`"
+
+	echo "Registering JRE with Windows"
+
+	wine regedit "$fd4mod_dir/jre.reg"
+	#TODO: find neat way to add reg by command, without separate .reg file	
+	#wine reg add "HKLM\\System\\CurrentControlSet\\Control\\Session Manager\\Environment" /v JAVA_HOME /d "C:\\jre\\" /f
+	#wine reg add "HKLM\\System\\CurrentControlSet\\Control\\Session Manager\\Environment" /v PATH /d ";C:\\jre\\bin" /f
+
+}
+
+
+post_installation_config()
+{
+	config_jre
+
+	echo ""
+	echo "- Config file handling applications"
+	echo "Set file handler for .SWF with default Linux application"
+	wine regedit "$fd4mod_dir/swf.reg"
+	echo "Set file handler for .BAT with Windows cmd"
+	wine regedit "$fd4mod_dir/bat.reg"
+
+	echo "- Generate shortcut on desktop"
+	shortcut=$HOME/Desktop/FlashDevelop.desktop
+	cat > $shortcut << _EOF_
+[Desktop Entry]
+Name=FlashDevelop
+Exec=env WINEPREFIX="$WINEPREFIX" wine "$fd4_w_dir\FlashDevelop.exe"
+Type=Application
+StartupNotify=true
+Path=$fd4_x_dir
+Icon=$fd4_x_dir/Docs/fdicon.png
+_EOF_
+
+	chmod +x $shortcut
+
+	#TODO: create file handler for FD files
+}
+
+clean_up()
+{
+	echo -n "Do you want to remove temporary folder ($tempdir)? (y/n) "
+	read oktoremove;
+	
+	if [ $oktoremove = "y" ]
+	then
+		rm -rf $tempdir;
+		echo "Temporary folder removed"
+	fi
+}
+
+#for testing
+fakefn()
+{
+	return 1
+}
+
+#MAIN SCRIPTS
+
+echo "------------------------------------------------------"
+echo "FlashDevelop 4 WineMod for Linux by trongthanh@gmail.com"
+echo "Installer v0.1.0"
+echo "------------------------------------------------------"
+echo ""
+echo "This will install FlashDevelop $fd4_ver and FD4WineMod for Linux"
+echo "Prerequisites:"
+echo "- Wine 1.3+ (Get it at: http://winehq.org)"
+echo "- Winetricks (May come preinstalled with Wine 1.3 on Ubuntu. Get it at: http://wintricks.org)"
+echo ""
+echo -n "Press Ctrl-C at any time to exit. Do you want to continue? (y/n) "
+read confirm 
+
+if [ $confirm = "y" ]
+then
+	echo "\n"
+	echo "------------------------------------------------------"
+	echo "Prepare Wine and install needed libraries"
+	echo "------------------------------------------------------"
+	echo ""
+	
+	prepare_dirs
+	prepare_wine
+
+	echo "\n"
+	echo "------------------------------------------------------"
+	echo "Download and install official FlashDevelop installer"
+	echo "------------------------------------------------------"
+	echo ""
+
+	download_fd4
+	install_fd4
+
+	echo "\n"
+	echo "------------------------------------------------------"
+	echo "Download and install FlashDevelop WineMod"
+	echo "------------------------------------------------------"
+	echo ""
+
+	download_fd4mod
+	install_fd4mod 	
+
+	echo "\n"
+	echo "------------------------------------------------------"
+	echo "Do post-installation configuration"
+	echo "------------------------------------------------------"
+	echo ""
+
+	post_installation_config
+
+	echo "------------------------------------------------------"
+	echo "Clean up"
+	echo "------------------------------------------------------"
+	echo ""
+
+	clean_up
+	
+	echo ""
+	echo "------------------------------------------------------"
+	echo "FINISHED"
+else
+	exit
+fi
+
+

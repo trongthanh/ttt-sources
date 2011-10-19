@@ -1,0 +1,31 @@
+/*
+Proxy - PureMVC
+*/
+package $(Package) $(CSLB){
+	import mx.rpc.IResponder;
+	import mx.rpc.events.FaultEvent;
+	import mx.rpc.events.ResultEvent;
+	import org.puremvc.as3.interfaces.IProxy;
+	import org.puremvc.as3.patterns.proxy.Proxy;
+
+    /**
+     * A proxy
+	 * @author	$(DefaultUser)
+     */
+    public class $(FileName) extends Proxy implements IProxy, IResponder $(CSLB){
+		public static const NAME: String = "$(FileName)";
+
+		public function $(FileName) (data: Object = null) $(CSLB){
+            super (NAME, data);
+            $(EntryPoint)
+        }
+  	
+		public function result(data: Object): void $(CSLB){
+			
+		}
+		
+		public function fault(info: Object ): void $(CSLB){
+			
+		}
+	}
+}

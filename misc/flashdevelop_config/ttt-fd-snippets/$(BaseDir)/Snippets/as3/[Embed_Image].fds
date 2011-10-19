@@ -1,0 +1,5 @@
+[Embed(source='$(EntryPoint)path/to/jpg|png|gif|svg|svgXML$(ExitPoint)', scaleGridTop=0, scaleGridBottom=0, scaleGridLeft=0, scaleGridRight=0)] //scaleGrid is optional
+public var Photo: Class; //subclass of BitmapAsset or SpriteAsset
+
+
+

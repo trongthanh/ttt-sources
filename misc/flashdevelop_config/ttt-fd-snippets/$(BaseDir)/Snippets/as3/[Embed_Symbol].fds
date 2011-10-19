@@ -1,0 +1,7 @@
+[Embed(source='$(EntryPoint)path/to/libray.swf$(ExitPoint)', symbol='linkageID')]
+public var Symbol: Class;
+
+
+
+
+

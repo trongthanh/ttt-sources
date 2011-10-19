@@ -1,0 +1,5 @@
+[HKEY_CLASSES_ROOT\.swf]
+@="SWFfile"
+"Content Type"="application/x-shockwave-flash"
+[HKEY_CLASSES_ROOT\SWFfile\Shell\Open\command]
+@="winebrowser \"%1\""

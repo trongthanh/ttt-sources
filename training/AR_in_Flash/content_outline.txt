@@ -1,0 +1,19 @@
+I. Introduction
+1. What is Augmented Reality?
+2. AR in Flash: FLARToolKit
+
+II. A FLARToolKit tour
+1. Making a Hello World demo with Starter-kit
+2. Using (animated) 3D object model
+3. Create custom ID marker
+4. Multiple markers
+5. Some FLARToolKit demos
+
+III. Other forms of AR interaction
+1. Motion detection
+2. Face detection
+3. Examples of combined techniques
+
+IV. Conclusion
+- What flash can do
+

@@ -1,0 +1,8 @@
+[Embed(source='$(EntryPoint)path/to/audio.mp3$(ExitPoint)', mimeType='audio/mpeg')]
+public var Audio: Class; //subclass of Sound
+
+
+
+
+
+

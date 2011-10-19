@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Scintilla xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<keyword-classes>
+		<keyword-class name="as-primary-keywords">
+			class dynamic extends implements import interface new case do while else if for in switch throw intrinsic
+			private public static get set function var try catch finally while with default break continue delete return
+		</keyword-class>
+		<keyword-class name="as-secondary-keywords">
+			arguments super this null newline Infinity NaN undefined true false _root instanceof typeof
+		</keyword-class>
+		<keyword-class name="as-additional-keywords">
+			Accessibility AsBroadcaster Array BevelFilter BitmapData BitmapFilter BlurFilter Boolean Button
+			Camera Color ColorMatrixFilter ColorTransform ConvolutionFilter DisplacementMapFilter DropShadowFilter
+			ContextMenu ContextMenuItem CustomActions Date ExternalInterface Error FileReference FileReferenceList
+			Function IME GlowFilter GradientBevelFilter GradientGlowFilter Math Matrix MovieClip Microphone Mouse
+			MovieClip MovieClipLoader NetConnection NetStream Number Object PrintJob Point Rectangle Selection
+			SharedObject Key LoadVars Locale LocalConnection Sound Stage String StyleSheet System TextField TextFormat
+			TextSnapshot TextRenderer Transform Video Void XML XMLNode XMLSocket XMLUI security capabilities
+		</keyword-class>
+		<keyword-class name="as-documentation-keywords">
+			author copy default deprecated eventType example exampleText exception haxe inheritDoc internal link mtasc mxmlc 
+			param private return see serial serialData serialField since throws usage version
+		</keyword-class>
+	</keyword-classes>
+	<languages>
+		<language name="as2">
+			<lexer name="cpp" style-bits="7" />
+			<character-class><![CDATA[qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789_$]]></character-class>
+			<line-comment><![CDATA[//]]></line-comment>
+			<comment-start><![CDATA[/*]]></comment-start>
+			<comment-end><![CDATA[*/]]></comment-end>
+			<file-extensions>as,asc,mx</file-extensions>
+			<use-keywords>
+				<keyword key="0" class="as-secondary-keywords" />
+				<keyword key="1" class="as-additional-keywords" />
+				<keyword key="2" class="as-documentation-keywords" />
+				<keyword key="3" class="as-primary-keywords" />
+			</use-keywords>
+			<!-- COLORING_START -->
+			<editor-style caret-fore="0xdadada" caretline-back="0x303030" selection-fore="0xdadada" selection-back="0x404040" />
+			<use-styles>
+				<style name="default" fore="0xcccccc" back="0x000000" size="11" font="Courier New" />
+				<style name="comment" fore="0x7E7F00" />
+				<style name="commentline" fore="0x7E7F00" />
+				<style name="commentdoc" fore="0x7E7F00" />
+				<style name="number" fore="0xFFA56F" />
+				<style name="word" fore="0x3F97FF" />
+				<style name="string" fore="0xFF99CC" />
+				<style name="character" fore="0xFF99CC" />
+				<style name="uuid" />
+				<style name="preprocessor" fore="0xec5ccf" />
+				<style name="operator" fore="0x95b4e2" />
+				<style name="identifier" />
+				<style name="stringeol" />
+				<style name="verbatim" />
+				<style name="regex" fore="0xFFFF00" />
+				<style name="commentlinedoc" fore="0x9B9B00" />
+				<style name="word2" fore="0x69fad1" />
+				<style name="commentdockeyword" fore="0xc9ec5c" />
+				<style name="commentdockeyworderror" fore="0xc9ec5c" />
+				<style name="globalclass" fore="0x95b4e2" />
+				<style name="gdefault" />
+				<style name="linenumber" fore="0xec5ccf" />
+				<style name="bracelight" fore="0xFF3333" back="0x595959" bold="true" />
+				<style name="bracebad" bold="true" />
+				<style name="controlchar" fore="0xffffff" />
+				<style name="indentguide" fore="0xc0c0c0" />
+				<style name="lastpredefined" />
+			</use-styles>
+			<!-- COLORING_END -->
+		</language>
+	</languages>
+</Scintilla>

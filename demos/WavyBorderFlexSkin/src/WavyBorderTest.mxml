@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+	<fx:Script>
+		<![CDATA[
+			public var waveWidth: uint = 10;
+			public var waveHeight: uint = 20;
+			
+			public var lineArray: Array;
+			private function generateLines(e: Event): void {
+				var bounds: Rectangle = new Rectangle(0,0, 200,200);
+				var tl: Point = bounds.topLeft;
+				var tr: Point = new Point(bounds.right, bounds.top);
+				var br: Point = bounds.bottomRight;
+				var bl: Point = new Point(bounds.left, bounds.bottom);
+				
+				lineArray = [];
+				var line: Array = [];
+				var i: int;
+				var p: Point;
+				var x: Number;
+				var y: Number;
+				//top line:
+				var segments: int = int((tr.x - tl.x) / waveWidth);
+				//trace("segments: " + segments);
+				p = new Point(tl.x, tl.y);
+				line.push(p);
+				x = tl.x - waveWidth / 2; //minus half step to add half step in the loop
+				//y = tl.y - waveHeight / 2;
+				for (i = 0; i < segments; ++i) {
+					x += waveWidth;
+					y = (i % 2 == 0)? tl.y - waveHeight / 2: tl.y + waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(tr.x, tr.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//right line
+				line = [];
+				segments = int((br.y - tr.y) / waveWidth);
+				p = new Point(tr.x, tr.y);
+				line.push(p);
+				y = tr.y - waveWidth / 2; //minus half step to add half step in the loop
+				//x = tr.x + waveHeight / 2;
+				for (i = 0; i < segments; ++i) {
+					y += waveWidth;
+					x = (i % 2 == 0)? tr.x + waveHeight / 2: tr.x - waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(br.x, br.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//bottom line
+				line = [];
+				segments = int((br.x - bl.x) / waveWidth);
+//				trace("segments: " + segments);
+				p = new Point(br.x, br.y);
+				line.push(p);
+				x = br.x + waveWidth / 2;
+				for (i = 0; i < segments; ++i) {
+					x -= waveWidth;
+					y = (i % 2 == 0)? br.y + waveHeight / 2: br.y - waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(bl.x, bl.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//left line
+				line = [];
+				segments = int((bl.y - tl.y) / waveWidth);
+				p = new Point(bl.x, bl.y);
+				line.push(p);
+				y = bl.y + waveWidth / 2;
+				for (i = 0; i < segments; ++i) {
+					y -= waveWidth;
+					x = (i % 2 == 0)? bl.x - waveHeight / 2: bl.x + waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(tl.x, tl.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				
+				drawLines();
+				
+				
+			}
+			
+			/**
+			 * This function is adopted from www.gskinner.com/blog/archives/2008/05/drawing_curved.html
+			 */
+			private function drawLines():void {
+				var g: Graphics = container.graphics;		
+				g.clear();
+				g.beginFill(0xFF0000,1);
+				var line: Array;
+				var p1: Point;
+				var p2: Point;
+				var prevMidPoint: Point;
+				var midPoint: Point;
+				var skipPoints: int = 0; //default 2
+				
+				for (var j: int = 0; j < lineArray.length; j++) {
+					line = lineArray[j];
+					g.lineStyle(1, 0x000000, 1);
+					//trace( "line : " + j + " - " + line );
+					prevMidPoint = null;
+					midPoint = null;
+					var l: int = line.length;
+					for (var i: int = 1; i < l; i++) {
+						p1 = line[i - 1];
+						p2 = line[i];							
+						midPoint = new Point(p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2);
+						
+						// draw the curves:
+						if (prevMidPoint) {
+							//g.moveTo(prevMidPoint.x,prevMidPoint.y);
+							g.curveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+						} else {
+							// draw start segment:
+							//g.moveTo(p1.x, p1.y);
+							g.lineTo(midPoint.x,midPoint.y);
+						}
+						prevMidPoint = midPoint;
+					}
+					// draw end segment:
+					g.lineTo(p2.x,p2.y);
+				}
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Button label="Draw" click="generateLines(event)" />
+	<s:SpriteVisualElement id="container" y="50" x="10" width="800" height="600" />
+</s:Application>

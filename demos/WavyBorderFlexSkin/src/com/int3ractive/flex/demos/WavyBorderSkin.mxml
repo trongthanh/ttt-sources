@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:fb="http://ns.adobe.com/flashbuilder/2009" >
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("spark.components.SkinnableContainer")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.formats.BackgroundColor;
+			//properties of the wavy border
+			private var fillColor: Number; 
+			private var fillAlpha: Number = 0; //default transparent
+			private var borderColor: Number = 0x000000;
+			private var borderAlpha: Number = 1;
+			private var borderThickness: Number = 1;
+			private var borderVisible: Boolean = true;
+			private var waveWidth: Number = 10;
+			private var waveHeight: Number = 10;
+			
+			private var lineArray: Array;
+			private function generateLines( bounds: Rectangle): void {
+				//var bounds: Rectangle = new Rectangle(0,0, 200,200);
+				var tl: Point = bounds.topLeft;
+				var tr: Point = new Point(bounds.right, bounds.top);
+				var br: Point = bounds.bottomRight;
+				var bl: Point = new Point(bounds.left, bounds.bottom);
+				
+				lineArray = [];
+				var line: Array = [];
+				var i: int;
+				var p: Point;
+				var x: Number;
+				var y: Number;
+				//top line:
+				var segments: int = int((tr.x - tl.x) / waveWidth);
+				//trace("segments: " + segments);
+				p = new Point(tl.x, tl.y);
+				line.push(p);
+				x = tl.x - waveWidth / 2; //minus half step to add half step in the loop
+				//y = tl.y - waveHeight / 2;
+				for (i = 0; i < segments; ++i) {
+					x += waveWidth;
+					y = (i % 2 == 0)? tl.y - waveHeight / 2: tl.y + waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(tr.x, tr.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//right line
+				line = [];
+				segments = int((br.y - tr.y) / waveWidth);
+				p = new Point(tr.x, tr.y);
+				line.push(p);
+				y = tr.y - waveWidth / 2; //minus half step to add half step in the loop
+				//x = tr.x + waveHeight / 2;
+				for (i = 0; i < segments; ++i) {
+					y += waveWidth;
+					x = (i % 2 == 0)? tr.x + waveHeight / 2: tr.x - waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(br.x, br.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//bottom line
+				line = [];
+				segments = int((br.x - bl.x) / waveWidth);
+				//				trace("segments: " + segments);
+				p = new Point(br.x, br.y);
+				line.push(p);
+				x = br.x + waveWidth / 2;
+				for (i = 0; i < segments; ++i) {
+					x -= waveWidth;
+					y = (i % 2 == 0)? br.y + waveHeight / 2: br.y - waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(bl.x, bl.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				//left line
+				line = [];
+				segments = int((bl.y - tl.y) / waveWidth);
+				p = new Point(bl.x, bl.y);
+				line.push(p);
+				y = bl.y + waveWidth / 2;
+				for (i = 0; i < segments; ++i) {
+					y -= waveWidth;
+					x = (i % 2 == 0)? bl.x - waveHeight / 2: bl.x + waveHeight / 2;
+					p = new Point(x,y);
+					line.push(p);
+				}
+				p = new Point(tl.x, tl.y);
+				line.push(p);
+				lineArray.push(line);
+				
+				
+				drawLines();
+				
+				
+			}
+			
+			/**
+			 * This function is adopted from www.gskinner.com/blog/archives/2008/05/drawing_curved.html
+			 */
+			private function drawLines():void {
+				var g: Graphics = this.graphics;		
+				g.clear();
+				
+				if (!isNaN(fillColor)) {
+					g.beginFill(fillColor,fillAlpha);
+				}
+				if(borderVisible && !isNaN(borderThickness) && borderThickness != 0) {
+					g.lineStyle(borderThickness, borderColor,borderAlpha);	
+				}
+				
+				var line: Array;
+				var p1: Point;
+				var p2: Point;
+				var prevMidPoint: Point;
+				var midPoint: Point;
+				var skipPoints: int = 0; //default 2
+				
+				for (var j: int = 0; j < lineArray.length; j++) {
+					line = lineArray[j];
+					//trace( "line : " + j + " - " + line );
+					prevMidPoint = null;
+					midPoint = null;
+					var l: int = line.length;
+					for (var i: int = 1; i < l; i++) {
+						p1 = line[i - 1];
+						p2 = line[i];							
+						midPoint = new Point(p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2);
+						
+						// draw the curves:
+						if (prevMidPoint) {
+							//g.moveTo(prevMidPoint.x,prevMidPoint.y);
+							g.curveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+						} else {
+							// draw start segment:
+							//g.moveTo(p1.x, p1.y);
+							g.lineTo(midPoint.x,midPoint.y);
+						}
+						prevMidPoint = midPoint;
+					}
+					// draw end segment:
+					g.lineTo(p2.x,p2.y);
+				}
+			}
+			/**
+			 *  @private
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
+			{
+				// Checking for styles
+				if (!isNaN(getStyle("backgroundColor"))) fillColor = getStyle("backgroundColor");
+				if (!isNaN(getStyle("backgroundAlpha"))) fillAlpha = getStyle("backgroundAlpha");
+				if (!isNaN(getStyle("borderColor"))) borderColor = getStyle("borderColor");
+				if (!isNaN(getStyle("borderAlpha"))) borderAlpha = getStyle("borderAlpha");
+				if (!isNaN(getStyle("borderThickness"))) borderThickness = getStyle("borderThickness");
+				if (!isNaN(getStyle("waveHeight"))) waveHeight = getStyle("waveHeight");
+				if (!isNaN(getStyle("waveWidth"))) waveWidth = getStyle("waveWidth");
+				if (getStyle("borderVisible") != undefined) borderVisible = getStyle("borderVisible");
+				
+				generateLines(new Rectangle(0,0, unscaledWidth, unscaledHeight));
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+		]]>        
+	</fx:Script>
+	
+	<!-- states -->
+	<s:states>
+		<s:State name="disabled" />
+		<s:State name="normal" />
+	</s:states>
+	
+	<!-- background and border of SkinnableComponent will be drawn by code -->
+	
+	<!--
+	Note: setting the minimum size to 0 here so that changes to the host component's
+	size will not be thwarted by this skin part's minimum size.   This is a compromise,
+	more about it here: http://bugs.adobe.com/jira/browse/SDK-21143
+	-->
+	<!--- @copy spark.components.SkinnableContainer#contentGroup -->
+	<s:Group id="contentGroup" left="0" right="0" top="0" bottom="0" minWidth="0" minHeight="0">
+		<s:layout>
+			<s:BasicLayout/>
+		</s:layout>
+	</s:Group>
+</s:Skin>

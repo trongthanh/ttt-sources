@@ -1,0 +1,11 @@
+#Tue Aug 10 14:10:43 ICT 2010
+#Coloring scheme for ANT xml editor, created by trongthanh@gmail.com
+#Version 1.0
+file_export_version=3.0
+
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.tagsColor=149,180,226
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.commentsColor=201,153,34
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.textColor=204,204,204
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.dtdColor=144,238,144
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.constantStringsColor=255,192,203
+/instance/org.eclipse.ant.ui/org.eclipse.ant.ui.processingInstructionsColor=192,192,192

@@ -38,10 +38,12 @@
         <span class="role-tag">Copywriter</span>
       </div>
     </div>
-    <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 		<script type="text/javascript" src="js/Three.js"></script>
     <script type="text/javascript" src="js/Detector.js"></script>
 		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+		<!-- data -->
+		<script type="text/javascript" src="js/in2data.js"></script>
 
 		<script type="text/javascript">
 
@@ -78,7 +80,8 @@
         projector = new THREE.Projector();
 
         var rendererInfo = document.getElementById('renderer-info');
-        if (/*false*/Detector.webgl) {
+        if (false) {
+        //if (Detector.webgl) {
            renderer = new THREE.WebGLRenderer();
            //work around some webgl bug rendering inner face
            rendererInfo.innerHTML = "WebGL Renderer (Fast)";
@@ -90,25 +93,23 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
         container.appendChild( renderer.domElement );
 
-				//mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2294472375_24a3b8ef46_o.jpg' ) } ) );
 				if(isWebGL) {
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ), wireframe: false } ) );
         } else {
           //reduce number of poligons to improve performance
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
-          mesh.overdraw = true;
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ), wireframe: false} ) );
+          mesh.overdraw = true; //seamless texture
         }
         mesh.doubleSided = true;
-        //mesh.flipSided = true;
-        //renderer.setFaceCulling("back", "ccw");
         
 				mesh.scale.x = -1;
 				scene.add( mesh );
 
         //test interactive
-        popout = document.getElementById('popout');
+        popout = $('#popout').get(0);
+        
         spriteList = [];
-        var geometry = new THREE.CubeGeometry( 20, 20, 20 );
+        var markerGeometry = new THREE.CubeGeometry(30, 60, 30, 1, 1, 1);
 
         var map = THREE.ImageUtils.loadTexture( "img/sprite_marker.png" );
         sprite = new THREE.Sprite( { map: map, useScreenCoordinates: false, color: 0xffffff } );
@@ -116,7 +117,7 @@
         //object.uvOffset.set( -0.5, -0.5 );
         sprite.uvOffset.x = .85714;
         sprite.uvScale.x = 0.14286; // one-seventh
-        sprite.boundingMesh = new THREE.Mesh( new THREE.CubeGeometry(30, 60, 30, 1, 1, 1) );
+        sprite.boundingMesh = new THREE.Mesh( markerGeometry, new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: true, wireframeLinewidth: 0 } ) );
         scene.add(sprite.boundingMesh);
         /*
         object.position.x = Math.random() * 800 - 400;
@@ -267,6 +268,7 @@
           frameTime = now;
         }
         
+        
         var p2D = projector.projectVector(sprite.position.clone(), camera);
 
         p2D.x = (p2D.x + 1)/2 * window.innerWidth;
@@ -274,6 +276,7 @@
         //$('#popout').position(p2D.x, p2D.y);
         popout.style.left = p2D.x + 'px';
         popout.style.top = p2D.y + 'px';
+				
 				/*
 				// distortion
 				camera.position.x = - camera.target.x;

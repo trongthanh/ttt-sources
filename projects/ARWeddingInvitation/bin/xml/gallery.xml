@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simpleviewergallery
+	
+	title=""
+	textColor="FFFFFF"
+	frameColor="FFFFFF"
+	thumbPosition="BOTTOM"
+	galleryStyle="COMPACT"
+	thumbColumns="6"
+	thumbRows="1"
+	showOpenButton="TRUE"
+	showFullscreenButton="TRUE"
+	frameWidth="0"
+	maxImageWidth="800"
+	maxImageHeight="600"
+	imagePath="images/"
+	thumbPath="thumbs/"
+	useFlickr="true"
+	flickrUserName=""
+	flickrTags=""
+	languageCode="AUTO"
+	languageList=""		
+	
+>
+</simpleviewergallery>

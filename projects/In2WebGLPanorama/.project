@@ -3,6 +3,7 @@
 	<name>In2Labs</name>
 	<comment></comment>
 	<projects>
+		<project>Three.js</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

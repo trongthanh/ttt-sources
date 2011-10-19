@@ -1,0 +1,14 @@
+#Tue Aug 10 21:32:50 ICT 2010
+#Preferences for SVN module, created by trongthanh@gmail.com
+#Version 1.0
+file_export_version=3.0
+
+/instance/org.eclipse.ui.workbench/preference.decoration.outgoing_change_foreground_color=145,15,158
+/instance/org.eclipse.ui.workbench/preference.decoration.ignored_resource_font=1|Sans|8.0|2|GTK|1|;
+/instance/org.eclipse.ui.workbench/preference.decoration.ignored_resource_foreground_color=127,127,127
+
+/instance/org.eclipse.team.svn.ui/preference.decoration.flag.outgoing=
+/instance/org.eclipse.team.svn.ui/preference.decoration.format.file={outgoing_flag} {name}
+/instance/org.eclipse.team.svn.ui/preference.decoration.format.folder={outgoing_flag} {name}
+/instance/org.eclipse.team.svn.ui/preference.decoration.use.fontdecor=true
+

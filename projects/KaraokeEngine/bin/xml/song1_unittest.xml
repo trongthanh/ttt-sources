@@ -1,0 +1,135 @@
+<tt xml:lang="vi" 
+	xmlns="http://www.w3.org/ns/ttml"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"> 
+	<head>
+		<metadata>
+			<ttm:title><![CDATA[Hạnh Phúc Bất Tận]]></ttm:title>
+			<ttm:desc><![CDATA[Composed by: Nguyễn Đức Thuận<br/>Singers: Hồ Ngọc Hà ft. V.Music Band]]></ttm:desc>
+			<ttm:copyright>Copyright (C) 2010 Thanh Tran - trongthanh@gmail.com</ttm:copyright>
+			<audio>mp3/hanh_phuc_bat_tan.mp3</audio>
+		</metadata>
+	</head>
+	<body>
+		<div style="f">
+			<p begin="00:00:21.260">* * *</p> <!-- this first version will only support sequential begin -->
+			<p begin="00:00:23.780">Thắp nến đêm nay</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:25.780">ấm áp trong tay</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:27.500">của người</p>
+			<p begin="00:00:27.860">yêu dấu</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:29.540">xiết bao ngọt ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:31.940">vu vơ mơ về</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:33.460">một ngày</p>
+			<p begin="00:00:34.300">của nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:36.540">hạnh phúc</p>
+			<p begin="00:00:36.860">lứa đôi</p>
+			<p begin="00:00:37.220">tràn dâng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:43.060">Hãy</p>
+			<p begin="00:00:43.420">nói</p>
+			<p begin="00:00:44.060">đi</p>
+			<p begin="00:00:44.500">em</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:45.100">tiếng</p>
+			<p begin="00:00:45.420">nói</p>
+			<p begin="00:00:45.860">con</p>
+			<p begin="00:00:46.300">tim</p>
+		</div>
+		<div style="m"> <!-- 10 -->
+			<p begin="00:00:47.060">để</p>
+			<p begin="00:00:47.340">rồi</p>
+			<p begin="00:00:47.780">khoảnh</p>
+			<p begin="00:00:48.220">khắc</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:48.940">ước</p>
+			<p begin="00:00:49.220">mơ</p>
+			<p begin="00:00:49.700">nhiệm</p>
+			<p begin="00:00:50.300">màu</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:51.340">ôm</p>
+			<p begin="00:00:51.580">nhau</p>
+			<p begin="00:00:51.860">dịu</p>
+			<p begin="00:00:52.140">dàng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:52.940">siết</p>
+			<p begin="00:00:53.380">em</p>
+			<p begin="00:00:53.740">vào</p>
+			<p begin="00:00:54.220">lòng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:55.940">hạnh</p>
+			<p begin="00:00:56.220">phúc</p>
+			<p begin="00:00:56.660">dường</p>
+			<p begin="00:00:56.980">như</p>
+			<p begin="00:00:57.460">bất</p>
+			<p begin="00:00:58.390">tận</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:33.910">Hãy</p>
+			<p begin="00:03:34.310">giữ</p>
+			<p begin="00:03:34.630">mãi</p>
+			<p begin="00:03:34.950">mãi</p>
+			<p begin="00:03:35.270">nghe</p>
+			<p begin="00:03:35.670">anh</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:37.750">Hãy</p>
+			<p begin="00:03:38.150">giữ</p>
+			<p begin="00:03:38.470">ấm</p>
+			<p begin="00:03:38.790">áp</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:39.350">từng</p>
+			<p begin="00:03:39.630">giây</p>
+			<p begin="00:03:40.030">phút</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:41.190">Để</p>
+			<p begin="00:03:41.470">mãi</p>
+			<p begin="00:03:41.790">mãi</p>
+			<p begin="00:03:42.190">trong</p>
+			<p begin="00:03:42.630">đời</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:43.910">phút</p>
+			<p begin="00:03:44.270">giây</p>
+			<p begin="00:03:44.590">này</p>
+			<p begin="00:03:45.950">vẹn</p>
+			<p begin="00:03:46.470">nguyên</p>
+		</div>
+		<div style="f"> <!-- 20 -->
+			<p begin="00:04:16.750">Phút</p>
+			<p begin="00:04:17.030">giây</p>
+			<p begin="00:04:17.510">này</p>
+			<p begin="00:04:18.710">thuộc</p>
+			<p begin="00:04:18.950">về</p>
+			<p begin="00:04:19.430">nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:20.710">phút</p>
+			<p begin="00:04:21.070">giây</p>
+			<p begin="00:04:21.470">này</p>
+			<p begin="00:04:24.350">thuộc</p>
+			<p begin="00:04:24.830">về</p>
+			<p begin="00:04:25.270">nhau</p>
+			<p begin="00:04:26.000">./.</p>
+		</div>
+	</body>
+</tt>

@@ -1,0 +1,930 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+  
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+  <title>XÂY DỰNG ỨNG DỤNG FLASH BẰNG FLASHDEVELOP VÀ FLEX SDK</title>
+
+  
+  
+  <meta name="GENERATOR" content="OpenOffice.org 3.2  (Linux)">
+
+  
+  <meta name="AUTHOR" content="thanh ">
+
+  
+  <meta name="CREATED" content="20100930;3203500">
+
+  
+  <meta name="CHANGEDBY" content="Thanh Tran">
+
+  
+  <meta name="CHANGED" content="20101019;14472000">
+
+  
+  <style type="text/css">
+	<!--
+		
+	-->
+	</style>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-4430452-3']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head><body dir="ltr" lang="en-US">
+<h2 style="text-align: center;">XÂY DỰNG ỨNG DỤNG
+FLASH BẰNG FLASHDEVELOP VÀ FLEX SDK</h2>
+
+<h3 style="page-break-after: avoid;">I. Giới thiệu</h3>
+
+<p align="left" lang="vi-VN">Cho đến bây giờ
+nhiều người (thậm chí là một số lập trình viên web)
+vẫn nghĩ rằng để làm ra Flash phải sử dụng các công
+cụ thương mại như Flash CS5 hay Flash Builder. Thực tế là
+lập trình viên hoàn toàn có thể làm Flash bằng các công
+cụ hoàn toàn miễn phí. Giống như Java hay .NET, Flash cũng
+có bộ biên dịch miễn phí tên là Flex SDK và bạn có thể
+viết code ActionScript 3 bằng bất kỳ trình biên soạn text
+nào.</p>
+
+<p align="left" lang="vi-VN">Bài viết này sẽ
+hướng dẫn các bạn từng bước viết một hoạt cảnh
+Flash đơn giản bằng 2 công cụ miễn phí đó là
+FlashDevelop (FD) và Flex SDK. Đối tượng hướng tới của
+bài viết này là các bạn đã có kiến thức căn bản về OOP và mới làm quen
+với Flash hoặc
+những ai chỉ quen sử dụng Adobe Flash CS 3/4/5 (sau đây sẽ
+gọi là <span style="font-weight: bold;">Flash Pro</span>). </p>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Ghi chú:</span> Không
+như cái tên của nó, Flex SDK không phải chỉ để biên dịch ứng dụng viết
+bằng Flex (AS + MXML). Flex SDK còn được dùng để biên dịch ứng dụng
+viết hoàn toàn bằng ActionScript (AS); biên dịch và đóng gói ứng dụng
+desktop AIR; xuất tài liệu tham khảo từ các comment trong mã nguồn
+(tương tự javadoc)...<br>
+</p>
+
+<p align="left" lang="vi-VN">Bạn không cần hiểu ngay những khái niệm
+mới nêu ra trong bài viết này.
+Hãy làm theo hướng dẫn và tự trải nghiệm, bạn sẽ dần dần hiểu và nắm
+được chúng.<br>
+<br>
+Bài viết này sẽ hướng dẫn phát
+triển ứng dụng Flash với ActionScript 3 thuần túy (pure
+ActionScript 3).</p>
+
+<p align="left" lang="vi-VN">Yêu cầu phần mềm
+trước khi bắt đầu:
+</p>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN">Windows XP / Vista / 7</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN"><span lang="vi-VN">.NET Framework 2.0.
+(<a target="_blank" href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5">download</a>):
+để chạy FlashDevelop 3</span></p>
+  </li>
+  <li>
+    <p lang="vi-VN"><span lang="vi-VN">Java Runtime Environment 1.6+ (<a target="_blank" href="http://www.java.com/en/download/index.jsp">download</a>):
+để
+chạy Flex SDK</span></p>
+  </li>
+</ol>
+
+<h3>II. Tải về và
+cài đặt</h3>
+
+<h4>A. Đối với FD trước 3.3.0 hoặc bạn
+không chọn tải về Flex SDK lúc cài FD 3.3+</h4>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN"><span lang="vi-VN">Đến trang <a target="_blank" href="http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK">http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK</a>
+để tải về Flex SDK mới nhất.<br>
+Đến thời điểm viết bài này có 2 bản Flex SDK là:</span></p>
+    <ul>
+      <li><span lang="vi-VN"><span style="font-weight: bold;">Fex SDK
+3.5</span>: Biên dịch ứng dụng Flash 9 và 10.0, AIR 1.5.3.<br>
+Đối với người mới bắt đầu hoặc mới chuyển từ AS2, <span style="font-weight: bold;">tôi khuyên các bạn sử
+dụng bản 3.5 sẽ ít rắc rối hơn</span>.</span></li>
+      <li><span lang="vi-VN"><span style="font-weight: bold;">Flex SDK
+4.1</span>: Biên dịch ứng dụng Flash 10.0 và 10.1, AIR 2.0.<br>
+Dùng phiên bản này khi bạn đã hiểu và nắm vững Flex SDK, hoặc có nhu
+cầu biên dịch ứng dụng cho Flash 10.1 trên thiết bị di động.</span></li>
+    </ul>
+    <p align="left" lang="vi-VN"><span lang="vi-VN"> Sau khi tải Flex
+SDK về, giải nén vào một thư mục dễ truy cập. VD:
+C:\flex_sdk</span></p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Nếu bạn chưa cài FlashDevelop, hãy đến
+trang: <a href="http://flashdevelop.org/" target="_blank">http://flashdevelop.org</a>
+để tải về và cài bản FD mới nhất. Sau đó
+chạy FD lần đầu tiên.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN"><span lang="vi-VN">Chỉnh settings của
+FD để FD biết và sử dụng trình biên dịch của Flex SDK:<br>
+Vào menu Tools &gt; Program Settings &gt; chọn AS3 context trong danh
+sách plugins &gt; tìm đến Language &gt; chọn Flex SDK Location &gt;
+nhấn vào nút “...” &gt; duyệt và chọn thư mục C:\flex_sdk<br>
+    <br>
+    <img src="images/FD_settings.png" name="graphics1" align="bottom" border="0" height="475" width="675"></span></p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">(Không bắt buộc) Chỉnh settings của FD
+để test ứng dụng với Flash Player debugger có sẵn trong Flex SDK:<br>
+Tại Program Settings &gt; chọn Flash Viewer &gt; External Player Path
+&gt; nhấn vào nút "..." &gt; duyệt và chọn Flash Player trong Flex SDK,
+thông thường nằm tại:<br>
+(Flex SDK 3.5) C:\flex_sdk\runtimes\player\10\win\FlashPlayer.exe<br>
+(Flex SDK 4.1)
+C:\flex_sdk\runtimes\player\10.1\win\FlashPlayerDebugger.exe<br>
+    <br>
+Cũng tại trang settings của Flash Viewer, chọn “External” cho Movie
+Display Style.</p>
+  </li>
+</ol>
+
+<h4>B. Đối với FD từ 3.3.0 trở đi:</h4>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN">Bạn cũng đến trang: <a target="_blank" href="http://flashdevelop.org/">http://flashdevelop.org</a> để tải về
+và cài bản FD mới nhất.<br>
+Phiên bản hiện tại khi viết bài này là 3.3.1</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Trong lúc cài đặt, FD có tùy chọn tải
+về Flex SDK. Nếu chọn, FD sẽ tải về Flex SDK mới nhất là 4.1.<br>
+Flex SDK được tải về sẽ nằm trong thư mục: [thư mục cài
+FD]\Tools\flexsdk</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Sau khi tải về Flex SDK và hoàn tất
+cài đặt FD, FD sẽ tự động config để làm việc với Flex SDK. Bạn không
+cần phải làm bước 3 và 4 ở trên.</p>
+  </li>
+</ol>
+
+<h3 lang="vi-VN">III.
+Viết và biên dịch ứng dụng “Hello World”</h3>
+
+<ol>
+
+  <li>
+    <p lang="vi-VN">Mở menu Project &gt; New Project...<br>
+    <br>
+    <img src="images/FD_new_project.png" name="graphics4" align="bottom" border="0" height="472" width="543"></p>
+  </li>
+  <li>
+    <p lang="vi-VN">Trong danh sách project template, chọn ActionScript
+3 - AS3 Project. (Đây là template cho dự án Flash ActionScript 3 thuần
+túy.)<br>
+Tại trường Name, nhập vào tên dự án (HelloAS3).<br>
+Tại trường Location, duyệt và tạo một thư mục mới cho dự án này.<br>
+Sau đó OK. FD sẽ hỏi tên mặc định cho tác giả (@author) nếu bạn chưa
+cài cho nó.</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Tại cửa sổ Project (mặc định ở bên phải), mở thư
+mục src và double click lên file Main.as để mở nó bên cửa sổ soạn thảo.<br>
+Đây là nội dung tạo sẵn cho lớp Main:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">package
+{<br>
+&nbsp;&nbsp;&nbsp; import flash.display.Sprite;<br>
+&nbsp;&nbsp;&nbsp; import flash.events.Event;<br>
+    <br>
+&nbsp;&nbsp;&nbsp; public class Main extends Sprite {<br>
+    <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; public function Main():void {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (stage)
+init();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else
+addEventListener(Event.ADDED_TO_STAGE, init);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+    <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; private function init(e:Event =
+null):void {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+removeEventListener(Event.ADDED_TO_STAGE, init);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // entry point<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}</p>
+  </li>
+</ol>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Ghi chú:</span>&nbsp; Để
+biên dịch với Flex SDK, bạn cần chỉ định một file target. Lớp của file
+này <span style="font-weight: bold;">phải extend từ MovieClip hoặc
+Sprite</span> và nó là đối tượng hiển thị
+(display object) đầu tiên được đặt lên stage. Để dễ hình dung, lớp này
+sẽ <span style="font-weight: bold;">tương ứng với Document Class </span>nếu
+bạn build ứng dụng bằng Flash Pro.<br>
+<br>
+Mặc định bởi template AS3 Project, file Main.as đã được chọn làm target
+để biên dịch. Khi nhấn
+chuột phải lên tên file, bạn sẽ thấy mục “Always Compile” đã được đánh
+dấu chọn. Bạn cũng có thể chọn Always Compile cho một lớp khác nếu muốn
+thay đổi target.</p>
+
+<ol start="4">
+
+  <li>
+    <p lang="vi-VN">Sửa hàm init() được tạo sẵn với nội dung sau:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">private
+function init(e:Event = null):void {<br>
+&nbsp;&nbsp;&nbsp; removeEventListener(Event.ADDED_TO_STAGE, init);<br>
+    <br>
+&nbsp;&nbsp;&nbsp; //trace output<br>
+&nbsp;&nbsp;&nbsp; trace(“init() is called”);<br>
+    <br>
+&nbsp;&nbsp;&nbsp; //tạo text field mới<br>
+&nbsp;&nbsp;&nbsp; var helloText: TextField = new TextField();<br>
+    <br>
+&nbsp;&nbsp;&nbsp; //set giá trị text cho text field<br>
+&nbsp;&nbsp;&nbsp; helloText.text = "Hello World";<br>
+    <br>
+&nbsp;&nbsp;&nbsp; //đặt text field lên stage<br>
+&nbsp;&nbsp;&nbsp; addChild(helloText);<br>
+}</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Build và test ứng dụng Flash bằng cách nhấn vào nút
+Test Movie trên thanh toolbar (<img src="images/FD_build_test_toolbar.png" name="graphics2" align="bottom" border="0" height="27" width="139"> nút play màu xanh) hoặc nhấn
+shorcut F5.<br>
+Bên dưới, FD sẽ gọi lệnh mxmlc của Flex SDK để biên dịch ứng dụng Flash
+của bạn. <br>
+Nếu mọi việc suôn sẻ bạn sẽ thấy:<br>
+- Ứng dụng của bạn sẽ được chạy trên Flash Player standalone với chữ
+“Hello World”.<br>
+- Trong panel output, bạn sẽ thấy dòng trace “<span style="font-family: 'Courier New',monospace;">init() is called</span>”
+    <br>
+    <br>
+    <img src="images/build_01.png" name="graphics3" border="1" height="283" width="350"><br>
+    <br>
+Nếu ở các bước trước bạn chưa cài đặt đường dẫn đến Flex SDK, FD sẽ
+cảnh báo và yêu cầu bạn cài đặt đường dẫn đến Flex SDK ở trong AS3
+context (bước II.A.3)</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Bạn có thể điều chỉnh kích thước mặc định của ứng
+dụng Flash khi xuất ra bằng cách vào Project &gt; Properties (hoặc nhấn
+nút Project Properties trên panel Project) &gt; tab Output &gt; General
+&gt; sửa lại Dimensions (chẳng hạn 500x400).<br>
+Tại đây bạn cũng có thể sửa màu nền mặc định và framerate mặc định.<br>
+Sửa xong bạn chạy test lại để thấy thay đổi.</p>
+  </li>
+</ol>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Ghi chú:</span>
+FlashDevelop khi build với
+Flex SDK sẽ sử dụng một process có tên là Flex Compiler
+Shell (fcsh). Process này sẽ được tạo ra khi build lần đầu
+và lưu lại trong RAM cho đến khi thoát FD. Do đó những lần
+build sau, bạn sẽ thấy tốc độ build cực nhanh.
+Đây là một lợi thế đáng kể của Flex SDK so với Flash
+Pro.</p>
+
+<p lang="vi-VN"><a target="_blank" href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/src/Main-III.as">Xem
+mã nguồn đầy đủ của Main.as trong phần này</a></p>
+
+<h3 lang="vi-VN">IV. Sử dụng thư viện đã được
+biên dịch sẵn (swc)</h3>
+
+<p lang="vi-VN">Mỗi file *.swc là một thư viện các
+component đã được biên dịch sẵn. SWC giống DLL của .NET hay JAR của
+Java ở chỗ: mã nguồn AS3 đã được biên dịch thành bytecode và tài nguyên
+(hình ảnh, âm thanh, font chữ...) đã được nhúng sẵn. Tuy nhiên nó khác
+ở chỗ: SWC chỉ dùng để liên kết lúc biên dịch, không dùng được lúc chạy
+(run-time).</p>
+
+<p lang="vi-VN">Ưu điểm của swc là
+do đã được biên dịch từ trước, thời gian biên dịch
+của dự án sẽ được rút ngắn. Khả năng dùng lại cao
+và dễ dàng khi đem từ dự án này sang dự án khác.
+Khuyết điểm là khi code với FlashDevelop, chú thích ngữ
+cảnh cho các lớp và hàm ở trong swc sẽ không được chi
+tiết so với khi có source đầy đủ.</p>
+
+<p lang="vi-VN">Làm theo hướng dẫn sau để
+hiểu rõ hơn về swc và cách dùng trong FD:</p>
+
+<ol>
+
+  <li>
+    <p lang="vi-VN"><span lang="vi-VN">Trước tiên bạn hãy tải về thư
+viện hỗ trợ hiệu ứng hoạt cảnh TweenLite tại địa chỉ: <a href="http://www.greensock.com/as/greensock-as3.zip">http://www.greensock.com/as/greensock-as3.zip</a><br>
+TweenLite/TweenMax là bộ thư viện tạo hoạt cảnh được dùng khá phổ biến.
+Cách dùng sẽ được ghi chú trong code mẫu của bài viết. </span> </p>
+  </li>
+  <li>
+    <p lang="vi-VN">Giải nén greensock-as3.zip ra bạn sẽ thấy
+file greensock.swc. Chép file này vào thư mục lib của dự án HelloAS3. <br>
+(Nhấn nút refresh trên Project panel nếu chưa thấy file này hiện ra)</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Trong panel Project,
+chuột phải lên file greensock.swc và chọn “Add to Library”. File
+greensock.swc sẽ chuyển màu xanh.<br>
+Lúc này FD sẽ hiểu các lớp có trong greensock.swc. Nó sẽ gợi ý code cho
+bạn cũng như liên kết đến khi biên dịch với Flex SDK.<br>
+    </p>
+  </li>
+  <li>
+    <p lang="vi-VN">Khai báo 2 biến member kiểu TextField và sửa hàm
+init() như bên dưới:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">public
+var nameText: TextField; <br>
+public var roleText: TextField;<br>
+    <br>
+private
+function init(e:Event = null):void { <br>
+&nbsp;&nbsp;&nbsp; removeEventListener(Event.ADDED_TO_STAGE, init); <br>
+&nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp;&nbsp; //xuất ra ouput <br>
+&nbsp;&nbsp;&nbsp; trace("init() is called"); <br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; //tạo TextField để hiển thị tên <br>
+&nbsp;&nbsp;&nbsp; nameText = new TextField(); <br>
+&nbsp;&nbsp;&nbsp; //TextField tự động điều chỉnh kích thước vùng bao
+vừa với text <br>
+&nbsp;&nbsp;&nbsp; nameText.autoSize = "left"; <br>
+&nbsp;&nbsp;&nbsp; nameText.text = "Emma Watson"; <br>
+&nbsp;&nbsp;&nbsp; //vị trí ban đầu của TextField ở bên ngoài stage về
+phía phải<br>
+&nbsp;&nbsp;&nbsp; nameText.x = stage.stageWidth; <br>
+&nbsp;&nbsp;&nbsp; nameText.y = 20; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;<br>
+&nbsp;&nbsp;&nbsp; //tạo TextField để hiển thị tên nhân vật <br>
+&nbsp;&nbsp;&nbsp; roleText = new TextField(); <br>
+&nbsp;&nbsp;&nbsp; roleText.autoSize = "left"; <br>
+&nbsp;&nbsp;&nbsp; //sử dụng htmlText để tận dụng một số tag của HTML <br>
+&nbsp;&nbsp;&nbsp; roleText.htmlText = "as &lt;b&gt;Hermione
+Granger&lt;/b&gt;"; <br>
+&nbsp;&nbsp;&nbsp; //vị trí ban đầu của TextField ở bên ngoài stage về
+phía phải<br>
+&nbsp;&nbsp;&nbsp; roleText.x = stage.stageWidth; <br>
+&nbsp;&nbsp;&nbsp; //roleText được đặt ngay phía dưới của nameText <br>
+&nbsp;&nbsp;&nbsp; roleText.y = nameText.y + nameText.height; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; //đặt các đối tượng lên stage <br>
+&nbsp;&nbsp;&nbsp; addChild(nameText); <br>
+&nbsp;&nbsp;&nbsp; addChild(roleText); <br>
+    <br>
+&nbsp;&nbsp;&nbsp; show();<br>
+}</p>
+    <p>Khi khai báo biến, nếu kiểu của nó chưa được import, FD sẽ
+import giùm bạn.</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Thêm hàm show() với nội
+dung sau:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">private
+function show(): void { <br>
+&nbsp;&nbsp;&nbsp; //di chuyển các TextField ra phía ngoài, bên phải
+stage <br>
+&nbsp;&nbsp;&nbsp; nameText.x = stage.stageWidth; <br>
+&nbsp;&nbsp;&nbsp; roleText.x = stage.stageWidth; <br>
+&nbsp;&nbsp;&nbsp; //di chuyển nameText từ vị trí hiện tại đến tọa độ
+x=220 trong thời gian 0.7s <br>
+&nbsp;&nbsp;&nbsp; TweenLite.to(nameText, 0.7, { x: 220 } ); <br>
+&nbsp;&nbsp;&nbsp; //di chuyển roleText từ vị trí hiện tại đến tọa độ
+x=220 trong thời gian 0.7s&nbsp; <br>
+&nbsp;&nbsp;&nbsp; //nhưng delay sau 0.4s <br>
+&nbsp;&nbsp;&nbsp; TweenLite.to(roleText, 0.7, { x: 220, delay: 0.4 }
+); <br>
+}</p>
+    <p>Với cách viết lớp static như TweenLite, FD hiện tại sẽ không
+import cho bạn. Bạn có thể tự viết dòng "<span style="font-family: Courier New;">import com.greensock.TweenLite;</span>"
+vào phía đầu file Main.as hoặc bạn chỉ cần đặt con trỏ tại "TweenLite"
+và nhấn Ctrl-Shift-1.</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Nhấn nút Test Movie
+hoặc F5 để test ứng dụng. Bạn sẽ thấy 2 đoạn text lần lượt bay vào từ
+bên phải.</p>
+    <img src="images/build_02.png" name="graphics5" border="0" height="359" width="520"> </li>
+</ol>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Ghi chú:</span>
+Bạn hoàn toàn có thể dùng source code thay cho swc bằng
+cách chép thư mục “gs” vào thư mục “src” của dự
+án. Độ ưu tiên khi biên dịch các lớp của Flex SDK sẽ
+là source code rồi mới tới swc.</p>
+
+<p><a target="_blank" href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/src/Main-IV.as">Xem
+mã nguồn đầy đủ của Main.as trong phần này</a></p>
+
+<h3 lang="vi-VN">V. Nhúng tài nguyên bên ngoài
+vào ứng dụng Flash build bằng Flex SDK<br>
+</h3>
+
+<p lang="vi-VN">Khi làm Flash với chương trình
+Adobe Flash CS*, bạn có thể chèn hình ảnh, âm thanh hoặc
+nhúng font vào cho TextField tùy mục đích trình diễn. Tất
+cả những hình ảnh, âm thanh đó ban đầu đều nằm bên
+ngoài được bạn chèn vào trong file fla và cuối cùng
+khi xuất ra swf, tất cả các tài nguyên đó được nhúng
+vào file swf.</p>
+
+<p lang="vi-VN">Với Flex SDK, bạn cũng có thể
+làm được việc tương tự bằng cách sử dụng thẻ
+metadata [embed]. Sau đây sẽ hướng dẫn nhúng font và hình
+ảnh vào ứng dụng Flash:</p>
+
+<h4>A. Nhúng file ảnh:</h4>
+
+<ol>
+
+  <li>
+    <p lang="vi-VN">Tạo thư mục “assets” ngay tại thư mục gốc của dự
+án. Theo quy ước, đây là thư mục chứa các tài nguyên sẽ được nhúng vào
+trong file swf. (Phân biệt với các tài nguyên được load lúc chạy).</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Tạo thư mục “images” bên trong “assets” và chép một
+ảnh làm ví dụ vào (<a href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/assets/images/hermione.jpg" target="_blank">hermione.jpg</a>).<br>
+Ảnh bạn có thể nhúng với thẻ [embed] là ảnh .jpg, .png, .gif (chỉ frame
+đầu). Flex SDK không cho nhúng .bmp (khác với Flash Pro).</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Phía bên cửa sổ soạn code, đặt dấu nháy trên một
+dòng trống ngay phía dưới dòng khai báo tên lớp.</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Click chuột phải lên file “hermione.jpg” bên
+project panel và chọn “Insert into document”.<br>
+FD sẽ tự động tạo ra thẻ nhúng với nội dung: </p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source
+=
+'../assets/images/hermione.jpg')]</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Ngay bên dưới thẻ [embed], bạn khai báo một biến
+kiểu
+Class để Flex SDK biết sẽ nhúng dữ liệu của tài nguyên vào lớp này:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source
+=
+'../assets/images/hermione.jpg')]<br>
+public var <span style="font-weight: bold;">PhotoClass</span>: Class;</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Khi tài nguyên được nhúng là dạng hình ảnh, <span style="font-weight: bold;">PhotoClass là một lớp con của
+Bitmap</span>. Bạn sử dụng ảnh được nhúng này
+như sau:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">//khai
+báo biến<br>
+public var photo: Bitmap;<br>
+&nbsp; <br>
+//khởi tạo và sử dụng đối tượng photo<br>
+private function init(e:Event = null):void {<br>
+&nbsp;&nbsp;&nbsp; /* ... */<br>
+&nbsp;&nbsp;&nbsp; photo = new <span style="font-weight: bold;">PhotoClass</span>();<br>
+&nbsp;&nbsp;&nbsp; photo.x = 10;<br>
+&nbsp;&nbsp;&nbsp; photo.y = 10;<br>
+&nbsp;&nbsp;&nbsp; addChild(photo);<br>
+}<br>
+    </p>
+    <p lang="vi-VN">Đến đây bạn có thể cho chạy
+thử để thấy ảnh đã được nhúng và đặt trên stage.</p>
+    <p lang="vi-VN"> <img src="images/build_03.png" name="graphics6" border="0" height="355" width="517"></p>
+  </li>
+  <li>
+    <p lang="vi-VN">Thêm hiệu ứng hiện ảnh dần dần (fade in) bằng cách
+thêm đoạn code sau vào hàm <span style="font-family: Courier New;">show()</span>:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">//hiệu
+ứng ảnh bắt đầu trong suốt hoàn toàn<br>
+photo.alpha = 0;<br>
+//chuyển alpha ảnh thành 1 trong thời gian 1s<br>
+TweenLite.to(photo, 1, { alpha: 1} );</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Chạy chứng dụng để thấy hoạt cảnh ảnh fade in và
+chữ chạy vào.</p>
+  </li>
+</ol>
+
+<h4>B. Nhúng font và cài đặt font cho TextField</h4>
+
+<ol>
+
+  <li>
+    <p lang="vi-VN">Chúng ta sẽ dùng font Comic Sans MS (có sẵn trên
+Windows) để làm ví dụ. Bạn hãy vào thư mục C:\Windows\Fonts, chép 2
+file comic.TTF (regular) và comicbd.TTF (bold) vào thư mục assets/fonts
+của dự án.<br>
+Để thuận tiện, bạn có thể download font từ các link sau: <a href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/assets/fonts/comic.TTF" target="_blank">comic.TFF</a>, <a href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/assets/fonts/comicbd.TTF" target="_blank">comicbd.TFF</a><br>
+    </p>
+  </li>
+  <li>
+    <p lang="vi-VN">Viết thẻ nhúng font theo cú pháp như sau:<br>
+    </p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source=
+'../assets/fonts/comic.TTF'<br>
+,fontName = 'Comic' //tên của font dùng để đăng ký TextFormat<br>
+,fontStyle = 'normal' // normal|italic<br>
+,fontWeight = 'normal' // normal|bold<br>
+,unicodeRange=
+'U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'<br>
+//,embedAsCFF='false'<br>
+)]<br>
+public var ComicFontRegular: Class;</p>
+  </li>
+</ol>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Lưu ý:</span>
+<br>
+- Nếu bạn sử dụng Flex SDK 4.1, thẻ embed trên bắt buộc phải có tham số
+<span style="font-family: Courier New;">embedAsCFF='false'</span>. Lý
+do tại sao phải có tham số này xin được bàn trong một bài viết khác.<br>
+-
+unicodeRange là danh sách mã unicode tương ứng với các ký tự sẽ được
+nhúng. Trong VD trên, các ký tự đang dùng là của nhóm Basic Latin, bạn
+có thể mở rộng hoặc
+dùng các bộ ký tự khác bằng cách tham khảo file:
+flex_sdk/frameworks/flash-unicode-table.xml</p>
+
+<ol start="3">
+
+  <li>
+    <p>Đăng ký font với hệ thống: thêm đoạn code sau vào đầu
+hàm init()</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">Font.registerFont(ComicFontRegular);
+//nhớ import lớp flash.text.Font </p>
+    <p class="code-western" style="margin-bottom: 0.2in;" lang="vi-VN">
+    </p>
+  </li>
+  <li>
+    <p lang="vi-VN">Tạo text format và gán format mặc định cho
+TextField (cũng trong hàm init)<br>
+    </p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">//khởi
+tạo TextFormat, lưu ý tên font ("Comic") tương ứng với fontName trong
+thẻ [embed]<br>
+var tf: TextFormat = new TextFormat("Comic", 20);<br>
+/*...*/<br>
+//với defaultTextFormat, text mới gán sẽ được áp dụng format này<br>
+nameText.defaultTextFormat = tf;<br>
+//bật embedFont=true để sử dụng font nhúng<br>
+nameText.embedFonts = true;<br>
+//chỉ gán text sau khi đã gán defaultTextFormat<br>
+nameText.text = "Emma Watson";<br>
+/*...*/<br>
+//tương tự với roleText:<br>
+roleText.defaultTextFormat = tf;<br>
+roleText.embedFonts = true;<br>
+roleText.htmlText = "as &lt;b&gt;Hermione Granger&lt;/b&gt;";<br>
+    </p>
+  </li>
+  <li>
+    <p lang="vi-VN">Chạy ứng dụng, bạn sẽ thấy 2 dòng text có diện mạo
+mới. Tuy nhiên đoạn text “Hermione Granger” không còn được in đậm bởi
+vì chúng ta mới nhúng phần font normal.</p>
+    <p lang="vi-VN"><img src="images/build_04a.png" name="graphics7" border="0" height="357" width="519"></p>
+  </li>
+  <li>
+    <p lang="vi-VN">Để có font in đậm, bạn nhúng tiếp phần font bold
+với đoạn code sau:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source=
+'../assets/fonts/<span style="font-weight: bold;">comicbd.TTF</span>'<br>
+,fontName = 'Comic' //tên của font dùng để đăng ký TextFormat<br>
+,fontStyle = 'normal' // normal|italic<br>
+,fontWeight = '<span style="font-weight: bold;">bold</span>' //
+normal|bold<br>
+,unicodeRange=
+'U+0020-U+002F,U+0030-U+0039,U+003A-U+0040,U+0041-U+005A,U+005B-U+0060,U+0061-U+007A,U+007B-U+007E'<br>
+//,embedAsCFF='false'<br>
+)]<br>
+public var ComicFontBold: Class;</p>
+    <p lang="vi-VN">Trong hàm init() đăng ký tiếp bộ font bold này:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">Font.registerFont(ComicFontBold);</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Chạy lại chương trình bạn sẽ thấy phần “Hermione
+Granger” được in đậm.</p>
+    <p lang="vi-VN"><img src="images/build_04b.png" name="graphics8" border="0" height="353" width="516"></p>
+  </li>
+</ol>
+
+<p style="border: 1px solid rgb(255, 128, 128); padding: 10px; background-color: rgb(240, 240, 240);" lang="vi-VN"><span style="font-weight: bold;">Ghi chú:</span>
+Qua ví dụ trên bạn cũng thấy rằng, font thường và font in đậm là 2 bộ
+font khác nhau (tương tự cho font in nghiêng, nghiêng + đậm). Khi
+nhúng, các kiểu khác nhau của cùng một font cần được nhúng lần lượt và
+tường minh. Điều này làm sáng tỏ một số vấn đề với TextField bạn thường
+gặp khi sử dụng font nhúng như là: không chịu hiển thị chữ in đậm, các
+thẻ &lt;b&gt; hay &lt;i&gt; đôi khi làm mất chữ khi dùng với htmlText...<br>
+</p>
+
+<p lang="vi-VN"><a target="_blank" href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/src/Main-V.as">Xem
+mã nguồn đầy đủ của Main.as trong phần này</a></p>
+
+<h3 lang="vi-VN">VI. Kết hợp với Flash Professional</h3>
+
+<p align="left" lang="vi-VN">Kết hợp với Flash Pro chúng ta sẽ tận dụng
+được
+khả năng vẽ hoạt cảnh bằng vector và giao diện thiết
+kế trực quan. </p>
+
+<h4>A. Nhúng symbol từ swf xuất bởi Flash Pro</h4>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN">Tạo thư mục “fla” tại gốc của dự án.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Trong Flash Pro, tạo file symbols.fla
+mới với template ActionScript 3 và save trong thư mục “fla” vừa tạo.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Tạo một Button có label là “Show” với
+hiệu ứng riêng biệt cho up, over, down.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Tạo linkage cho Button mới với tên là
+symbols.ShowButton.<br>
+(Flash CS5: Mở library (Ctrl-L) &gt; chuột phải lên show-btn &gt;
+Properties &gt; mở rộng phần Advanced &gt; chọn Export for ActionScript
+&gt; Tại trường Class, nhập “symbols.ShowButton” &gt; Tại trường Base
+Class, nhập flash.display.SimpleButton (có thể đã có sẵn) &gt; OK &gt;
+Flash cảnh báo việc
+tạo tự động class &gt; OK.)<br>
+    <img src="images/fl_symbol_properties.png" name="graphics9" height="378" width="475"></p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Xuất fla thành symbols.swf</p>
+  </li>
+  <li>
+    <p lang="vi-VN">Trong cửa sổ edit Main.as của FD, thêm
+đoạn code sau để nhúng symbol ShowButton:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source='../fla/symbols.swf',
+symbol='symbols.ShowButton')]<br>
+public
+var <span style="font-weight: bold;">ShowButtonClass</span>: Class;</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Khai báo một biến SimpleButton mới và
+khởi tạo ShowButton trong hàm init:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">public
+var showButton: SimpleButton;<br>
+    <br>
+private function init(e:Event = null):void {<br>
+&nbsp;&nbsp;&nbsp; /* ... */<br>
+&nbsp;&nbsp;&nbsp; //tạo nút ShowButon:<br>
+&nbsp;&nbsp;&nbsp; showButton = new <span style="font-weight: bold;">ShowButtonClass</span>();<br>
+&nbsp;&nbsp;&nbsp; showButton.x = stage.stageWidth - showButton.width -
+10;<br>
+&nbsp;&nbsp;&nbsp; showButton.y = stage.stageHeight - showButton.height
+- 20;<br>
+&nbsp;&nbsp;&nbsp; showButton.addEventListener(MouseEvent.CLICK,
+showButtonClickHandler);<br>
+    <br>
+&nbsp;&nbsp;&nbsp; addChild(showButton);<br>
+}<br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Chuyển lệnh gọi hàm show() trong init
+sang cho showButtonClickHandler():</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">private
+function showButtonClickHandler(e:MouseEvent):void {<br>
+&nbsp;&nbsp;&nbsp; show();<br>
+}<br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Build và chạy chương trình. Lần này
+bạn phải nhấn nút “Show” để chạy hoạt cảnh thay vì tự động như trước.<br>
+    <img style="width: 519px; height: 357px;" alt="build 05" src="images/build_05.png"><br>
+    </p>
+  </li>
+</ol>
+
+<h4>Thử nhúng một symbol là MovieClip nhiều
+frame và có code đi kèm:</h4>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN">Trong library của Flash Pro, duplicate
+show-btn, đặt tên mới là hide-mov và sửa kiểu (Type) của nó thành
+MovieClip.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Cũng trong cửa sổ symbol properties,
+chọn Export for ActionScript. Nhập class: symbols.HideButton (Base
+class là flash.display.MovieClip). Sau đó OK 2 lần.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Chỉnh sửa MovieClip vừa tạo:<br>
+- Sửa text của nút thành "Hide"<br>
+- Thêm các label “up”, “over”, “down” cho các frame thể hiện trạng thái
+tương ứng của nút.<br>
+- Tạo một layer rỗng và chèn đoạn code xử lý sự kiện chuột như sau:<br>
+    </p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">import
+flash.events.MouseEvent;<br>
+    <br>
+stop();<br>
+this.addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);<br>
+this.addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);<br>
+this.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);<br>
+this.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);<br>
+this.buttonMode = true;<br>
+    <br>
+function rollOverHandler(event: MouseEvent): void {<br>
+&nbsp;&nbsp;&nbsp; this.gotoAndStop("over");<br>
+}<br>
+    <br>
+function rollOutHandler(event: MouseEvent): void {<br>
+&nbsp;&nbsp;&nbsp; this.gotoAndStop("up");<br>
+}<br>
+    <br>
+function mouseDownHandler(event: MouseEvent): void {<br>
+&nbsp;&nbsp;&nbsp; this.gotoAndStop("down");<br>
+}<br>
+    <br>
+function mouseUpHandler(event: MouseEvent): void {<br>
+&nbsp;&nbsp;&nbsp; this.gotoAndStop("over");<br>
+}<br>
+    </p>
+    <p lang="vi-VN">Đoạn code trên sẽ làm cho HideButton có hiệu ứng
+mouse over và down tương tự như ShowButton.</p>
+    <p><img style="width: 779px; height: 754px;" alt="FL code on frame" src="images/fl_code_on_frame.png"></p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Xuất bản FLA thành SWF sau đó quay trở
+lại FD nhúng symbol HideButton vào Main:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">[Embed(source
+= '../fla/symbols.swf', symbol = 'symbols.HideButton')]<br>
+public var <span style="font-weight: bold;">HideButtonClass</span>:
+Class;<br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Khai báo một biến MovieClip mới và
+khởi tạo HideButton trong hàm init:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">public
+var hideButton: MovieClip;<br>
+    <br>
+private function init(e:Event = null):void {<br>
+&nbsp;&nbsp;&nbsp; /* ... */<br>
+&nbsp;&nbsp;&nbsp; //tạo nút HideButon:<br>
+&nbsp;&nbsp;&nbsp; hideButton = new <span style="font-weight: bold;">HideButtonClass</span>();<br>
+&nbsp;&nbsp;&nbsp; hideButton.x = showButton.x - hideButton.width - 10;<br>
+&nbsp;&nbsp;&nbsp; hideButton.y = stage.stageHeight - hideButton.height
+- 20;<br>
+&nbsp;&nbsp;&nbsp; hideButton.addEventListener(MouseEvent.CLICK,
+hideButtonClickHandler);<br>
+}<br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Viết đoạn code xử lý hoạt cảnh <span style="font-family: Courier New;">hide()</span>
+và gọi nó trong <span style="font-family: Courier New;">hideButtonClickHandler()</span>:</p>
+    <p style="border: 1px solid rgb(208, 208, 208); font-family: 'Courier New',monospace; color: rgb(0, 0, 102); background-color: rgb(240, 240, 240);">private
+function hideButtonClickHandler(e:MouseEvent):void {<br>
+&nbsp;&nbsp;&nbsp; hide();<br>
+}<br>
+    <br>
+private function hide(): void {<br>
+&nbsp;&nbsp;&nbsp; //di chuyển các TextField về vị trí mặc định<br>
+&nbsp;&nbsp;&nbsp; nameText.x = 220;<br>
+&nbsp;&nbsp;&nbsp; roleText.x = 220;<br>
+&nbsp;&nbsp;&nbsp; //alpha mặc định<br>
+&nbsp;&nbsp;&nbsp; photo.alpha = 1;<br>
+&nbsp;&nbsp;&nbsp; //di chuyển nameText từ vị trí hiện tại ra khỏi phía
+trái của stage trong thời gian 0.7s<br>
+&nbsp;&nbsp;&nbsp; TweenLite.to(nameText, 0.7, { x: - nameText.width }
+);<br>
+&nbsp;&nbsp;&nbsp; //di chuyển roleText từ vị trí hiện tại ra khỏi phía
+trái của stage trong thời gian 0.7s<br>
+&nbsp;&nbsp;&nbsp; //nhưng delay sau 0.2s<br>
+&nbsp;&nbsp;&nbsp; TweenLite.to(roleText, 0.7, { x: - roleText.width,
+delay: 0.2 } );<br>
+&nbsp;&nbsp;&nbsp; //chuyển alpha (độ trong suốt) của ảnh thành 0 trong
+thời gian 1s<br>
+&nbsp;&nbsp;&nbsp; TweenLite.to(photo, 1, { alpha: 0} );<br>
+}<br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Build và test ứng dụng. Bạn vẫn có thể
+click lên HideButton để chạy hiệu ứng nhưng sẽ thấy nó nhảy frame liên
+tục và không còn hiệu ứng rê chuột nữa. Đây là một hạn chế cần lưu ý
+của việc
+dùng thẻ [embed] để nhúng symbol. Tất cả các ActionScript trên frame
+của MovieClip
+hoặc trong lớp gắn với linkage sẽ bị mất.<br>
+Để khắc phục điều này, chúng ta sẽ sử dụng SWC xuất từ Flash Pro. </p>
+  </li>
+</ol>
+
+<h4>B. Sử dụng SWC xuất
+bởi Flash Pro:</h4>
+
+<ol>
+
+  <li>
+    <p align="left" lang="vi-VN">Trong Flash Pro với symbols.fla đang
+mở, vào File &gt; Publish Settings &gt; Flash &gt; SWF
+Settings &gt; đánh dấu chọn “Export SWC”.</p>
+    <p><img style="width: 433px; height: 663px;" alt="FL export SWC" src="images/fl_export_swc.png"><br>
+    </p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Xuất bản lại file fla. Bạn sẽ thấy
+file <span style="font-weight: bold;">symbols.swc</span> mới được tạo
+ra.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Quay trở lại FD, làm thao tác “add to
+library” (tham khảo bước IV.3) cho symbols.swc vừa được tạo.</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Trong file Main.as, sửa kiểu của biến
+hideButton thành HideButton. (FD sẽ tự động import lớp.)</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Tại dòng khởi tạo biến hideButton, sửa
+lệnh <span style="font-family: Courier New;">new HideButtonClass()</span>
+thành <span style="font-family: Courier New;">new HideButton()</span><br>
+(Sau đó có thể xóa phần nhúng HideButtonClass ở trên)</p>
+  </li>
+  <li>
+    <p align="left" lang="vi-VN">Build và test ứng dụng. Lúc này
+HideButton đã có đầy đủ hiệu ứng rê chuột.</p>
+    <p><img style="width: 520px; height: 356px;" alt="Build VI" src="images/build_06.png"><br>
+    </p>
+  </li>
+</ol>
+
+<p><a target="_blank" href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3/src/Main.as">Xem
+mã nguồn đầy đủ của Main.as trong phần này</a></p>
+
+<p><span style="font-weight: bold; font-size: 1.5em;">↓ </span><a style="font-weight: bold;" target="_blank" href="http://thanhtran-sources.googlecode.com/svn/trunk/training/FlashDevelop_FlexSDK_Tutorial/HelloAS3.zip">Tải
+về toàn bộ mã nguồn và tài nguyên của dự án.</a><span style="font-weight: bold; font-size: 1.5em;"> ↓</span>
+</p>
+
+<h3 align="left" lang="vi-VN">VII. Kết luận:</h3>
+
+<ul>
+
+  <li>
+    <p align="left" lang="vi-VN">Một khi bạn đã thuần thục và nắm những
+bí quyết sử dụng FlashDevelop với Flex SDK, bạn có thể <span style="font-weight: bold;">phát triển dự án
+được biên dịch hoàn toàn bằng Flex SDK.</span></p>
+  </li>
+  <li>
+    <p lang="vi-VN">Khi đó <span style="font-weight: bold;">Flash Pro
+chỉ còn được sử dụng
+như một công cụ tạo các thành phần giao diện cơ bản</span>.</p>
+  </li>
+  <li><span style="font-weight: bold;">Mô hình kết hợp Flash Pro và
+Flex SDK cho phép bạn dễ dàng tách
+các module trên nhiều file FLA khác nhau</span>, tránh được xung đột
+hay gặp
+phải nếu nhiều người làm việc trên một FLA duy nhất.<br>
+  </li>
+  <li>
+    <p lang="vi-VN"><span style="font-weight: bold;">Việc build (và
+deploy) dự án có thể dễ dàng được tự
+động hóa</span> bằng các script như BAT, BASH... hay bằng các công cụ
+như ANT
+(FlexANT), Maven (Flexmojos).</p>
+  </li>
+</ul>
+
+<h3>VIII. Đi tiếp từ đây:</h3>
+
+<ul>
+
+  <li>
+    <p><a href="http://www.flashdevelop.org/wikidocs/index.php?title=Features:Interface" target="_blank">Đào sâu các tính năng hỗ trợ code của FlashDevelop.</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.flashdevelop.org/wikidocs/index.php?title=AS3:FlexAndFlashCS3Workflow" target="_blank">Xem thêm về workflow giữa Flash Pro và Flex SDK.</a></p>
+  </li>
+  <li><p><a href="http://livedocs.adobe.com/flex/3/html/help.html?content=compilers_13.html" target="_blank">Xem cách sử dụng Flex SDK với dòng lệnh.</a></p></li>
+<li>
+    <p><a href="http://livedocs.adobe.com/flex/3/html/help.html?content=anttasks_1.html" target="_blank">Sử dụng Flex ANT Tasks để build dự án bằng ANT.</a><br>
+    </p>
+  </li>
+</ul>
+
+</body></html>

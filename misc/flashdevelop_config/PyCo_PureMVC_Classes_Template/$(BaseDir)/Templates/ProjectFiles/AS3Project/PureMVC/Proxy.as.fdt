@@ -1,0 +1,20 @@
+/*
+Proxy - PureMVC
+*/
+package $(Package) $(CSLB){
+	import org.puremvc.as3.interfaces.IProxy;
+	import org.puremvc.as3.patterns.proxy.Proxy;
+
+    /**
+     * A proxy
+	 * @author	$(DefaultUser)
+     */
+    public class $(FileName) extends Proxy implements IProxy $(CSLB){
+		public static const NAME:String = "$(FileName)";
+
+		public function $(FileName) ( data:Object = null ) $(CSLB){
+            super (NAME, data);
+            $(EntryPoint)
+        }
+	}
+}

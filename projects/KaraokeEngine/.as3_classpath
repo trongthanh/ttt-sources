@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AS3Classpath>
+    <AS3Classpath generateProblems="true" type="source" useAsSharedCode="false">src</AS3Classpath>
+    <AS3Classpath generateProblems="true" type="source" useAsSharedCode="false">unit_test</AS3Classpath>
+    <AS3Classpath generateProblems="true" type="source" useAsSharedCode="false">lib</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">lib/GTween_V2_01.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">lib/as3-signals-v0.6.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">lib/FlexUnit4.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">lib/FlexUnit4UIListener.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">playerglobal.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">flex.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">framework.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">rpc.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">utilities.swc</AS3Classpath>
+    <AS3Classpath generateProblems="false" type="lib" useAsSharedCode="false">lib/UserInterface.swc</AS3Classpath>
+</AS3Classpath>

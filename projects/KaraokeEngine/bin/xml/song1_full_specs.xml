@@ -1,0 +1,64 @@
+<tt xml:lang="vi"
+    xmlns="http://www.w3.org/ns/ttml"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"> 
+	<head>
+		<metadata>
+			<ttm:title><![CDATA[Hạnh Phúc Bất Tận]]></ttm:title>
+			<ttm:desc><![CDATA[Composed by: Nguyễn Đức Thuận<br/>Singers: Hồ Ngọc Hà ft. V.Music Band]]></ttm:desc>
+			<ttm:copyright>Copyright (C) 2010 Thanh Tran - trongthanh@gmail.com</ttm:copyright>
+			<audio>mp3/hanh_phuc_bat_tan.mp3</audio>
+			<width>800</width>
+			<height>600</height>
+			<numLines>2</numLines> 
+		</metadata>
+	<styling> <!-- custom styling is planned to be implemented later-->
+		<!--- basic style, must equals 'b' 
+			font size values: only support absolute pixel (assumed)
+			textOutline: only support color
+		-->
+		<style xml:id="b" 
+			tts:color="#8AD420" tts:fontFamily="Verdana" 
+			tts:fontSize="50" tts:fontStyle="normal" tts:fontWeight="normal" 
+			tts:textOutline="0xFFFFFF"
+		/>
+		<!-- style for male lyrics, ID must equals 'm'
+			for singer specific styling, only accept color & textOutline
+		-->
+		<style xml:id="m" tts:color="#00CCFF" tts:textOutline="0xFFFFFF"/>
+		<!-- style for female lyrics, ID must equals 'f' -->
+		<style xml:id="f" tts:color="#FF37BF" tts:textOutline="0xFFFFFF"/>
+		<!-- style for synced (overlayed) lyrics, ID must equals 's' -->
+		<style xml:id="s" tts:color="#FF37BF" tts:textOutline="0xFFFFFF"/>
+	</styling> 
+      
+  </head> 
+  <body>
+	<div style="f"> <!-- only support style and begin; timeContainer is seq (sequence) by default-->
+		<p begin="00:00:21.256">* * *</p> <!-- support begin, the coloring will appear sequentially; the begin param at containing div will be ignored -->
+		<p begin="00:00:22.456">Thắp nến đêm nay </p>
+	</div>
+	<div style="f">
+		<p begin="00:00:25.780">ấm áp trong tay</p>
+	</div>
+	<div begin="00:00:27.500" style="f"> <!-- if div is defined with begin p should be defined with dur -->
+		<p dur="360">của người</p> <!-- with this scheme, lyrics in different blocks may appear parallel -->
+		<p dur="700">yêu dấu</p>
+	</div>
+	<div begin="00:00:29.540" style="f">
+		<p dur="1360">xiết bao ngọt ngào</p>
+	</div>
+	<div begin="00:00:31.940" style="f">
+		<p dur="840">vu vơ mơ về</p>
+	</div>
+	<div begin="00:00:33.460" style="f">
+		<p dur="840">một ngày</p>
+		<p dur="320">của nhau</p>
+	</div>
+	<div begin="00:00:36.540" style="f">
+		<p dur="320">hạnh phúc</p>
+		<p dur="360">lứa đôi</p>
+		<p dur="600">tràn dâng</p>
+	</div>
+  </body> 
+</tt>

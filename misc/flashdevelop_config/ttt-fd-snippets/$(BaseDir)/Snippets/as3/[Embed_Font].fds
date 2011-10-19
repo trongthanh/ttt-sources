@@ -1,0 +1,6 @@
+[Embed(source='$(EntryPoint)path/to/font.ttf$(ExitPoint)', fontName='FontName', fontWeight='bold|heavy|normal|plain|700', 
+	fontStyle='italic|oblique|normal|plain', unicodeRange='englishRange')]
+private static var EMBEDDED_FONT: Class;
+
+
+

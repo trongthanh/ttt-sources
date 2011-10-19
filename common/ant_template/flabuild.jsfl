@@ -1,0 +1,15 @@
+﻿fl.publishDocument("file:///../fla/contact.fla");
+fl.publishDocument("file:///../fla/gallery.fla");
+fl.publishDocument("file:///../fla/about_page.fla");
+//fl.publishDocument("file:///../fla/login.fla");
+fl.publishDocument("file:///../fla/logo.fla");
+//fl.publishDocument("file:///../fla/members.fla");
+fl.publishDocument("file:///../fla/Popup.fla");
+fl.publishDocument("file:///../fla/progress_bar.fla");
+//fl.publishDocument("file:///../fla/research_detail_page.fla");
+fl.publishDocument("file:///../fla/research_intro_page.fla");
+fl.publishDocument("file:///../fla/scrollbar.fla");
+fl.publishDocument("file:///../fla/selectlanguage.fla");
+fl.publishDocument("file:///../fla/works.fla");
+fl.publishDocument("file:///../fla/home_page.fla");
+fl.quit(false);

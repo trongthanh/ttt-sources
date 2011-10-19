@@ -32,9 +32,6 @@
 			singleton = (loaderInfo.parameters["singleton"] == "true");
 			event = (loaderInfo.parameters["event"] == "true");
 			
-			singleton = true;
-			event = true;
-			
 			var movingBall: MovingBall;
 			for (var i:int = 0; i < 5000; i++) {
 				movingBall = new MovingBall(bounds, singleton, event);

@@ -1,0 +1,5 @@
+[HKEY_CLASSES_ROOT\.bat]
+@="MSDOSBatchfile"
+"Content Type"="application/batch"
+[HKEY_CLASSES_ROOT\MSDOSBatchfile\Shell\Open\command]
+@="cmd \"%1\""

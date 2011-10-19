@@ -1,0 +1,9 @@
+ImplementHeader	$(Boundary)\n\n/* INTERFACE {0} */
+ImplementPart	\n\n{0} $(CSLB){{\n\t{1}\n}}
+Function	{0} $(CSLB){{\n\t\n}}
+Variable	{0}$(EntryPoint);
+Delegate	{0} function {1}(): {2} $(CSLB){{\n\t$(EntryPoint)\n}}
+EventHandler	{0} function {1}(event: {2}): {3} $(CSLB){{\n\t$(EntryPoint)\n}}
+Getter	{0} function get {1}(): {2} {{ $(EntryPoint)return {3}; }}
+Setter	{0} function set {1}(value: {2}): {4} $(CSLB){{\n\t$(EntryPoint){3} = value;\n}}
+MethodOverride	({0}): {1} $(CSLB){{\n\t$(EntryPoint){2}\n}}

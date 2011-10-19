@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+   <asset>
+      <contributor>
+         <authoring_tool>Google SketchUp 7.0.1</authoring_tool>
+      </contributor>
+      <created>2009-10-17T21:28:59Z</created>
+      <modified>2009-10-17T21:28:59Z</modified>
+      <unit name="meters" meter="1.0"/>
+      <up_axis>Z_UP</up_axis>
+   </asset>
+   <library_images>
+      <image id="material_0_1_0-image" name="material_0_1_0-image">
+         <init_from>model/pyramid_cheops_texture.jpg</init_from>
+      </image>
+   </library_images>
+   <library_materials>
+      <material id="material_0_1_0ID" name="material_0_1_0">
+         <instance_effect url="#material_0_1_0-effect"/>
+      </material>
+   </library_materials>
+   <library_effects>
+      <effect id="material_0_1_0-effect" name="material_0_1_0-effect">
+         <profile_COMMON>
+            <newparam sid="material_0_1_0-image-surface">
+               <surface type="2D">
+                  <init_from>material_0_1_0-image</init_from>
+               </surface>
+            </newparam>
+            <newparam sid="material_0_1_0-image-sampler">
+               <sampler2D>
+                  <source>material_0_1_0-image-surface</source>
+               </sampler2D>
+            </newparam>
+            <technique sid="COMMON">
+               <lambert>
+                  <emission>
+                     <color>0.000000 0.000000 0.000000 1</color>
+                  </emission>
+                  <ambient>
+                     <color>0.000000 0.000000 0.000000 1</color>
+                  </ambient>
+                  <diffuse>
+                     <texture texture="material_0_1_0-image-sampler" texcoord="UVSET0"/>
+                  </diffuse>
+                  <transparent>
+                     <color>1 1 1 1</color>
+                  </transparent>
+                  <transparency>
+                     <float>0.000000</float>
+                  </transparency>
+               </lambert>
+            </technique>
+            <extra>
+               <technique profile="GOOGLEEARTH">
+                  <double_sided>1</double_sided>
+               </technique>
+            </extra>
+         </profile_COMMON>
+      </effect>
+   </library_effects>
+   <library_geometries>
+      <geometry id="mesh1-geometry" name="mesh1-geometry">
+         <mesh>
+            <source id="mesh1-geometry-position">
+               <float_array id="mesh1-geometry-position-array" count="24">4209.136900 4799.031777 5461.176192 9008.165267 9008.167050 0.000000 0.000594 9008.167050 0.000000 4799.031183 4799.031933 5461.176192 4209.137056 4209.138683 5461.176192 4799.031338 4209.138838 5461.176192 0.000000 0.000000 0.000000 9008.167644 0.001783 0.000000 </float_array>
+               <technique_common>
+                  <accessor source="#mesh1-geometry-position-array" count="8" stride="3">
+                     <param name="X" type="float"/>
+                     <param name="Y" type="float"/>
+                     <param name="Z" type="float"/>
+                  </accessor>
+               </technique_common>
+            </source>
+            <source id="mesh1-geometry-normal">
+               <float_array id="mesh1-geometry-normal-array" count="24">-0.318423 0.318423 0.892868 0.478029 0.478029 0.736870 -0.478029 0.478029 0.736870 0.318423 0.318423 0.892868 -0.318423 -0.318423 0.892868 0.318423 -0.318423 0.892868 -0.478029 -0.478029 0.736870 0.478029 -0.478029 0.736870 </float_array>
+               <technique_common>
+                  <accessor source="#mesh1-geometry-normal-array" count="8" stride="3">
+                     <param name="X" type="float"/>
+                     <param name="Y" type="float"/>
+                     <param name="Z" type="float"/>
+                  </accessor>
+               </technique_common>
+            </source>
+            <source id="mesh1-geometry-uv">
+               <float_array id="mesh1-geometry-uv-array" count="40">0.370162 0.430150 0.973760 0.973760 0.026240 0.973760 0.432210 0.430150 0.026240 0.973760 0.385970 0.383900 0.385970 0.445948 0.385970 0.383900 0.432210 0.430150 0.385970 0.430150 0.432210 0.368102 0.973760 0.973760 0.432210 0.430150 0.026240 0.026240 0.432210 0.383900 0.973760 0.026240 0.026240 0.026240 0.448018 0.383900 0.385970 0.383900 0.973760 0.026240 </float_array>
+               <technique_common>
+                  <accessor source="#mesh1-geometry-uv-array" count="20" stride="2">
+                     <param name="S" type="float"/>
+                     <param name="T" type="float"/>
+                  </accessor>
+               </technique_common>
+            </source>
+            <vertices id="mesh1-geometry-vertex">
+               <input semantic="POSITION" source="#mesh1-geometry-position"/>
+            </vertices>
+            <triangles material="material_0_1_0" count="10">
+               <input semantic="VERTEX" source="#mesh1-geometry-vertex" offset="0"/>
+               <input semantic="NORMAL" source="#mesh1-geometry-normal" offset="1"/>
+               <input semantic="TEXCOORD" source="#mesh1-geometry-uv" offset="2" set="0"/>
+               <p>0 0 0 1 1 1 2 2 2 1 1 1 0 0 0 3 3 3 2 2 4 4 4 5 0 0 6 4 4 7 3 3 8 0 0 9 5 5 10 1 1 11 3 3 12 4 4 5 2 2 4 6 6 13 3 3 8 4 4 7 5 5 14 1 1 11 5 5 10 7 7 15 6 6 16 5 5 17 4 4 18 5 5 17 6 6 16 7 7 19 </p>
+            </triangles>
+         </mesh>
+      </geometry>
+   </library_geometries>
+   <library_nodes>
+      <node id="Cheops-Py" name="Cheops-Py">
+         <node id="mesh1" name="mesh1">
+            <instance_geometry url="#mesh1-geometry">
+               <bind_material>
+                  <technique_common>
+                     <instance_material symbol="material_0_1_0" target="#material_0_1_0ID">
+                        <bind_vertex_input semantic="UVSET0" input_semantic="TEXCOORD" input_set="0"/>
+                     </instance_material>
+                  </technique_common>
+               </bind_material>
+            </instance_geometry>
+         </node>
+      </node>
+   </library_nodes>
+   <library_cameras>
+      <camera id="Camera-camera" name="Camera-camera">
+         <optics>
+            <technique_common>
+               <perspective>
+                  <xfov>46.666667</xfov>
+                  <yfov>35.000000</yfov>
+                  <znear>0.025400</znear>
+                  <zfar>25.400000</zfar>
+               </perspective>
+            </technique_common>
+         </optics>
+      </camera>
+   </library_cameras>
+   <library_visual_scenes>
+      <visual_scene id="SketchUpScene" name="SketchUpScene">
+         <node id="Model" name="Model">
+            <node id="Cheops-Py1" name="Cheops-Py1">
+               <matrix>
+                  0.025400 0.000000 0.000000 -113.598693
+                  0.000000 0.025400 0.000000 -115.562661
+                  0.000000 0.000000 0.025400 -22.238627
+                  0.000000 0.000000 0.000000 1.000000
+               </matrix>
+               <instance_node url="#Cheops-Py"/>
+            </node>
+         </node>
+         <node id="Camera" name="Camera">
+            <lookat>
+               276.926975 260.346247 142.117872
+               -41.718805 -46.222194 -14.223153
+               -0.260431 -0.209905 0.942399
+            </lookat>
+            <instance_camera url="#Camera-camera"/>
+         </node>
+      </visual_scene>
+   </library_visual_scenes>
+   <scene>
+      <instance_visual_scene url="#SketchUpScene"/>
+   </scene>
+</COLLADA>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Scintilla xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<keyword-classes>
+		<keyword-class name="as3-primary-keywords">
+			class dynamic extends implements import interface new case do while else if for in switch throw intrinsic
+			private public static get set function var try catch finally while with default break continue delete return
+			final each internal native override protected const namespace package include use AS3
+		</keyword-class>
+		<keyword-class name="as3-secondary-keywords">
+			super this null Infinity NaN undefined true false is as instanceof typeof
+		</keyword-class>
+		<keyword-class name="as3-additional-keywords">
+			void Null ArgumentError arguments Array Boolean Class Date DefinitionError Error EvalError Function int Math Namespace
+			Number Object QName RangeError ReferenceError RegExp SecurityError String SyntaxError TypeError uint URIError
+			VerifyError XML XMLList Accessibility AccessibilityProperties ActionScriptVersion AVM1Movie Bitmap BitmapData
+			BitmapDataChannel BlendMode CapsStyle DisplayObject DisplayObjectContainer FrameLabel GradientType Graphics
+			IBitmapDrawable InteractiveObject InterpolationMethod JointStyle LineScaleMode Loader LoaderInfo MorphShape MovieClip
+			PixelSnapping Scene Shape SimpleButton SpreadMethod Sprite Stage StageAlign StageDisplayState StageQuality StageScaleMode
+			SWFVersion EOFError IllegalOperationError InvalidSWFError IOError MemoryError ScriptTimeoutError StackOverflowError
+			ActivityEvent AsyncErrorEvent ContextMenuEvent DataEvent ErrorEvent Event EventDispatcher EventPhase FocusEvent
+			FullScreenEvent HTTPStatusEvent IEventDispatcher IMEEvent IOErrorEvent KeyboardEvent MouseEvent NetStatusEvent ProgressEvent
+			SecurityErrorEvent StatusEvent SyncEvent TextEvent TimerEvent ExternalInterface BevelFilter BitmapFilter
+			BitmapFilterQuality BitmapFilterType BlurFilter ColorMatrixFilter ConvolutionFilter DisplacementMapFilter
+			DisplacementMapFilterMode DropShadowFilter GlowFilter GradientBevelFilter GradientGlowFilter ColorTransform Matrix
+			Point Rectangle Transform Camera ID3Info Microphone Sound SoundChannel SoundLoaderContext SoundMixer SoundTransform
+			Video FileFilter FileReference FileReferenceList IDynamicPropertyOutput IDynamicPropertyWriter LocalConnection
+			NetConnection NetStream ObjectEncoding Responder SharedObject SharedObjectFlushStatus Socket URLLoader
+			URLLoaderDataFormat URLRequest URLRequestHeader URLRequestMethod URLStream URLVariables XMLSocket
+			PrintJob PrintJobOptions PrintJobOrientation ApplicationDomain Capabilities IME IMEConversionMode LoaderContext
+			Security SecurityDomain SecurityPanel System AntiAliasType CSMSettings Font FontStyle FontType GridFitType
+			StaticText StyleSheet TextColorType TextDisplayMode TextField TextFieldAutoSize TextFieldType TextFormat
+			TextFormatAlign TextLineMetrics TextRenderer TextSnapshot ContextMenu ContextMenuBuiltInItems ContextMenuItem
+			Keyboard KeyLocation Mouse ByteArray Dictionary Endian IDataInput IDataOutput IExternalizable Proxy Timer
+			XMLDocument XMLNode XMLNodeType
+		</keyword-class>
+		<keyword-class name="as3-documentation-keywords">
+			author copy default deprecated eventType example exampleText exception haxe inheritDoc internal link mtasc mxmlc 
+			param private return see serial serialData serialField since throws usage version
+		</keyword-class>
+	</keyword-classes>
+	<languages>
+		<language name="as3">
+			<lexer name="cpp" style-bits="7" />
+			<character-class><![CDATA[qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789_$]]></character-class>
+			<line-comment><![CDATA[//]]></line-comment>
+			<comment-start><![CDATA[/*]]></comment-start>
+			<comment-end><![CDATA[*/]]></comment-end>
+			<file-extensions>
+			</file-extensions>
+			<use-keywords>
+				<keyword key="0" class="as3-secondary-keywords" />
+				<keyword key="1" class="as3-additional-keywords" />
+				<keyword key="2" class="as3-documentation-keywords" />
+				<keyword key="3" class="as3-primary-keywords" />
+			</use-keywords>
+			<!-- COLORING_START -->
+			<editor-style caret-fore="0xdadada" caretline-back="0x303030" selection-fore="0xdadada" selection-back="0x404040" />
+			<use-styles>
+				<style name="default" fore="0xcccccc" back="0x000000" size="11" font="Courier New" />
+				<style name="comment" fore="0x7E7F00" />
+				<style name="commentline" fore="0x7E7F00" />
+				<style name="commentdoc" fore="0x7E7F00" />
+				<style name="number" fore="0xFFA56F" />
+				<style name="word" fore="0x3F97FF" />
+				<style name="string" fore="0xFF99CC" />
+				<style name="character" fore="0xFF99CC" />
+				<style name="uuid" />
+				<style name="preprocessor" fore="0xec5ccf" />
+				<style name="operator" fore="0x95b4e2" />
+				<style name="identifier" />
+				<style name="stringeol" />
+				<style name="verbatim" />
+				<style name="regex" fore="0xFFFF00" />
+				<style name="commentlinedoc" fore="0x9B9B00" />
+				<style name="word2" fore="0x69fad1" />
+				<style name="commentdockeyword" fore="0xc9ec5c" />
+				<style name="commentdockeyworderror" fore="0xc9ec5c" />
+				<style name="globalclass" fore="0x95b4e2" />
+				<style name="gdefault" />
+				<style name="linenumber" fore="0xec5ccf" />
+				<style name="bracelight" fore="0xFF3333" back="0x595959" bold="true" />
+				<style name="bracebad" bold="true" />
+				<style name="controlchar" fore="0xffffff" />
+				<style name="indentguide" fore="0xc0c0c0" />
+				<style name="lastpredefined" />
+			</use-styles>
+			<!-- COLORING_END -->
+		</language>
+	</languages>
+</Scintilla>

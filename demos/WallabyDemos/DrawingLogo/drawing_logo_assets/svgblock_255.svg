@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version='1.1' width='12px' height='62px' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+	<g transform="translate(-84.725,-109.85)">
+		<path d="M 95.8 111.75 L 95.8 169.45 Q 95.799 170.228 95.225 170.775 Q 94.6561 171.34 93.85 171.35 L 86.675 171.35 Q 85.8688 171.34 85.3 170.775 Q 84.726 170.228 84.725 169.45 L 84.725 111.75 Q 84.726 110.972 85.3 110.425 Q 85.8688 109.859 86.675 109.85 L 93.85 109.85 Q 94.6561 109.859 95.225 110.425 Q 95.799 110.972 95.8 111.75 Z" fill="#0066CC"/>
+	</g>
+</svg>

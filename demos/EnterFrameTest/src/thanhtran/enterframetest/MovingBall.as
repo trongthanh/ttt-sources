@@ -1,9 +1,8 @@
 package thanhtran.enterframetest {
-	import com.pyco.utils.EnterFrameManager;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	
+	import thanhtran.utils.EnterFrameManager;
 	import thanhtran.utils.GeomUtil;
 	import thanhtran.utils.TwoFrameManager;
 	/**
@@ -25,7 +24,7 @@ package thanhtran.enterframetest {
 			if (useSingleton) {
 				trace("using singleton enter frame manager - event: " + useEvent);
 				if (useEvent)
-					EnterFrameManager.add(enterFrameHandler);
+					EnterFrameManager.instance.enterFrame.add(enterFrameHandler);
 				else 
 					TwoFrameManager.instance.enterFrame.add(enterFrameHandler);
 			} else {

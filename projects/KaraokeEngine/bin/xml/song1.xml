@@ -1,0 +1,527 @@
+<tt xml:lang="vi" 
+	xmlns="http://www.w3.org/ns/ttml"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"> 
+	<head>
+		<metadata>
+			<ttm:title><![CDATA[Hạnh Phúc Bất Tận]]></ttm:title>
+			<ttm:desc><![CDATA[Composed by: Nguyễn Đức Thuận<br/>Singers: Hồ Ngọc Hà ft. V.Music Band]]></ttm:desc>
+			<ttm:copyright>Copyright (C) 2010 Thanh Tran - trongthanh@gmail.com</ttm:copyright>
+			<audio>mp3/hanh_phuc_bat_tan.mp3</audio>
+		</metadata>
+	</head>
+	<body>
+		<div style="f">
+			<p begin="00:00:21.260">* * *</p> <!-- this first version will only support sequential begin -->
+			<p begin="00:00:23.780">Thắp nến đêm nay</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:25.780">ấm áp trong tay</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:27.500">của người</p>
+			<p begin="00:00:27.860">yêu dấu</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:29.540">xiết bao ngọt ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:31.940">vu vơ mơ về</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:33.460">một ngày</p>
+			<p begin="00:00:34.300">của nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:36.540">hạnh phúc</p>
+			<p begin="00:00:36.860">lứa đôi</p>
+			<p begin="00:00:37.220">tràn dâng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:43.060">Hãy</p>
+			<p begin="00:00:43.420">nói</p>
+			<p begin="00:00:44.060">đi</p>
+			<p begin="00:00:44.500">em</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:45.100">tiếng</p>
+			<p begin="00:00:45.420">nói</p>
+			<p begin="00:00:45.860">con</p>
+			<p begin="00:00:46.300">tim</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:47.060">để</p>
+			<p begin="00:00:47.340">rồi</p>
+			<p begin="00:00:47.780">khoảnh</p>
+			<p begin="00:00:48.220">khắc</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:48.940">ước</p>
+			<p begin="00:00:49.220">mơ</p>
+			<p begin="00:00:49.700">nhiệm</p>
+			<p begin="00:00:50.300">màu</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:51.340">ôm</p>
+			<p begin="00:00:51.580">nhau</p>
+			<p begin="00:00:51.860">dịu</p>
+			<p begin="00:00:52.140">dàng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:52.940">siết</p>
+			<p begin="00:00:53.380">em</p>
+			<p begin="00:00:53.740">vào</p>
+			<p begin="00:00:54.220">lòng</p>
+		</div>
+		<div style="m">
+			<p begin="00:00:55.940">hạnh</p>
+			<p begin="00:00:56.220">phúc</p>
+			<p begin="00:00:56.660">dường</p>
+			<p begin="00:00:56.980">như</p>
+			<p begin="00:00:57.460">bất</p>
+			<p begin="00:00:58.390">tận</p>
+		</div>
+		<div style="f">
+			<p begin="00:00:59.870">Khi</p>
+			<p begin="00:01:00.110">đã</p>
+			<p begin="00:01:00.350">yêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:00.830">em</p>
+			<p begin="00:01:01.070">trao</p>
+			<p begin="00:01:01.510">rất</p>
+			<p begin="00:01:01.990">nhìêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:03.230">khi</p>
+			<p begin="00:01:03.470">đã</p>
+			<p begin="00:01:03.790">yêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:04.470">em</p>
+			<p begin="00:01:04.790">yêu</p>
+			<p begin="00:01:05.230">thật</p>
+			<p begin="00:01:05.790">nhiều</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:07.030">Khi</p>
+			<p begin="00:01:07.310">đã</p>
+			<p begin="00:01:07.630">yêu</p>
+			<p begin="00:01:08.270">anh</p>
+			<p begin="00:01:08.630">say</p>
+			<p begin="00:01:09.110">giấc</p>
+			<p begin="00:01:09.710">mộng</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:10.990">khi</p>
+			<p begin="00:01:11.230">đã</p>
+			<p begin="00:01:11.590">yêu</p>
+			<p begin="00:01:11.950">là</p>
+			<p begin="00:01:12.270">dành</p>
+			<p begin="00:01:12.910">tất</p>
+			<p begin="00:01:13.430">cả</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:14.070">cuộc</p>
+			<p begin="00:01:14.430">đời</p>
+			<p begin="00:01:14.870">cho</p>
+			<p begin="00:01:15.470">em</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:18.150">Bao</p>
+			<p begin="00:01:18.390">nhiêu</p>
+			<p begin="00:01:18.790">yêu</p>
+			<p begin="00:01:19.190">thương</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:19.870">bao</p>
+			<p begin="00:01:20.190">nhiêu</p>
+			<p begin="00:01:20.670">diệu</p>
+			<p begin="00:01:21.110">kì</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:21.830">bao</p>
+			<p begin="00:01:22.150">nhiêu</p>
+			<p begin="00:01:22.590">tin</p>
+			<p begin="00:01:22.990">yêu</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:23.750">suốt</p>
+			<p begin="00:01:24.030">cả</p>
+			<p begin="00:01:24.510">cuộc</p>
+			<p begin="00:01:24.950">đời</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:26.430">chỉ</p>
+			<p begin="00:01:26.750">để</p>
+			<p begin="00:01:27.190">dành</p>
+			<p begin="00:01:27.590">riêng</p>
+			<p begin="00:01:27.830">em</p>
+			<p begin="00:01:28.150">thôi</p>
+		</div>
+		<div style="m">
+			<p begin="00:01:29.070">chỉ</p>
+			<p begin="00:01:29.310">một</p>
+			<p begin="00:01:29.630">người</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:33.430">Đêm</p>
+			<p begin="00:01:33.710">nay</p>
+			<p begin="00:01:34.190">môi</p>
+			<p begin="00:01:34.630">hôn</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:35.390">trao</p>
+			<p begin="00:01:35.710">nhau</p>
+			<p begin="00:01:36.150">ngọt</p>
+			<p begin="00:01:36.590">ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:37.310">đêm</p>
+			<p begin="00:01:37.590">nay</p>
+			<p begin="00:01:38.030">ta</p>
+			<p begin="00:01:38.510">đã</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:39.270">có</p>
+			<p begin="00:01:39.590">nhau</p>
+			<p begin="00:01:40.070">trong</p>
+			<p begin="00:01:40.630">đời</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:41.910">Phút</p>
+			<p begin="00:01:42.190">giây</p>
+			<p begin="00:01:42.590">này</p>
+			<p begin="00:01:43.830">thuộc</p>
+			<p begin="00:01:44.110">về</p>
+			<p begin="00:01:44.550">nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:01:45.790">phút</p>
+			<p begin="00:01:46.150">giây</p>
+			<p begin="00:01:46.550">này</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:05.030">*</p>
+			<p begin="00:02:05.990">*</p>
+			<p begin="00:02:07.070">*</p>
+			<p begin="00:02:08.230">Thắp</p>
+			<p begin="00:02:08.550">nến</p>
+			<p begin="00:02:09.150">đêm</p>
+			<p begin="00:02:09.470">nay</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:10.230">ấm</p>
+			<p begin="00:02:10.550">áp</p>
+			<p begin="00:02:11.030">trong</p>
+			<p begin="00:02:11.550">tay</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:12.190">của</p>
+			<p begin="00:02:12.550">người</p>
+			<p begin="00:02:12.950">yêu</p>
+			<p begin="00:02:13.510">dấu</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:14.110">siết</p>
+			<p begin="00:02:14.470">bao</p>
+			<p begin="00:02:14.950">ngọt</p>
+			<p begin="00:02:15.430">ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:16.430">vu</p>
+			<p begin="00:02:16.710">vơ</p>
+			<p begin="00:02:16.990">mơ</p>
+			<p begin="00:02:17.310">về</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:17.990">một</p>
+			<p begin="00:02:18.350">ngày</p>
+			<p begin="00:02:18.910">của</p>
+			<p begin="00:02:19.310">nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:21.070">hạnh</p>
+			<p begin="00:02:21.430">phúc</p>
+			<p begin="00:02:21.830">lứa</p>
+			<p begin="00:02:22.310">đôi</p>
+			<p begin="00:02:22.790">tràn</p>
+			<p begin="00:02:23.150">dâng</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:27.590">Hãy</p>
+			<p begin="00:02:27.950">nói</p>
+			<p begin="00:02:28.550">đi</p>
+			<p begin="00:02:28.910">em</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:29.630">tiếng</p>
+			<p begin="00:02:29.950">nói</p>
+			<p begin="00:02:30.430">con</p>
+			<p begin="00:02:30.990">tim</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:31.950">để</p>
+			<p begin="00:02:32.230">rồi</p>
+			<p begin="00:02:32.510">khoảnh</p>
+			<p begin="00:02:32.870">khắc</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:33.470">ước</p>
+			<p begin="00:02:33.790">mơ</p>
+			<p begin="00:02:34.230">nhiệm</p>
+			<p begin="00:02:34.870">màu</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:35.830">ôm</p>
+			<p begin="00:02:36.070">nhau</p>
+			<p begin="00:02:36.350">dịu</p>
+			<p begin="00:02:36.750">dàng</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:37.550">siết</p>
+			<p begin="00:02:37.870">em</p>
+			<p begin="00:02:38.230">vào</p>
+			<p begin="00:02:38.710">lòng</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:40.470">hạnh</p>
+			<p begin="00:02:40.750">phúc</p>
+			<p begin="00:02:41.190">dường</p>
+			<p begin="00:02:41.550">như</p>
+			<p begin="00:02:41.990">bất</p>
+			<p begin="00:02:42.830">tận</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:44.710">Khi</p>
+			<p begin="00:02:45.030">đã</p>
+			<p begin="00:02:45.350">yêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:46.190">em</p>
+			<p begin="00:02:46.510">trao</p>
+			<p begin="00:02:46.870">rất</p>
+			<p begin="00:02:47.350">nhìêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:48.630">khi</p>
+			<p begin="00:02:48.910">đã</p>
+			<p begin="00:02:49.230">yêu</p>
+		</div>
+		<div style="f">
+			<p begin="00:02:50.070">em</p>
+			<p begin="00:02:50.430">yêu</p>
+			<p begin="00:02:50.750">thật</p>
+			<p begin="00:02:51.190">nhiều</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:52.510">Khi</p>
+			<p begin="00:02:52.750">đã</p>
+			<p begin="00:02:53.110">yêu</p>
+			<p begin="00:02:53.950">anh</p>
+			<p begin="00:02:54.270">say</p>
+			<p begin="00:02:54.590">giấc</p>
+			<p begin="00:02:55.030">mộng</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:56.390">khi</p>
+			<p begin="00:02:56.670">đã</p>
+			<p begin="00:02:56.990">yêu</p>
+			<p begin="00:02:57.630">là</p>
+			<p begin="00:02:57.910">dành</p>
+			<p begin="00:02:58.230">tất</p>
+			<p begin="00:02:58.470">cả</p>
+		</div>
+		<div style="m">
+			<p begin="00:02:58.950">cuộc</p>
+			<p begin="00:02:59.230">đời</p>
+			<p begin="00:02:59.550">cho</p>
+			<p begin="00:03:00.030">em</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:02.430">Bao</p>
+			<p begin="00:03:02.750">nhiêu</p>
+			<p begin="00:03:03.310">yêu</p>
+			<p begin="00:03:03.790">thương</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:04.470">bao</p>
+			<p begin="00:03:04.790">nhiêu</p>
+			<p begin="00:03:05.230">diệu</p>
+			<p begin="00:03:05.670">kì</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:06.390">bao</p>
+			<p begin="00:03:06.670">nhiêu</p>
+			<p begin="00:03:07.110">tin</p>
+			<p begin="00:03:07.590">yêu</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:08.270">suốt</p>
+			<p begin="00:03:08.550">cả</p>
+			<p begin="00:03:09.030">cuộc</p>
+			<p begin="00:03:09.550">đời</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:11.110">chỉ</p>
+			<p begin="00:03:11.430">để</p>
+			<p begin="00:03:11.750">dành</p>
+			<p begin="00:03:12.190">riêng</p>
+			<p begin="00:03:12.430">em</p>
+			<p begin="00:03:12.830">thôi</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:14.710">chỉ</p>
+			<p begin="00:03:15.030">một</p>
+			<p begin="00:03:15.430">người</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:17.910">Đêm</p>
+			<p begin="00:03:18.230">nay</p>
+			<p begin="00:03:18.710">môi</p>
+			<p begin="00:03:19.150">hôn</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:19.870">trao</p>
+			<p begin="00:03:20.150">nhau</p>
+			<p begin="00:03:20.630">ngọt</p>
+			<p begin="00:03:20.990">ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:21.830">đêm</p>
+			<p begin="00:03:22.150">nay</p>
+			<p begin="00:03:22.590">ta</p>
+			<p begin="00:03:23.030">đã</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:23.830">có</p>
+			<p begin="00:03:24.110">nhau</p>
+			<p begin="00:03:24.510">trong</p>
+			<p begin="00:03:25.150">đời</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:26.430">Phút</p>
+			<p begin="00:03:26.750">giây</p>
+			<p begin="00:03:27.110">này</p>
+			<p begin="00:03:28.350">thuộc</p>
+			<p begin="00:03:28.630">về</p>
+			<p begin="00:03:29.030">nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:03:30.230">phút</p>
+			<p begin="00:03:30.590">giây</p>
+			<p begin="00:03:31.030">này</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:33.910">Hãy</p>
+			<p begin="00:03:34.310">giữ</p>
+			<p begin="00:03:34.630">mãi</p>
+			<p begin="00:03:34.950">mãi</p>
+			<p begin="00:03:35.270">nghe</p>
+			<p begin="00:03:35.670">anh</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:37.750">Hãy</p>
+			<p begin="00:03:38.150">giữ</p>
+			<p begin="00:03:38.470">ấm</p>
+			<p begin="00:03:38.790">áp</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:39.350">từng</p>
+			<p begin="00:03:39.630">giây</p>
+			<p begin="00:03:40.030">phút</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:41.190">Để</p>
+			<p begin="00:03:41.470">mãi</p>
+			<p begin="00:03:41.790">mãi</p>
+			<p begin="00:03:42.190">trong</p>
+			<p begin="00:03:42.630">đời</p>
+		</div>
+		<div style="b">
+			<p begin="00:03:43.910">phút</p>
+			<p begin="00:03:44.270">giây</p>
+			<p begin="00:03:44.590">này</p>
+			<p begin="00:03:45.950">vẹn</p>
+			<p begin="00:03:46.470">nguyên</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:50.790">Bao</p>
+			<p begin="00:03:51.110">nhiêu</p>
+			<p begin="00:03:51.590">yêu</p>
+			<p begin="00:03:52.110">thương</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:52.870">bao</p>
+			<p begin="00:03:53.190">nhiêu</p>
+			<p begin="00:03:53.630">diệu</p>
+			<p begin="00:03:54.150">kì</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:54.790">bao</p>
+			<p begin="00:03:55.030">nhiêu</p>
+			<p begin="00:03:55.510">tin</p>
+			<p begin="00:03:55.990">yêu</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:56.710">suốt</p>
+			<p begin="00:03:56.990">cả</p>
+			<p begin="00:03:57.470">cuộc</p>
+			<p begin="00:03:58.070">đời</p>
+		</div>
+		<div style="m">
+			<p begin="00:03:59.390">chỉ</p>
+			<p begin="00:03:59.710">để</p>
+			<p begin="00:04:00.110">dành</p>
+			<p begin="00:04:00.550">riêng</p>
+			<p begin="00:04:01.390">em</p>
+			<p begin="00:04:01.950">thôi</p>
+		</div>
+		<div style="m">
+			<p begin="00:04:03.190">chỉ</p>
+			<p begin="00:04:03.510">một</p>
+			<p begin="00:04:03.950">người</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:08.230">Đêm</p>
+			<p begin="00:04:08.590">nay</p>
+			<p begin="00:04:09.070">môi</p>
+			<p begin="00:04:09.630">hôn</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:10.270">trao</p>
+			<p begin="00:04:10.630">nhau</p>
+			<p begin="00:04:11.070">ngọt</p>
+			<p begin="00:04:11.630">ngào</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:12.230">đêm</p>
+			<p begin="00:04:12.550">nay</p>
+			<p begin="00:04:12.990">ta</p>
+			<p begin="00:04:13.510">đã</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:14.150">có</p>
+			<p begin="00:04:14.430">nhau</p>
+			<p begin="00:04:14.910">trong</p>
+			<p begin="00:04:15.470">đời</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:16.750">Phút</p>
+			<p begin="00:04:17.030">giây</p>
+			<p begin="00:04:17.510">này</p>
+			<p begin="00:04:18.710">thuộc</p>
+			<p begin="00:04:18.950">về</p>
+			<p begin="00:04:19.430">nhau</p>
+		</div>
+		<div style="f">
+			<p begin="00:04:20.710">phút</p>
+			<p begin="00:04:21.070">giây</p>
+			<p begin="00:04:21.470">này</p>
+			<p begin="00:04:24.350">thuộc</p>
+			<p begin="00:04:24.830">về</p>
+			<p begin="00:04:25.270">nhau</p>
+			<p begin="00:04:26.000">./.</p>
+		</div>
+	</body>
+</tt>
