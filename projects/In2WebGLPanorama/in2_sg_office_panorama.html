@@ -1,293 +1,344 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<title>In2Ideas Labs - equirectangular panorama demo with three.js webgl</title>
-		<meta charset="utf-8">
-    <meta name="title" content="In2Ideas office in 360°"/>
-    <meta name="description" content="Equirectangular panorama demo with HTML5 Canvas, WebGL and three.js library by Thanh Tran - Creative Dept. - in2ideas. A modern browser like Firefox, Google Chrome is required. The example is based on a three.js example.
+<head>
+  <title>In2Ideas Labs - equirectangular panorama demo with three.js webgl</title>
+  <meta charset="utf-8">
+  <meta name="title" content="In2Ideas office in 360°"/>
+  <meta name="description" content="Equirectangular panorama demo with HTML5 Canvas, WebGL and three.js library by Thanh Tran - Creative Dept. - in2ideas. A modern browser like Firefox, Google Chrome is required. The example is based on a three.js example.
     http://www.in2ideas.com"/>
-    <meta name="keywords" content=""/>
-    <script type="text/javascript" src="js/info.js"></script>
+  <meta name="keywords" content=""/>
+  <script type="text/javascript" src="js/info.js"></script>
 
-    <link rel="image_src"
-          href="http://in2ideas.com/labs/html5/webgl/img/In2Ideas_Labs_equirectangular_panorama_demo.jpg"/>
-    <link rel="stylesheet" type="text/css" href="css/global.css" />
-		<style type="text/css">
+  <link rel="image_src"
+        href="http://in2ideas.com/labs/html5/webgl/img/In2Ideas_Labs_equirectangular_panorama_demo.jpg"/>
+  <link rel="stylesheet" type="text/css" href="css/global.css" />
+  <style type="text/css">
 
-		</style>
-	</head>
-	<body>
-    <div id="infobutton">
-          <a href="javascript:toggleInfo()"><img src="img/i.png" border="0"></a>
+  </style>
+</head>
+<body>
+<div id="infobutton">
+  <a href="javascript:toggleInfo()"><img src="img/i.png" border="0"></a>
+</div>
+<div id="info">
+  <p>Equirectangular Panorama - An experiment by Thanh Tran<br/>
+    The example is based on <a href="http://github.com/mrdoob/three.js" target="_blank" >a three.js example</a>.</p>
+  <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
+    For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
+  <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
+  <p><a href="http://www.in2ideas.com" target="_blank">&copy; 2011 In2ideas</a></p>
+</div>
+<div id="container"></div>
+<div id="popout">
+  <div class="popout-bg"></div>
+  <div class="popout-content">
+    <div class="thumb-container">
+      <img src="img/people/jane_koh.jpg" width="150" height="150" />
     </div>
-    <div id="info">
-      <p>Equirectangular Panorama - An experiment by Thanh Tran<br/>
-      		The example is based on <a href="http://github.com/mrdoob/three.js" target="_blank" >a three.js example</a>.</p>
-      <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
-        For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
-      <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
-      <p><a href="http://www.in2ideas.com" target="_blank">&copy; 2011 In2ideas</a></p>
+    <div class="member-info">
+      <span class="name-tag">Jane Koh</span><br/>
+      <span class="role-tag">Copywriter</span>
     </div>
-		<div id="container"></div>
-    <div id="popout">
-      <div class="thumb-container">
-        <img src="img/people/jane_koh.jpg" width="150" height="150" />
-      </div>
-      <div class="member-info">
-        <span class="name-tag">Jane Koh</span><br/>
-        <span class="role-tag">Copywriter</span>
-      </div>
-    </div>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-		<script type="text/javascript" src="js/Three.js"></script>
-    <script type="text/javascript" src="js/Detector.js"></script>
-		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
-		<!-- data -->
-		<script type="text/javascript" src="js/in2data.js"></script>
-
-		<script type="text/javascript">
-
-			var camera, scene, renderer, projector;
-
-      var mouse = { x: 0, y: 0 }, intersected;
-
-			var fov = 70,
-			texture_placeholder,
-			isUserInteracting = false,
-			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
-			lon = 0, onMouseDownLon = 0,
-			lat = 0, onMouseDownLat = 0,
-			phi = 0, theta = 0,
-      isWebGL = false;
-
-      var container, mesh, sprite, spriteList,
-      spriteOffset = 0.14286,frameTime;
-
-      var popout;
-
-			init();
-			animate();
-
-			function init() {
-				container = document.getElementById( 'container' );
-
-				camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 1, 1100 );
-
-				camera.target = new THREE.Vector3( 0, 0, 0 );
-
-				scene = new THREE.Scene();
-
-        projector = new THREE.Projector();
-
-        var rendererInfo = document.getElementById('renderer-info');
-        if (false) {
-        //if (Detector.webgl) {
-           renderer = new THREE.WebGLRenderer();
-           //work around some webgl bug rendering inner face
-           rendererInfo.innerHTML = "WebGL Renderer (Fast)";
-           isWebGL = true;
-        } else {
-          renderer = new THREE.CanvasRenderer();
-           rendererInfo.innerHTML = "2D Canvas Renderer (Slow)";
-        }
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
-
-				if(isWebGL) {
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ), wireframe: false } ) );
-        } else {
-          //reduce number of poligons to improve performance
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ), wireframe: false} ) );
-          mesh.overdraw = true; //seamless texture
-        }
-        mesh.doubleSided = true;
-        
-				mesh.scale.x = -1;
-				scene.add( mesh );
-
-        //test interactive
-        popout = $('#popout').get(0);
-        
-        spriteList = [];
-        var markerGeometry = new THREE.CubeGeometry(30, 60, 30, 1, 1, 1);
-
-        var map = THREE.ImageUtils.loadTexture( "img/sprite_marker.png" );
-        sprite = new THREE.Sprite( { map: map, useScreenCoordinates: false, color: 0xffffff } );
-        //object.uvScale.set( 2, 2 );
-        //object.uvOffset.set( -0.5, -0.5 );
-        sprite.uvOffset.x = .85714;
-        sprite.uvScale.x = 0.14286; // one-seventh
-        sprite.boundingMesh = new THREE.Mesh( markerGeometry, new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: true, wireframeLinewidth: 0 } ) );
-        scene.add(sprite.boundingMesh);
-        /*
-        object.position.x = Math.random() * 800 - 400;
-        object.position.y = Math.random() * 800 - 400;
-        object.position.z = Math.random() * 800 - 400;
-
-        object.rotation.x = ( Math.random() * 360 ) * Math.PI / 180;
-        object.rotation.y = ( Math.random() * 360 ) * Math.PI / 180;
-        object.rotation.z = ( Math.random() * 360 ) * Math.PI / 180;
+  </div>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/Three.js"></script>
+<script type="text/javascript" src="js/Detector.js"></script>
+<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+<!-- data -->
+<script type="text/javascript" src="js/in2data.js"></script>
+
+<script type="text/javascript">
+
+var camera, scene, renderer, projector;
+
+var mouse = { x: 0, y: 0 }, intersected;
+
+var fov = 70,
+    texture_placeholder,
+    isUserInteracting = false,
+    onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+    lon = 0, onMouseDownLon = 0,
+    lat = 0, onMouseDownLat = 0,
+    phi = 0, theta = 0,
+    isWebGL = false;
+
+var container, sphere, sprite, spriteList,
+        spriteOffset = 0.14286,frameTime;
+
+var popout, markerList, markerLen;
+
+init();
+animate();
+
+function init() {
+  container = document.getElementById( 'container' );
+
+  camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 1, 1100 );
+
+  camera.target = new THREE.Vector3( 0, 0, 0 );
+
+  scene = new THREE.Scene();
+
+  projector = new THREE.Projector();
+
+  var rendererInfo = document.getElementById('renderer-info');
+  //if (false) {
+  if (Detector.webgl) {
+    renderer = new THREE.WebGLRenderer();
+    //work around some webgl bug rendering inner face
+    rendererInfo.innerHTML = "WebGL Renderer (Fast)";
+    isWebGL = true;
+  } else {
+    renderer = new THREE.CanvasRenderer();
+    rendererInfo.innerHTML = "2D Canvas Renderer (Slow)";
+  }
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  container.appendChild( renderer.domElement );
+
+  var panoramaObj = officeData.panorama[0];
+  var panoTexture = panoramaObj.mapFile;
+  var panoMap = THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg');
+  if(isWebGL) {
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
+  } else {
+    //reduce number of poligons to improve performance
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
+    sphere.overdraw = true; //seamless texture
+  }
+  sphere.doubleSided = true;
 
-        object.scale.x = 2;
-        object.scale.y = 2;
-        object.scale.z = 2;
-        /*/
-        var vector = new THREE.Vector3( -143.49673797349618, -97.18085562192277, 490.94395353515745);
-        vector.normalize();
-        vector.multiplyScalar( 480 );
+  sphere.scale.x = -1;
+  scene.add( sphere );
+
+  popout = $('#popout').get(0);
+  //test interactive
+
+  markerList = panoramaObj.markers;
+  markerLen = markerList.length;
+  for (var i = 0; i < markerLen; ++i) {
+    var markerObj = markerList[i];
+    var marker = createMarker(i, markerObj);
+    document.body.appendChild(marker);
+    markerObj.element = marker;
+    marker.addEventListener('mouseup', markerClickHandler);
+    
+
+  }
+  /*
+  spriteList = [];
+  var markerGeometry = new THREE.CubeGeometry(30, 60, 30, 1, 1, 1);
+
+  var map = THREE.ImageUtils.loadTexture( "img/sprite_marker.png" );
+  sprite = new THREE.Sprite( { map: map, useScreenCoordinates: false, color: 0xffffff } );
+  //object.uvScale.set( 2, 2 );
+  //object.uvOffset.set( -0.5, -0.5 );
+  sprite.uvOffset.x = .85714;
+  sprite.uvScale.x = 0.14286; // one-seventh
+  sprite.boundingMesh = new THREE.Mesh( markerGeometry, new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: true, wireframeLinewidth: 0 } ) );
+  scene.add(sprite.boundingMesh);
 
-        sprite.position.x=vector.x;
-        sprite.position.y=vector.y;
-        sprite.position.z=vector.z;
-        sprite.scale.x = sprite.scale.y = 0.25;
-        //*/
+  var vector = new THREE.Vector3( -143.49673797349618, -97.18085562192277, 490.94395353515745);
+  vector.normalize();
+  vector.multiplyScalar( 480 );
 
-        sprite.boundingMesh.position = sprite.position.clone();
-        spriteList.push(sprite);
-        scene.add(sprite);
+  sprite.position.x=vector.x;
+  sprite.position.y=vector.y;
+  sprite.position.z=vector.z;
+  sprite.scale.x = sprite.scale.y = 0.25;
+  //
 
-        //camera.position.z = 1000;
-        renderer.sortObjects = false;
-				container.appendChild( renderer.domElement );
+  sprite.boundingMesh.position = sprite.position.clone();
+  spriteList.push(sprite);
+  scene.add(sprite);
+  */
+  //camera.position.z = 1000;
+  renderer.sortObjects = false;
+  container.appendChild( renderer.domElement );
 
-				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
-				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
+  document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+  document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+  document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+  document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
+  document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
 
-        frameTime = new Date().getTime();
-			}
+  frameTime = new Date().getTime();
+}
 
-			function onDocumentMouseDown( event ) {
+function onDocumentMouseDown( event ) {
 
-				event.preventDefault();
+  event.preventDefault();
 
-				isUserInteracting = true;
+  isUserInteracting = true;
 
-				onPointerDownPointerX = event.clientX;
-				onPointerDownPointerY = event.clientY;
+  onPointerDownPointerX = event.clientX;
+  onPointerDownPointerY = event.clientY;
 
-				onPointerDownLon = lon;
-				onPointerDownLat = lat;
+  onPointerDownLon = lon;
+  onPointerDownLat = lat;
 
-			}
+}
 
-			function onDocumentMouseMove( event ) {
+function onDocumentMouseMove( event ) {
 
-				if ( isUserInteracting ) {
+  if ( isUserInteracting ) {
 
-					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
-					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+    lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+    lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
 
-				}
-        
-        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  }
 
-			}
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-			function onDocumentMouseUp( event ) {
+}
 
-				isUserInteracting = false;
+function onDocumentMouseUp( event ) {
 
-        var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
-        projector.unprojectVector( vector, camera );
+  isUserInteracting = false;
 
-        var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
+  var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
+  projector.unprojectVector( vector, camera );
 
-        var intersects = ray.intersectScene( scene );
-        //var intersects = ray.intersectObject(mesh );
+  var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
 
-        if ( intersects.length > 0 ) {
-            intersected = intersects[ 0 ].object;
-            for (var i= 0; i < spriteList.length; i++) {
-              if(intersected === spriteList[i].boundingMesh) {
-                $('#popout').show(200);
-              }
-            }
-        } else {
-          $('#popout').hide(200);
-        }
+  var intersects = ray.intersectScene( scene );
+  //var intersects = ray.intersectObject(mesh );
 
-			}
+  if ( intersects.length > 0 ) {
+    intersected = intersects[ 0 ].object;
+    for (var i= 0; i < spriteList.length; i++) {
+      if(intersected === spriteList[i].boundingMesh) {
+        $('#popout').slideDown({duration: 200, queue: false});
+        $('#popout').fadeIn({duration: 200, queue: false});
+      }
+    }
+  } else {
+    $('#popout').slideUp({duration: 200, queue: false});
+    $('#popout').fadeOut({duration: 200, queue: false});
+  }
+}
 
+function onDocumentMouseWheel( event ) {
 
-			function onDocumentMouseWheel( event ) {
+  // WebKit
+/* disable mouse wheel for now
+  if ( event.wheelDeltaY ) {
 
-				// WebKit
+    fov -= event.wheelDeltaY * 0.05;
 
-				if ( event.wheelDeltaY ) {
+    // Opera / Explorer 9
 
-					fov -= event.wheelDeltaY * 0.05;
+  } else if ( event.wheelDelta ) {
 
-				// Opera / Explorer 9
+    fov -= event.wheelDelta * 0.05;
 
-				} else if ( event.wheelDelta ) {
+    // Firefox
 
-					fov -= event.wheelDelta * 0.05;
+  } else if ( event.detail ) {
 
-				// Firefox
+    fov += event.detail * 1.0;
 
-				} else if ( event.detail ) {
+  }
 
-					fov += event.detail * 1.0;
+  camera.projectionMatrix = THREE.Matrix4.makePerspective( fov, window.innerWidth / window.innerHeight, 1, 1100 );
+  render();
+*/
+}
 
-				}
+function animate() {
 
-				camera.projectionMatrix = THREE.Matrix4.makePerspective( fov, window.innerWidth / window.innerHeight, 1, 1100 );
-				render();
+  requestAnimationFrame( animate );
+  render();
 
-			}
+}
 
-			function animate() {
+function render() {
 
-				requestAnimationFrame( animate );
-				render();
+  lat = Math.max( - 85, Math.min( 85, lat ) );
+  phi = ( 90 - lat ) * Math.PI / 180;
+  theta = lon * Math.PI / 180;
 
-			}
+  camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+  camera.target.y = 500 * Math.cos( phi );
+  camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
 
-			function render() {
+  camera.lookAt( camera.target );
+  /*
+  var now = new Date().getTime();
+  if (now - frameTime > 120) {
+    sprite.uvOffset.x += spriteOffset;
+    if (sprite.uvOffset.x > 1.0) {
+      sprite.uvOffset.x = 0.0;
+    }
+    frameTime = now;
+  }
 
-				lat = Math.max( - 85, Math.min( 85, lat ) );
-				phi = ( 90 - lat ) * Math.PI / 180;
-				theta = lon * Math.PI / 180;
 
-				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
-				camera.target.y = 500 * Math.cos( phi );
-				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+  var p2D = projector.projectVector(sprite.position.clone(), camera);
 
-				camera.lookAt( camera.target );
+  p2D.x = (p2D.x + 1)/2 * window.innerWidth;
+  p2D.y = - (p2D.y - 1)/2 * window.innerHeight;*/
+  //$('#popout').position(p2D.x, p2D.y);
+  //popout.style.left = p2D.x + 'px';
+  //popout.style.top = p2D.y + 'px';
 
-        var now = new Date().getTime();
-        if (now - frameTime > 120) {
-          sprite.uvOffset.x += spriteOffset;
-          if (sprite.uvOffset.x > 1.0) {
-            sprite.uvOffset.x = 0.0;
-          }
-          frameTime = now;
-        }
-        
-        
-        var p2D = projector.projectVector(sprite.position.clone(), camera);
+  /*
+   // distortion
+   camera.position.x = - camera.target.x;
+   camera.position.y = - camera.target.y;
+   camera.position.z = - camera.target.z;
+   //*/
 
-        p2D.x = (p2D.x + 1)/2 * window.innerWidth;
-        p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
-        //$('#popout').position(p2D.x, p2D.y);
-        popout.style.left = p2D.x + 'px';
-        popout.style.top = p2D.y + 'px';
-				
-				/*
-				// distortion
-				camera.position.x = - camera.target.x;
-				camera.position.y = - camera.target.y;
-				camera.position.z = - camera.target.z;
-				//*/
+  renderer.render( scene, camera );
 
-				renderer.render( scene, camera );
+  for (var i = 0; i < markerLen; ++i) {
+    var markerObj = markerList[i];
+    var marker = markerObj.element;
+    var p2D = projector.projectVector(new THREE.Vector3(markerObj.x, markerObj.y, markerObj.z), camera);
 
-			}
+    p2D.x = (p2D.x + 1)/2 * window.innerWidth;
+    p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
 
-		</script>
-	</body>
+    markerObj.p2D = p2D;
+    if(p2D.x < 0 || p2D.x > document.body.innerWidth ||
+       p2D.y < 0 || p2D.y > document.body.innerHeight) {
+      marker.style.display = 'none';
+    } else {
+      if (marker.style.display == 'none') marker.style.display = 'block';
+      marker.style.left = p2D.x + 'px';
+      marker.style.top = p2D.y + 'px';
+    }
+
+
+  }
+}
+
+function createMarker(index, markerobj) {
+  //test
+  /*index = 1;
+  markerobj = { "name": "Justin Bui Tran",
+        "role": "Senior Designer",
+        "x": -2.47729003305631,
+        "y": -104.86474210628994,
+        "z": 488.6734803502833,
+        "image": "img/people/justin_buitran.jpg"
+      };*/
+
+  var markerDiv = document.createElement('div');
+  markerDiv.className = 'marker';
+  markerDiv.id = 'marker'+index;
+
+  var innerHTML = '<div class="marker-label">' + markerobj.name + '</div><div class="marker-symbol"></div>';
+  markerDiv.innerHTML = innerHTML;
+
+  return markerDiv;
+}
+
+function markerClickHandler(e) {
+  alert('marker click');
+}
+
+</script>
+</body>
 </html>
