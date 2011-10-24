@@ -33,7 +33,7 @@
   <div class="popout-bg"></div>
   <div class="popout-content">
     <div class="thumb-container">
-      <img src="img/people/jane_koh.jpg" width="150" height="150" />
+      <img class="thumb" src="img/people/jane_koh.jpg" width="150" height="150" />
     </div>
     <div class="member-info">
       <span class="name-tag">Jane Koh</span><br/>
@@ -49,6 +49,122 @@
 <script type="text/javascript" src="js/in2data.js"></script>
 
 <script type="text/javascript">
+
+function Ticker() {
+  this.handlers = [];
+  this.contextObjs = [];
+}
+
+Ticker.prototype = {
+  constructor: Ticker,
+  add: function (obj, handler) {
+    if(! handler instanceof Function) return;
+    if(this.contextObjs.indexOf(obj) == -1 || this.handlers.indexOf(handler) == -1) {
+      this.handlers.push(handler);
+      this.contextObjs.push(obj);
+    }
+  },
+  remove: function (handler) {
+    var pos = this.handlers.indexOf(handler);
+    if(pos >= 0) {
+      this.handlers.splice(pos,1);
+      this.contextObjs.splice(pos, 1);
+    }
+  },
+  tick: function() {
+    for (var i = 0; i < this.handlers.length; ++i) {
+      this.handlers[i].call(this.contextObjs[i]);
+    }
+  }
+
+};
+Ticker.instance = new Ticker();
+
+//Implement Popout class wrap around a div
+function Popout(divEl) {
+  this.DOMElement = divEl;
+  this._x = 0;
+  this._y = 0;
+  this._$ = $(this.DOMElement);
+}
+
+Popout.prototype = {
+  constructor: Popout,
+  setPosition: function(x, y) {
+    this._x = x;
+    this._y = y;
+    this.DOMElement.style.left = x + 'px';
+    this.DOMElement.style.top = y + 'px';
+  },
+  getX: function() { return this._x; },
+  getY: function() { return this._y; },
+  setData: function(markerObj) {
+    this._$.find('img')[0].src = markerObj.image;
+    this._$.find('.name-tag')[0].innerText = markerObj.name;
+    this._$.find('.role-tag')[0].innerText = markerObj.role;
+  },
+  show: function(time) {
+    this._$.stop().show(time);
+  },
+  hide: function(time) {
+    this._$.stop().hide(time);
+  }
+};
+
+
+//Implement Marker class wrap around a div
+function PosMarker(index, markerobj) {
+  this.className = 'marker';
+  this.id = 'marker'+index;
+  this.dataObj = markerobj;
+  this.innerHTML = '<span class="marker-label">' + markerobj.name + '</span><br/><div class="marker-symbol"></div>';
+  this.addEventListener('click', markerClickHandler);
+
+  this._x = 0;
+  this._y = 0;
+  this._bgX = 0;
+
+  Ticker.instance.add(this, this._animateBackground);
+}
+
+PosMarker.prototype = {
+  constructor: PosMarker,
+  setPosition: function(x, y) {
+    this._x = x;
+    this._y = y;
+    this.style.left = x + 'px';
+    this.style.top = y + 'px';
+  },
+  getX: function() { return this._x; },
+  getY: function() { return this._y; },
+  visible: function(value) {
+    var isVisible = (this.style.display != 'none');
+    if(value === undefined) {
+      return isVisible;
+    } else {
+      if(value != isVisible) {
+        this.style.display = (value)?'inline':'none';
+      }
+      return value;
+    }
+  },
+  _animateBackground: function (){
+    this.childNodes[2].style.backgroundPosition = this._bgX +'px 0px';
+    this._bgX += 40;
+    if(this._bgX > 280) this._bgX = 0;
+  }
+
+};
+
+//factory function to create a PosMarker extends a Div element
+PosMarker.create = function(index, markerObj) {
+  var element = document.createElement('div');
+  $.extend(element, PosMarker.prototype);
+  PosMarker.apply(element, arguments);
+  return element;
+};
+
+//----------------------------------------------------------------------------
 
 var camera, scene, renderer, projector;
 
@@ -83,8 +199,8 @@ function init() {
   projector = new THREE.Projector();
 
   var rendererInfo = document.getElementById('renderer-info');
-  //if (false) {
-  if (Detector.webgl) {
+  if (false) {
+  //if (Detector.webgl) {
     renderer = new THREE.WebGLRenderer();
     //work around some webgl bug rendering inner face
     rendererInfo.innerHTML = "WebGL Renderer (Fast)";
@@ -111,19 +227,17 @@ function init() {
   sphere.scale.x = -1;
   scene.add( sphere );
 
-  popout = $('#popout').get(0);
+  popout = new Popout($('#popout').get(0));
   //test interactive
 
   markerList = panoramaObj.markers;
   markerLen = markerList.length;
   for (var i = 0; i < markerLen; ++i) {
     var markerObj = markerList[i];
-    var marker = createMarker(i, markerObj);
-    document.body.appendChild(marker);
-    markerObj.element = marker;
-    marker.addEventListener('mouseup', markerClickHandler);
-    
+    var marker = PosMarker.create(i, markerObj);
 
+    document.body.appendChild(marker);
+    markerObj.marker = marker;
   }
   /*
   spriteList = [];
@@ -206,16 +320,9 @@ function onDocumentMouseUp( event ) {
   //var intersects = ray.intersectObject(mesh );
 
   if ( intersects.length > 0 ) {
-    intersected = intersects[ 0 ].object;
-    for (var i= 0; i < spriteList.length; i++) {
-      if(intersected === spriteList[i].boundingMesh) {
-        $('#popout').slideDown({duration: 200, queue: false});
-        $('#popout').fadeIn({duration: 200, queue: false});
-      }
-    }
+
   } else {
-    $('#popout').slideUp({duration: 200, queue: false});
-    $('#popout').fadeOut({duration: 200, queue: false});
+
   }
 }
 
@@ -294,7 +401,7 @@ function render() {
 
   for (var i = 0; i < markerLen; ++i) {
     var markerObj = markerList[i];
-    var marker = markerObj.element;
+    var marker = markerObj.marker;
     var p2D = projector.projectVector(new THREE.Vector3(markerObj.x, markerObj.y, markerObj.z), camera);
 
     p2D.x = (p2D.x + 1)/2 * window.innerWidth;
@@ -302,41 +409,46 @@ function render() {
 
     markerObj.p2D = p2D;
     if(p2D.x < 0 || p2D.x > document.body.innerWidth ||
-       p2D.y < 0 || p2D.y > document.body.innerHeight) {
-      marker.style.display = 'none';
+       p2D.y < 0 || p2D.y > document.body.innerHeight || p2D.z > 1) {
+      marker.visible(false);
     } else {
-      if (marker.style.display == 'none') marker.style.display = 'block';
-      marker.style.left = p2D.x + 'px';
-      marker.style.top = p2D.y + 'px';
+      marker.visible(true);
+      marker.setPosition(p2D.x, p2D.y);
     }
-
-
+    if (popout.targetMarker === marker) {
+      marker.visible(false);
+      popout.setPosition(marker.getX(), marker.getY());
+    }
   }
-}
-
-function createMarker(index, markerobj) {
-  //test
-  /*index = 1;
-  markerobj = { "name": "Justin Bui Tran",
-        "role": "Senior Designer",
-        "x": -2.47729003305631,
-        "y": -104.86474210628994,
-        "z": 488.6734803502833,
-        "image": "img/people/justin_buitran.jpg"
-      };*/
-
-  var markerDiv = document.createElement('div');
-  markerDiv.className = 'marker';
-  markerDiv.id = 'marker'+index;
-
-  var innerHTML = '<div class="marker-label">' + markerobj.name + '</div><div class="marker-symbol"></div>';
-  markerDiv.innerHTML = innerHTML;
-
-  return markerDiv;
+  //call ticker
+  Ticker.instance.tick();
 }
 
 function markerClickHandler(e) {
-  alert('marker click');
+  var targetMarker = e.currentTarget;
+  for (var i = 0; i < markerLen; ++i) {
+    var markerObj = markerList[i];
+    var marker = markerObj.marker;
+
+    if(marker === targetMarker) {
+      popout.setData(markerObj);
+      popout.setPosition(marker.getX(), marker.getY());
+      popout.targetMarker = marker;
+      popout.show(200);
+      break;
+    }
+
+  }
+  document.addEventListener('mouseup', clickOutsideHandler);
+}
+
+function clickOutsideHandler(e) {
+  //hide popout
+//  $(popout).stop().slideUp({duration: 200, queue: false});
+//  $(popout).fadeOut({duration: 200, queue: false});
+  popout.hide(200);
+  popout.targetMarker = null;
+  document.removeEventListener('mouseup', clickOutsideHandler);
 }
 
 </script>

@@ -19,7 +19,7 @@ canvas { pointer-events:none; z-index:1; position:relative; }
   left: 0;
   color:#fff;
   padding: 10px;
-  /*display: none;*/
+  display: none;
   width: 170px;
   height: 210px;
 }
@@ -52,17 +52,17 @@ canvas { pointer-events:none; z-index:1; position:relative; }
   top: 100px;
   text-align: center;
   cursor: pointer;
-  width: 200px;
-  margin-left: -100px;
+  width: 100px;
+  margin-left: -50px;
+  margin-top: -20px;
   overflow: visible;
   /*display: none;*/
 }
 .marker-symbol {
   position: relative;
-  margin-left: -15px;
-  left: 50%;
-  width: 30px;
-  height: 30px;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
   background-image: url("../img/sprite_marker.png");
   overflow: hidden;
 }
