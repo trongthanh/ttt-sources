@@ -81,11 +81,10 @@ Ticker.prototype = {
 Ticker.instance = new Ticker();
 
 //Implement Popout class wrap around a div
-function Popout(divEl) {
-  this.DOMElement = divEl;
+function Popout() {
   this._x = 0;
   this._y = 0;
-  this._$ = $(this.DOMElement);
+  this._$ = $(this);
 }
 
 Popout.prototype = {
@@ -93,8 +92,8 @@ Popout.prototype = {
   setPosition: function(x, y) {
     this._x = x;
     this._y = y;
-    this.DOMElement.style.left = x + 'px';
-    this.DOMElement.style.top = y + 'px';
+    this.style.left = x + 'px';
+    this.style.top = y + 'px';
   },
   getX: function() { return this._x; },
   getY: function() { return this._y; },
@@ -111,6 +110,11 @@ Popout.prototype = {
   }
 };
 
+Popout.extends = function (divEl) {
+  $.extend(divEl, Popout.prototype);
+  Popout.apply(divEl);
+  return divEl;
+};
 
 //Implement Marker class wrap around a div
 function PosMarker(index, markerobj) {
@@ -149,6 +153,7 @@ PosMarker.prototype = {
     }
   },
   _animateBackground: function (){
+    if(!this.visible()) return;
     this.childNodes[2].style.backgroundPosition = this._bgX +'px 0px';
     this._bgX += 40;
     if(this._bgX > 280) this._bgX = 0;
@@ -227,7 +232,7 @@ function init() {
   sphere.scale.x = -1;
   scene.add( sphere );
 
-  popout = new Popout($('#popout').get(0));
+  popout = Popout.extends($('#popout').get(0));
   //test interactive
 
   markerList = panoramaObj.markers;
@@ -407,9 +412,14 @@ function render() {
     p2D.x = (p2D.x + 1)/2 * window.innerWidth;
     p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
 
+    //my trick, not standard way
+    var dotVector = camera.target.clone().normalize().dot(new THREE.Vector3(markerObj.x, markerObj.y, markerObj.z).normalize());
+    var angle = Math.acos(dotVector) * 180 / 3.14;
+    var sameSide = (angle < 90);
+
     markerObj.p2D = p2D;
-    if(p2D.x < 0 || p2D.x > document.body.innerWidth ||
-       p2D.y < 0 || p2D.y > document.body.innerHeight || p2D.z > 1) {
+    if(!sameSide || p2D.x < 0 || p2D.x > window.innerWidth ||
+       p2D.y < 0 || p2D.y > window.innerHeight) {
       marker.visible(false);
     } else {
       marker.visible(true);

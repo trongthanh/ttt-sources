@@ -41,11 +41,35 @@ var officeData = { 'panorama': [
         'y': -104.86474210628994,
         'z': 488.6734803502833,
         'image': 'img/people/justin_buitran.jpg'
+      },
+      { 'name': 'Kevin Chong',
+        'role': 'HR / Admin Manager',
+        'x': -478.6680241283694,
+        'y': -142.84418370248673,
+        'z': 21.736187784728653,
+        'image': 'img/people/kevin_chong.jpg'
+      },
+      { 'name': 'Some Body',
+        'role': 'HR / Admin Assitant',
+        x: -350.74397955627745,
+        y: -130.25225432132416,
+        z: -331.6820933503024,
+        'image': 'img/people/none.jpg'
+      },
+      { 'name': 'Viraj Joshi',
+        'role': 'Content Development Exec',
+        x: -51.00553970129992,
+        y: -109.07162069827118,
+        z: -485.2852939024956,
+        'image': 'img/people/viraj_joshi.jpg'
       }
+
+
     
     ]
     
   } //end 1st panorama
   
   ]//end panorama
+
 };
