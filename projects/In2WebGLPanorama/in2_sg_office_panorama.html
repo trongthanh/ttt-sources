@@ -33,7 +33,7 @@
   <div class="popout-bg"></div>
   <div class="popout-content">
     <div class="thumb-container">
-      <img class="thumb" src="img/people/jane_koh.jpg" width="150" height="150" />
+      <img class="thumb" src="" width="150" height="150" />
     </div>
     <div class="member-info">
       <span class="name-tag">Jane Koh</span><br/>
@@ -53,6 +53,8 @@
 function Ticker() {
   this.handlers = [];
   this.contextObjs = [];
+  this._lft = new Date().getTime();
+  this.frameRate = 15;
 }
 
 Ticker.prototype = {
@@ -72,8 +74,12 @@ Ticker.prototype = {
     }
   },
   tick: function() {
-    for (var i = 0; i < this.handlers.length; ++i) {
-      this.handlers[i].call(this.contextObjs[i]);
+    var now = new Date().getTime();
+    if((now - this._lft) > 1000/this.frameRate) {
+      this._lft = now;
+      for (var i = 0; i < this.handlers.length; ++i) {
+        this.handlers[i].call(this.contextObjs[i]);
+      }
     }
   }
 
@@ -82,21 +88,21 @@ Ticker.instance = new Ticker();
 
 //Implement Popout class wrap around a div
 function Popout() {
-  this._x = 0;
-  this._y = 0;
+  this._scrX = 0;
+  this._scrY = 0;
   this._$ = $(this);
 }
 
 Popout.prototype = {
   constructor: Popout,
   setPosition: function(x, y) {
-    this._x = x;
-    this._y = y;
+    this._scrX = x;
+    this._scrY = y;
     this.style.left = x + 'px';
     this.style.top = y + 'px';
   },
-  getX: function() { return this._x; },
-  getY: function() { return this._y; },
+  getX: function() { return this._scrX; },
+  getY: function() { return this._scrY; },
   setData: function(markerObj) {
     this._$.find('img')[0].src = markerObj.image;
     this._$.find('.name-tag')[0].innerText = markerObj.name;
@@ -110,22 +116,25 @@ Popout.prototype = {
   }
 };
 
-Popout.extends = function (divEl) {
+Popout.extend = function (divEl) {
   $.extend(divEl, Popout.prototype);
   Popout.apply(divEl);
   return divEl;
 };
 
 //Implement Marker class wrap around a div
-function PosMarker(index, markerobj) {
+function PosMarker(index,x, y, z, personObj) {
   this.className = 'marker';
   this.id = 'marker'+index;
-  this.dataObj = markerobj;
-  this.innerHTML = '<span class="marker-label">' + markerobj.name + '</span><br/><div class="marker-symbol"></div>';
+  this.position = new THREE.Vector3(x, y, z);
+  this.data = personObj;
+  if(!personObj) alert('no personObj for marker ' + index);
+  this.innerHTML = '<span class="marker-label">' + personObj.name + '</span><br/><div class="marker-symbol"></div>';
   this.addEventListener('click', markerClickHandler);
+  this.unitVector = new THREE.Vector3(x, y, z).normalize();
 
-  this._x = 0;
-  this._y = 0;
+  this._scrX = 0;
+  this._scrY = 0;
   this._bgX = 0;
 
   Ticker.instance.add(this, this._animateBackground);
@@ -134,13 +143,13 @@ function PosMarker(index, markerobj) {
 PosMarker.prototype = {
   constructor: PosMarker,
   setPosition: function(x, y) {
-    this._x = x;
-    this._y = y;
+    this._scrX = x;
+    this._scrY = y;
     this.style.left = x + 'px';
     this.style.top = y + 'px';
   },
-  getX: function() { return this._x; },
-  getY: function() { return this._y; },
+  getX: function() { return this._scrX; },
+  getY: function() { return this._scrY; },
   visible: function(value) {
     var isVisible = (this.style.display != 'none');
     if(value === undefined) {
@@ -162,7 +171,7 @@ PosMarker.prototype = {
 };
 
 //factory function to create a PosMarker extends a Div element
-PosMarker.create = function(index, markerObj) {
+PosMarker.create = function(index, x, y, z, personObj) {
   var element = document.createElement('div');
   $.extend(element, PosMarker.prototype);
   PosMarker.apply(element, arguments);
@@ -224,25 +233,25 @@ function init() {
     sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
   } else {
     //reduce number of poligons to improve performance
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
-    sphere.overdraw = true; //seamless texture
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 20, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
+    //sphere.overdraw = true; //seamless texture
   }
   sphere.doubleSided = true;
 
   sphere.scale.x = -1;
   scene.add( sphere );
 
-  popout = Popout.extends($('#popout').get(0));
+  popout = Popout.extend($('#popout').get(0));
   //test interactive
 
-  markerList = panoramaObj.markers;
-  markerLen = markerList.length;
+  markerList = [];
+  markerLen = panoramaObj.markers.length;
   for (var i = 0; i < markerLen; ++i) {
-    var markerObj = markerList[i];
-    var marker = PosMarker.create(i, markerObj);
+    var markerObj = panoramaObj.markers[i];
+    var marker = PosMarker.create(i, markerObj.x, markerObj.y, markerObj.z, officeData.people[markerObj.person]);
 
     document.body.appendChild(marker);
-    markerObj.marker = marker;
+    markerList.push(marker);
   }
   /*
   spriteList = [];
@@ -403,21 +412,19 @@ function render() {
    //*/
 
   renderer.render( scene, camera );
-
+  var camUnitVector = camera.target.clone().normalize();
   for (var i = 0; i < markerLen; ++i) {
-    var markerObj = markerList[i];
-    var marker = markerObj.marker;
-    var p2D = projector.projectVector(new THREE.Vector3(markerObj.x, markerObj.y, markerObj.z), camera);
+    var marker =  markerList[i];
+    var p2D = projector.projectVector(marker.position.clone(), camera);
 
     p2D.x = (p2D.x + 1)/2 * window.innerWidth;
     p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
 
     //my trick, not standard way
-    var dotVector = camera.target.clone().normalize().dot(new THREE.Vector3(markerObj.x, markerObj.y, markerObj.z).normalize());
+    var dotVector = camUnitVector.dot(marker.unitVector);
     var angle = Math.acos(dotVector) * 180 / 3.14;
     var sameSide = (angle < 90);
 
-    markerObj.p2D = p2D;
     if(!sameSide || p2D.x < 0 || p2D.x > window.innerWidth ||
        p2D.y < 0 || p2D.y > window.innerHeight) {
       marker.visible(false);
@@ -437,11 +444,10 @@ function render() {
 function markerClickHandler(e) {
   var targetMarker = e.currentTarget;
   for (var i = 0; i < markerLen; ++i) {
-    var markerObj = markerList[i];
-    var marker = markerObj.marker;
+    var marker = markerList[i];
 
     if(marker === targetMarker) {
-      popout.setData(markerObj);
+      popout.setData(marker.data);
       popout.setPosition(marker.getX(), marker.getY());
       popout.targetMarker = marker;
       popout.show(200);

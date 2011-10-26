@@ -7,69 +7,92 @@ var officeData = { 'panorama': [
   { //1st panorama
     'mapFile': 'textures/in2_pano.jpg',
     'markers': [
-      { 'name': 'Jane Koh',
-        'role': 'Copywriter',
-        'x': -144.26178473196032,
-        'y': -97.4847535699491,
-        'z': 491.08645148975273,
-        'image': 'img/people/jane_koh.jpg'
+      { 'person': 'jane_koh',
+        x: 494.99702534411864,
+        y: -65.26309611002569,
+        z: 26.80808062147547
       },
-      { 'name': 'Jin Cheung',
-        'role': 'Designer',
-        'x': 339.80780029936346,
-        'y': -165.561484014872,
-        'z': 319.04960044220866,
-        'image': 'img/people/jin_cheung.jpg'
+      { 'person': 'jin_cheung',
+        'x': 210.58892980955218,
+        'y': -138.65732665118887,
+        'z': -431.7712917825976
       },
-      { 'name': 'Brandon Lee',
-        'role': 'Art Director',
-        'x': 261.28291502641264,
-        'y': -117.40601912530519,
-        'z': 385.33437846553375,
-        'image': 'img/people/brandon_lee.jpg'
+      { 'person': 'brandon_lee',
+        x: 316.9860821401838,
+        y: -82.52380293033886,
+        z: -377.76930219292734
       },
-      { 'name': 'Thanh Tran',
-        'role': 'Web Developer',
-        'x': -86.3953449819011,
-        'y': -112.11062888255337,
-        'z': 490.0836997068697,
-        'image': 'img/people/thanh_tran.jpg'
+      { 'person': 'thanh_tran',
+        x: 489.51013190088656,
+        y: -34.00764533262415,
+        z: -96.03806966670615
       },
-      { 'name': 'Justin Bui Tran',
-        'role': 'Senior Designer',
-        'x': -2.47729003305631,
-        'y': -104.86474210628994,
-        'z': 488.6734803502833,
-        'image': 'img/people/justin_buitran.jpg'
+      { 'person': 'justin_buitran',
+        x: 464.38801383781794,
+        y: -43.57787137382912,
+        z: -180.12423970774353
       },
-      { 'name': 'Kevin Chong',
-        'role': 'HR / Admin Manager',
-        'x': -478.6680241283694,
-        'y': -142.84418370248673,
-        'z': 21.736187784728653,
-        'image': 'img/people/kevin_chong.jpg'
+      { 'person': 'kevin_chong',
+        x: 166.36627389668968,
+        y: -63.53230430067525,
+        z: 467.2107760101195
       },
-      { 'name': 'Some Body',
-        'role': 'HR / Admin Assitant',
-        x: -350.74397955627745,
-        y: -130.25225432132416,
-        z: -331.6820933503024,
-        'image': 'img/people/none.jpg'
+      { 'person': 'some_body',
+        x: -172.24756777235547,
+        y: -59.20198415325052,
+        z: 465.6456812522007
       },
-      { 'name': 'Viraj Joshi',
-        'role': 'Content Development Exec',
-        x: -51.00553970129992,
-        y: -109.07162069827118,
-        z: -485.2852939024956,
-        'image': 'img/people/viraj_joshi.jpg'
+      { 'person': 'viraj_joshi',
+        x: -442.65815168644724,
+        y: -37.489363413163815,
+        z: 229.45219191895717
       }
-
-
-    
     ]
     
   } //end 1st panorama
   
-  ]//end panorama
+  ],//end panorama
+  'people':{
+    'jane_koh': {
+      'name': 'Jane Koh',
+      'role': 'Copywriter',
+      'image': 'img/people/jane_koh.jpg'
+    },
+    'jin_cheung': {
+      'name': 'Jin Cheung',
+      'role': 'Designer',
+      'image': 'img/people/jin_cheung.jpg'
+    },
+    'brandon_lee': {
+      'name': 'Brandon Lee',
+      'role': 'Art Director',
+      'image': 'img/people/brandon_lee.jpg'
+    },
+    'thanh_tran':{
+      'name': 'Thanh Tran',
+      'role': 'Web Developer',
+      'image': 'img/people/thanh_tran.jpg'
+    },
+    'justin_buitran': {
+      'name': 'Justin Bui Tran',
+      'role': 'Senior Designer',
+      'image': 'img/people/justin_buitran.jpg'
+    },
+    'kevin_chong':{
+      'name': 'Kevin Chong',
+      'role': 'HR / Admin Manager',
+      'image': 'img/people/kevin_chong.jpg'
+    },
+    'some_body': {
+      'name': 'Some Body',
+      'role': 'HR / Admin Assitant',
+      'image': 'img/people/none.jpg'
+    },
+    'viraj_joshi': {
+      'name': 'Viraj Joshi',
+      'role': 'Content Development Exec',
+      'image': 'img/people/viraj_joshi.jpg'
+    }
+  } //end people
 
 };

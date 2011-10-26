@@ -54,7 +54,7 @@ canvas { pointer-events:none; z-index:1; position:relative; }
   cursor: pointer;
   width: 100px;
   margin-left: -50px;
-  margin-top: -20px;
+  margin-top: -50px;
   overflow: visible;
   /*display: none;*/
 }
@@ -67,8 +67,10 @@ canvas { pointer-events:none; z-index:1; position:relative; }
   overflow: hidden;
 }
 .marker-label {
+	font-family: 'Century Gothic', 'URW Gothic L', 'Trebuchet MS', sans-serif;
   font-weight: bold;
-  font-size: 0.8em;
+  font-size: 0.9em;
   color: #f5622d;
-  
+  text-shadow: 1px 1px 2px #000000;
+  filter: dropshadow(color=#000000, offx=1, offy=1);
 }
