@@ -52,6 +52,7 @@
 			var fov = 70,
 			texture_placeholder,
 			isUserInteracting = false,
+      isUserDragging = false,
 			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
 			lon = 0, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
@@ -91,11 +92,12 @@
         container.appendChild( renderer.domElement );
 
 				//mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2294472375_24a3b8ef46_o.jpg' ) } ) );
-				if(isWebGL) {
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
+				var texture = 'textures/in2_pano_2.jpg';
+        if(isWebGL) {
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( texture ) } ) );
         } else {
           //reduce number of poligons to improve performance
-          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg' ) } ) );
+          mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( texture) } ) );
           mesh.overdraw = true;
         }
         mesh.doubleSided = true;
@@ -172,7 +174,9 @@
         
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
+        if(isUserInteracting) {
+          isUserDragging = true;
+        }
 			}
 
 			function onDocumentMouseUp( event ) {
@@ -198,6 +202,11 @@
           $('#popout').hide(200);
         }
 
+        if(!isUserDragging) {
+          var pos = sprite.position;
+          alert("'x': " + pos.x + ",\n'y': " + pos.y + ",\n'z': " + pos.z);
+        }
+        isUserDragging = false;
 			}
 
 
@@ -250,8 +259,6 @@
         sprite.position.x = camera.target.x;
         sprite.position.y = camera.target.y;
         sprite.position.z = camera.target.z;
-        
-        var pos = sprite.position;
 
         var p2D = projector.projectVector(sprite.position.clone(), camera);
 

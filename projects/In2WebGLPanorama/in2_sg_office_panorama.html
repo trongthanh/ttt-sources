@@ -178,6 +178,43 @@ PosMarker.create = function(index, x, y, z, personObj) {
   return element;
 };
 
+function Panorama (panoramaObj, people) {
+  this.textureFile = panoramaObj.mapFile;
+
+  var panoMap = THREE.ImageUtils.loadTexture( this.textureFile );
+  var sphere;
+  if(isWebGL) {
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
+  } else {
+    //reduce number of poligons to improve performance
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 40, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
+    sphere.overdraw = true; //seamless texture
+  }
+  sphere.doubleSided = true;
+
+  sphere.scale.x = -1;
+  //scene.add( sphere );
+  this.sphere = sphere;
+
+  this.markers = [];
+  this.markerLen = panoramaObj.markers.length;
+  for (var i = 0; i < this.markerLen; ++i) {
+    var markerObj = panoramaObj.markers[i];
+    var marker = PosMarker.create(i, markerObj.x, markerObj.y, markerObj.z, people[markerObj.person]);
+
+    //document.body.appendChild(marker);
+    this.markers.push(marker);
+  }
+
+
+}
+
+Panorama.prototype = {
+  constructor: Panorama
+
+
+};
+
 //----------------------------------------------------------------------------
 
 var camera, scene, renderer, projector;
@@ -213,8 +250,8 @@ function init() {
   projector = new THREE.Projector();
 
   var rendererInfo = document.getElementById('renderer-info');
-  if (false) {
-  //if (Detector.webgl) {
+  //if (false) {
+  if (Detector.webgl) {
     renderer = new THREE.WebGLRenderer();
     //work around some webgl bug rendering inner face
     rendererInfo.innerHTML = "WebGL Renderer (Fast)";
@@ -228,13 +265,13 @@ function init() {
 
   var panoramaObj = officeData.panorama[0];
   var panoTexture = panoramaObj.mapFile;
-  var panoMap = THREE.ImageUtils.loadTexture( 'textures/in2_pano.jpg');
+  var panoMap = THREE.ImageUtils.loadTexture( panoTexture );
   if(isWebGL) {
     sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
   } else {
     //reduce number of poligons to improve performance
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 20, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
-    //sphere.overdraw = true; //seamless texture
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 40, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
+    sphere.overdraw = true; //seamless texture
   }
   sphere.doubleSided = true;
 
