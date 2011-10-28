@@ -21,8 +21,9 @@
   <a href="javascript:toggleInfo()"><img src="img/i.png" border="0"></a>
 </div>
 <div id="info">
-  <p>Equirectangular Panorama - An experiment by Thanh Tran<br/>
+  <p>In2 Office Walkthrough with Equirectangular Panorama - An experiment by <a href="mailto:thanh.tran@in2ideas.com">Thanh Tran</a><br/>
     The example is based on <a href="http://github.com/mrdoob/three.js" target="_blank" >a three.js example</a>.</p>
+  <p>Usage: Drag the screen to navigate around. Click on named markers for more person info. Click on observer marker to change position</p>
   <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
     For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
   <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
@@ -45,6 +46,7 @@
 <script type="text/javascript" src="js/Three.js"></script>
 <script type="text/javascript" src="js/Detector.js"></script>
 <script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+<script type="text/javascript" src="js/Tween.js"></script>
 <!-- data -->
 <script type="text/javascript" src="js/in2data.js"></script>
 
@@ -122,26 +124,14 @@ Popout.extend = function (divEl) {
   return divEl;
 };
 
-//Implement Marker class wrap around a div
-function PosMarker(index,x, y, z, personObj) {
-  this.className = 'marker';
-  this.id = 'marker'+index;
-  this.position = new THREE.Vector3(x, y, z);
-  this.data = personObj;
-  if(!personObj) alert('no personObj for marker ' + index);
-  this.innerHTML = '<span class="marker-label">' + personObj.name + '</span><br/><div class="marker-symbol"></div>';
-  this.addEventListener('click', markerClickHandler);
-  this.unitVector = new THREE.Vector3(x, y, z).normalize();
-
+function BaseMarker() {
   this._scrX = 0;
   this._scrY = 0;
-  this._bgX = 0;
-
-  Ticker.instance.add(this, this._animateBackground);
+  this._live = true;
 }
 
-PosMarker.prototype = {
-  constructor: PosMarker,
+BaseMarker.prototype = {
+  constructor: BaseMarker,
   setPosition: function(x, y) {
     this._scrX = x;
     this._scrY = y;
@@ -156,18 +146,116 @@ PosMarker.prototype = {
       return isVisible;
     } else {
       if(value != isVisible) {
-        this.style.display = (value)?'inline':'none';
+        this.style.display = (value)?'block':'none';
       }
       return value;
     }
   },
-  _animateBackground: function (){
-    if(!this.visible()) return;
-    this.childNodes[2].style.backgroundPosition = this._bgX +'px 0px';
-    this._bgX += 40;
-    if(this._bgX > 280) this._bgX = 0;
+  activate: function() {
+    this._live = true;
+  },
+  deactivate: function() {
+    this._live = false;
   }
+};
 
+function NavMarker(index, initObj) {
+  BaseMarker.call(this);
+  this.className = 'navigate-point';
+  this.id = 'navmarker'+index;
+  this.position = new THREE.Vector3(initObj.x, initObj.y, initObj.z);
+  this.target = initObj.target;
+
+  this.addEventListener('click', this.markerClickHandler);
+  this.unitVector = new THREE.Vector3(initObj.x,  initObj.y, initObj.z).normalize();
+
+  this._scrX = 0;
+  this._scrY = 0;
+  this._live = true;
+  this._bgX = 0;
+  Ticker.instance.add(this, this._animateBackground);
+}
+
+NavMarker.prototype = new BaseMarker();
+NavMarker.prototype.constructor = NavMarker;
+NavMarker.prototype._animateBackground = function (){
+  if(!this.visible()) return;
+  this.style.backgroundPosition = this._bgX +'px 0px';
+  this._bgX += 80;
+  if(this._bgX > 560) this._bgX = 0;
+};
+NavMarker.prototype.markerClickHandler = function() {
+  var movePos = new THREE.Vector3(- this.position.x, - this.position.y, - this.position.z);
+  movePos.normalize();
+  movePos.multiplyScalar( 300 );
+
+  var targetPano = panoList[this.target];
+  activePano.removeMarkers();
+  if(isWebGL) new TWEEN.Tween(activePano.sphere.materials[0]).to({opacity: 0}, 500).start();
+  new TWEEN.Tween(activePano.sphere.position).to({
+    x: movePos.x, y: movePos.y, z: movePos.z}, 500).onComplete(function() {
+        activePano.remove();
+        targetPano.place();
+
+        activePano = targetPano; //closure scope problem with this.target
+        lat = 0;
+        lon = 0;
+        if(isWebGL) {
+          targetPano.sphere.materials[0].opacity = 0;
+          new TWEEN.Tween(targetPano.sphere.materials[0]).to({opacity: 1}, 500).onComplete(function() {
+            targetPano.placeMarkers();
+          }).start();
+        } else {
+          targetPano.placeMarkers();
+        }
+
+    }).start();
+
+};
+
+//factory function to create a PosMarker extends a Div element
+NavMarker.create = function(index, initObj) {
+  var element = document.createElement('div');
+  $.extend(element, NavMarker.prototype);
+  NavMarker.apply(element, arguments);
+  return element;
+};
+
+//Implement Marker class wrap around a div
+function PosMarker(index,x, y, z, personObj) {
+  BaseMarker.call(this);
+  this.className = 'marker';
+  this.id = 'marker'+index;
+  this.position = new THREE.Vector3(x, y, z);
+  this.data = personObj;
+  if(!personObj) alert('no personObj for marker ' + index);
+  this.innerHTML = '<span class="marker-label">' + personObj.name + '</span><br/><div class="marker-symbol"></div>';
+  this.addEventListener('click', this.markerClickHandler);
+  this.unitVector = new THREE.Vector3(x, y, z).normalize();
+
+  this._bgX = 0;
+  Ticker.instance.add(this, this._animateBackground);
+}
+
+PosMarker.prototype = new BaseMarker();
+PosMarker.prototype.constructor = PosMarker;
+PosMarker.prototype._animateBackground = function (){
+  if(!this.visible()) return;
+  this.childNodes[2].style.backgroundPosition = this._bgX +'px 0px';
+  this._bgX += 40;
+  if(this._bgX > 280) this._bgX = 0;
+};
+PosMarker.prototype.markerClickHandler = function(e) {
+  popout.setData(this.data);
+  popout.setPosition(this._scrX, this._scrY);
+  popout.targetMarker = this;
+  popout.show(200);
+  document.addEventListener('mouseup', this.clickOutsideHandler);
+};
+PosMarker.prototype.clickOutsideHandler = function (e) {
+  popout.hide(200);
+  popout.targetMarker = null;
+  document.removeEventListener('mouseup', this.clickOutsideHandler);
 };
 
 //factory function to create a PosMarker extends a Div element
@@ -187,18 +275,16 @@ function Panorama (panoramaObj, people) {
     sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
   } else {
     //reduce number of poligons to improve performance
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 40, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
+    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60,40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
     sphere.overdraw = true; //seamless texture
   }
   sphere.doubleSided = true;
-
   sphere.scale.x = -1;
-  //scene.add( sphere );
   this.sphere = sphere;
-
+  var i;
   this.markers = [];
   this.markerLen = panoramaObj.markers.length;
-  for (var i = 0; i < this.markerLen; ++i) {
+  for (i = 0; i < this.markerLen; ++i) {
     var markerObj = panoramaObj.markers[i];
     var marker = PosMarker.create(i, markerObj.x, markerObj.y, markerObj.z, people[markerObj.person]);
 
@@ -206,16 +292,99 @@ function Panorama (panoramaObj, people) {
     this.markers.push(marker);
   }
 
+  this.navMarkers = [];
+  for ( i = 0; i < panoramaObj.navMarkers.length; ++i) {
+    this.navMarkers.push(NavMarker.create(i, panoramaObj.navMarkers[i]));
+  }
+
 
 }
 
+// TODO: copy global variable to inside class
 Panorama.prototype = {
-  constructor: Panorama
+  constructor: Panorama,
+  place: function() {
+    this.sphere.position.x = 0;
+    this.sphere.position.y = 0;
+    this.sphere.position.z = 0;
+    scene.add( this.sphere );
+  },
+  placeMarkers: function() {
+    var i;
+    for ( i = 0; i < this.markerLen; ++i) {
+      document.body.appendChild(this.markers[i]);
+      this.markers[i].activate();
+    }
+    for (i = 0; i < this.navMarkers.length; ++i) {
+      document.body.appendChild(this.navMarkers[i]);
+      this.navMarkers[i].activate();
+    }
+  },
+  remove: function() {
+    scene.remove(this.sphere);
+  },
+  removeMarkers: function() {
+    for (var i = 0; i < this.markerLen; ++i) {
+      document.body.removeChild(this.markers[i]);
+      this.markers[i].deactivate();
+    }
+    for (i = 0; i < this.navMarkers.length; ++i) {
+      document.body.removeChild(this.navMarkers[i]);
+      this.navMarkers[i].deactivate();
+    }
+  },
+  update: function() {
+    var camUnitVector = camera.target.clone().normalize();
+    var i, angle, sameSide, p2D, marker;
+    for (i = 0; i < this.markerLen; ++i) {
+      marker =  this.markers[i];
+      p2D = projector.projectVector(marker.position.clone(), camera);
+
+      p2D.x = (p2D.x + 1)/2 * window.innerWidth;
+      p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
+
+      //my trick
+      angle = Math.acos(camUnitVector.dot(marker.unitVector)) * 180 / 3.14;
+      sameSide = (angle < 90);
+
+      if(!sameSide || p2D.x < 0 || p2D.x > window.innerWidth ||
+         p2D.y < 0 || p2D.y > window.innerHeight) {
+        marker.visible(false);
+      } else {
+        marker.visible(true);
+        marker.setPosition(p2D.x, p2D.y);
+      }
+      if (popout.targetMarker === marker) {
+        marker.visible(false);
+        popout.setPosition(marker.getX(), marker.getY());
+      }
+    }
+
+    for (i = 0; i < this.navMarkers.length; ++i) {
+      marker =  this.navMarkers[i];
+      p2D = projector.projectVector(marker.position.clone(), camera);
+
+      p2D.x = (p2D.x + 1)/2 * window.innerWidth;
+      p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
+
+      //my trick
+      angle = Math.acos(camUnitVector.dot(marker.unitVector)) * 180 / 3.14;
+      sameSide = (angle < 90);
+
+      if(!sameSide || p2D.x < 0 || p2D.x > window.innerWidth ||
+         p2D.y < 0 || p2D.y > window.innerHeight) {
+        marker.visible(false);
+      } else {
+        marker.visible(true);
+        marker.setPosition(p2D.x, p2D.y);
+      }
+    }
+  }
 
 
 };
 
-//----------------------------------------------------------------------------
+//-----------------------------------------  MAIN SCRIPT ----------------------------------
 
 var camera, scene, renderer, projector;
 
@@ -228,12 +397,16 @@ var fov = 70,
     lon = 0, onMouseDownLon = 0,
     lat = 0, onMouseDownLat = 0,
     phi = 0, theta = 0,
+    onPointerDownPointerX,
+    onPointerDownPointerY,
+    onPointerDownLon,
+    onPointerDownLat,
     isWebGL = false;
 
-var container, sphere, sprite, spriteList,
-        spriteOffset = 0.14286,frameTime;
+var container, popout, activePano, panoList;
 
-var popout, markerList, markerLen;
+//testing
+var targetPos = {x:0, y:0, z:0};
 
 init();
 animate();
@@ -263,61 +436,18 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   container.appendChild( renderer.domElement );
 
-  var panoramaObj = officeData.panorama[0];
-  var panoTexture = panoramaObj.mapFile;
-  var panoMap = THREE.ImageUtils.loadTexture( panoTexture );
-  if(isWebGL) {
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
-  } else {
-    //reduce number of poligons to improve performance
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 40, 30 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false} ) );
-    sphere.overdraw = true; //seamless texture
-  }
-  sphere.doubleSided = true;
+  panoList = [];
 
-  sphere.scale.x = -1;
-  scene.add( sphere );
+  for (var i = 0; i <  officeData.panorama.length; ++i) {
+    panoList.push(new Panorama(officeData.panorama[i], officeData.people));
+  }
+
+  activePano = panoList[0];
+  activePano.place();
+  activePano.placeMarkers();
 
   popout = Popout.extend($('#popout').get(0));
-  //test interactive
 
-  markerList = [];
-  markerLen = panoramaObj.markers.length;
-  for (var i = 0; i < markerLen; ++i) {
-    var markerObj = panoramaObj.markers[i];
-    var marker = PosMarker.create(i, markerObj.x, markerObj.y, markerObj.z, officeData.people[markerObj.person]);
-
-    document.body.appendChild(marker);
-    markerList.push(marker);
-  }
-  /*
-  spriteList = [];
-  var markerGeometry = new THREE.CubeGeometry(30, 60, 30, 1, 1, 1);
-
-  var map = THREE.ImageUtils.loadTexture( "img/sprite_marker.png" );
-  sprite = new THREE.Sprite( { map: map, useScreenCoordinates: false, color: 0xffffff } );
-  //object.uvScale.set( 2, 2 );
-  //object.uvOffset.set( -0.5, -0.5 );
-  sprite.uvOffset.x = .85714;
-  sprite.uvScale.x = 0.14286; // one-seventh
-  sprite.boundingMesh = new THREE.Mesh( markerGeometry, new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: true, wireframeLinewidth: 0 } ) );
-  scene.add(sprite.boundingMesh);
-
-  var vector = new THREE.Vector3( -143.49673797349618, -97.18085562192277, 490.94395353515745);
-  vector.normalize();
-  vector.multiplyScalar( 480 );
-
-  sprite.position.x=vector.x;
-  sprite.position.y=vector.y;
-  sprite.position.z=vector.z;
-  sprite.scale.x = sprite.scale.y = 0.25;
-  //
-
-  sprite.boundingMesh.position = sprite.position.clone();
-  spriteList.push(sprite);
-  scene.add(sprite);
-  */
-  //camera.position.z = 1000;
   renderer.sortObjects = false;
   container.appendChild( renderer.domElement );
 
@@ -327,7 +457,6 @@ function init() {
   document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
   document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
 
-  frameTime = new Date().getTime();
 }
 
 function onDocumentMouseDown( event ) {
@@ -375,6 +504,7 @@ function onDocumentMouseUp( event ) {
   } else {
 
   }
+
 }
 
 function onDocumentMouseWheel( event ) {
@@ -408,7 +538,7 @@ function animate() {
 
   requestAnimationFrame( animate );
   render();
-
+  TWEEN.update();
 }
 
 function render() {
@@ -422,6 +552,7 @@ function render() {
   camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
 
   camera.lookAt( camera.target );
+  
   /*
   var now = new Date().getTime();
   if (now - frameTime > 120) {
@@ -449,60 +580,18 @@ function render() {
    //*/
 
   renderer.render( scene, camera );
-  var camUnitVector = camera.target.clone().normalize();
-  for (var i = 0; i < markerLen; ++i) {
-    var marker =  markerList[i];
-    var p2D = projector.projectVector(marker.position.clone(), camera);
-
-    p2D.x = (p2D.x + 1)/2 * window.innerWidth;
-    p2D.y = - (p2D.y - 1)/2 * window.innerHeight;
-
-    //my trick, not standard way
-    var dotVector = camUnitVector.dot(marker.unitVector);
-    var angle = Math.acos(dotVector) * 180 / 3.14;
-    var sameSide = (angle < 90);
-
-    if(!sameSide || p2D.x < 0 || p2D.x > window.innerWidth ||
-       p2D.y < 0 || p2D.y > window.innerHeight) {
-      marker.visible(false);
-    } else {
-      marker.visible(true);
-      marker.setPosition(p2D.x, p2D.y);
-    }
-    if (popout.targetMarker === marker) {
-      marker.visible(false);
-      popout.setPosition(marker.getX(), marker.getY());
-    }
+  if(activePano) {
+    activePano.update();
   }
   //call ticker
   Ticker.instance.tick();
 }
 
-function markerClickHandler(e) {
-  var targetMarker = e.currentTarget;
-  for (var i = 0; i < markerLen; ++i) {
-    var marker = markerList[i];
-
-    if(marker === targetMarker) {
-      popout.setData(marker.data);
-      popout.setPosition(marker.getX(), marker.getY());
-      popout.targetMarker = marker;
-      popout.show(200);
-      break;
-    }
-
-  }
-  document.addEventListener('mouseup', clickOutsideHandler);
-}
-
-function clickOutsideHandler(e) {
-  //hide popout
-//  $(popout).stop().slideUp({duration: 200, queue: false});
-//  $(popout).fadeOut({duration: 200, queue: false});
-  popout.hide(200);
-  popout.targetMarker = null;
-  document.removeEventListener('mouseup', clickOutsideHandler);
-}
+//analytics
+var _gaq=[["_setAccount","UA-24761068-1"],["_trackPageview"]];
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+s.parentNode.insertBefore(g,s)}(document,"script"));
 
 </script>
 </body>

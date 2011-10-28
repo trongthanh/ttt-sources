@@ -79,7 +79,8 @@
         projector = new THREE.Projector();
 
         var rendererInfo = document.getElementById('renderer-info');
-        if (/*false*/Detector.webgl) {
+        if (false) {
+        //if (Detector.webgl) {
            renderer = new THREE.WebGLRenderer();
            //work around some webgl bug rendering inner face
            rendererInfo.innerHTML = "WebGL Renderer (Fast)";
