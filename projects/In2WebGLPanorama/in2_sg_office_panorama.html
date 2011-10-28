@@ -169,9 +169,6 @@ function NavMarker(index, initObj) {
   this.addEventListener('click', this.markerClickHandler);
   this.unitVector = new THREE.Vector3(initObj.x,  initObj.y, initObj.z).normalize();
 
-  this._scrX = 0;
-  this._scrY = 0;
-  this._live = true;
   this._bgX = 0;
   Ticker.instance.add(this, this._animateBackground);
 }
@@ -230,6 +227,7 @@ function PosMarker(index,x, y, z, personObj) {
   this.data = personObj;
   if(!personObj) alert('no personObj for marker ' + index);
   this.innerHTML = '<span class="marker-label">' + personObj.name + '</span><br/><div class="marker-symbol"></div>';
+
   this.addEventListener('click', this.markerClickHandler);
   this.unitVector = new THREE.Vector3(x, y, z).normalize();
 
@@ -256,6 +254,16 @@ PosMarker.prototype.clickOutsideHandler = function (e) {
   popout.hide(200);
   popout.targetMarker = null;
   document.removeEventListener('mouseup', this.clickOutsideHandler);
+};
+//override visible function
+PosMarker.prototype.visible = function(value) {
+  var returnValue = BaseMarker.prototype.visible.call(this, value);
+  
+  if(returnValue) {
+    //move register point at center of div
+    this.style.marginLeft =(- this.offsetWidth / 2) + 'px';
+  }
+  return returnValue;
 };
 
 //factory function to create a PosMarker extends a Div element

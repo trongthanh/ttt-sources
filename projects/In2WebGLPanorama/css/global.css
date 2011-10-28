@@ -48,13 +48,12 @@ canvas { pointer-events:none; z-index:1; position:relative; }
 .marker {
   z-index: 98;
   position: absolute;
-  left: 100px;
-  top: 100px;
+  left: 0px;
+  top: 0px;
   text-align: center;
   cursor: pointer;
-  width: 100px;
-  margin-left: -50px;
-  margin-top: -50px;
+  /*margin-left: -50px;*/
+  margin-top: -35px;
   overflow: visible;
   /*display: none;*/
 }
