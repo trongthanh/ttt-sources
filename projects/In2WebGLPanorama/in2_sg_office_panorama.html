@@ -37,8 +37,8 @@
       <img class="thumb" src="" width="150" height="150" />
     </div>
     <div class="member-info">
-      <span class="name-tag">Jane Koh</span><br/>
-      <span class="role-tag">Copywriter</span>
+      <span class="name-tag">&nbsp;</span><br/>
+      <span class="role-tag">&nbsp;</span>
     </div>
   </div>
 </div>
@@ -107,8 +107,9 @@ Popout.prototype = {
   getY: function() { return this._scrY; },
   setData: function(markerObj) {
     this._$.find('img')[0].src = markerObj.image;
-    this._$.find('.name-tag')[0].innerText = markerObj.name;
-    this._$.find('.role-tag')[0].innerText = markerObj.role;
+    this._$.find('.name-tag')[0].innerHTML = markerObj.name;
+    this._$.find('.role-tag')[0].innerHTML = markerObj.role;
+
   },
   show: function(time) {
     this._$.stop().show(time);
@@ -166,7 +167,6 @@ function NavMarker(index, initObj) {
   this.position = new THREE.Vector3(initObj.x, initObj.y, initObj.z);
   this.target = initObj.target;
 
-  this.addEventListener('click', this.markerClickHandler);
   this.unitVector = new THREE.Vector3(initObj.x,  initObj.y, initObj.z).normalize();
 
   this._bgX = 0;
@@ -180,34 +180,6 @@ NavMarker.prototype._animateBackground = function (){
   this.style.backgroundPosition = this._bgX +'px 0px';
   this._bgX += 80;
   if(this._bgX > 560) this._bgX = 0;
-};
-NavMarker.prototype.markerClickHandler = function() {
-  var movePos = new THREE.Vector3(- this.position.x, - this.position.y, - this.position.z);
-  movePos.normalize();
-  movePos.multiplyScalar( 300 );
-
-  var targetPano = panoList[this.target];
-  activePano.removeMarkers();
-  if(isWebGL) new TWEEN.Tween(activePano.sphere.materials[0]).to({opacity: 0}, 500).start();
-  new TWEEN.Tween(activePano.sphere.position).to({
-    x: movePos.x, y: movePos.y, z: movePos.z}, 500).onComplete(function() {
-        activePano.remove();
-        targetPano.place();
-
-        activePano = targetPano; //closure scope problem with this.target
-        lat = 0;
-        lon = 0;
-        if(isWebGL) {
-          targetPano.sphere.materials[0].opacity = 0;
-          new TWEEN.Tween(targetPano.sphere.materials[0]).to({opacity: 1}, 500).onComplete(function() {
-            targetPano.placeMarkers();
-          }).start();
-        } else {
-          targetPano.placeMarkers();
-        }
-
-    }).start();
-
 };
 
 //factory function to create a PosMarker extends a Div element
@@ -257,13 +229,12 @@ PosMarker.prototype.clickOutsideHandler = function (e) {
 };
 //override visible function
 PosMarker.prototype.visible = function(value) {
-  var returnValue = BaseMarker.prototype.visible.call(this, value);
-  
-  if(returnValue) {
+  if(value) {
     //move register point at center of div
     this.style.marginLeft =(- this.offsetWidth / 2) + 'px';
   }
-  return returnValue;
+  return BaseMarker.prototype.visible.call(this, value);
+
 };
 
 //factory function to create a PosMarker extends a Div element
@@ -277,6 +248,8 @@ PosMarker.create = function(index, x, y, z, personObj) {
 function Panorama (panoramaObj, people) {
   this.textureFile = panoramaObj.mapFile;
 
+  this.group = new THREE.Object3D();
+
   var panoMap = THREE.ImageUtils.loadTexture( this.textureFile );
   var sphere;
   if(isWebGL) {
@@ -289,6 +262,7 @@ function Panorama (panoramaObj, people) {
   sphere.doubleSided = true;
   sphere.scale.x = -1;
   this.sphere = sphere;
+  this.group.add(sphere);
   var i;
   this.markers = [];
   this.markerLen = panoramaObj.markers.length;
@@ -302,9 +276,39 @@ function Panorama (panoramaObj, people) {
 
   this.navMarkers = [];
   for ( i = 0; i < panoramaObj.navMarkers.length; ++i) {
-    this.navMarkers.push(NavMarker.create(i, panoramaObj.navMarkers[i]));
+    var navMarker = NavMarker.create(i, panoramaObj.navMarkers[i]);
+    this.navMarkers.push(navMarker);
+     navMarker.addEventListener('click', this.switchPanoramaHandler);
   }
 
+  //testing 3D objects
+  var plane = new THREE.PlaneGeometry(25, 50, 2, 4);
+  var cardStringMat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/card_string.png'), wireframe: false } );
+  cardStringMat.transparent = true;
+  this.cardString = new THREE.Mesh(plane, cardStringMat);
+  this.cardString.doubleSided = true;
+  /*this.cardString.rotation.x = 15;
+  this.cardString.rotation.y = 45;
+  this.cardString.rotation.z = 16;*/
+  this.cardString.position.set(Math.random() * 120 - 40, 15, Math.random() * 150 - 40);
+
+  this.group.add(this.cardString);
+
+  //CUBE
+  var materials = [];
+
+  for (i = 0; i < 6; i ++ ) {
+    materials.push( [ new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff } ) ] );
+
+  }
+
+  this.cube = new THREE.Mesh( new THREE.CubeGeometry( 20, 30, 20, 1, 1, 1, materials ), new THREE.MeshFaceMaterial() );
+  this.cube.position.y = Math.random() * -60;
+  this.cube.position.z = Math.random() * 200 - 50;
+  this.cube.position.x = Math.random() * 200 - 150;
+  this.cube.overdraw = true;
+
+  this.group.add(this.cube);
 
 }
 
@@ -312,10 +316,10 @@ function Panorama (panoramaObj, people) {
 Panorama.prototype = {
   constructor: Panorama,
   place: function() {
-    this.sphere.position.x = 0;
-    this.sphere.position.y = 0;
-    this.sphere.position.z = 0;
-    scene.add( this.sphere );
+    this.group.position.x = 0;
+    this.group.position.y = 0;
+    this.group.position.z = 0;
+    scene.add( this.group);
   },
   placeMarkers: function() {
     var i;
@@ -329,7 +333,7 @@ Panorama.prototype = {
     }
   },
   remove: function() {
-    scene.remove(this.sphere);
+    scene.remove(this.group);
   },
   removeMarkers: function() {
     for (var i = 0; i < this.markerLen; ++i) {
@@ -340,6 +344,34 @@ Panorama.prototype = {
       document.body.removeChild(this.navMarkers[i]);
       this.navMarkers[i].deactivate();
     }
+  },
+  switchPanoramaHandler: function(event) {
+    var navMarker = event.currentTarget;
+    var movePos = new THREE.Vector3(- navMarker.position.x, - navMarker.position.y, - navMarker.position.z);
+    movePos.normalize();
+    movePos.multiplyScalar( 300 );
+
+    var targetPano = panoList[navMarker.target];
+    activePano.removeMarkers();
+    if(isWebGL) new TWEEN.Tween(activePano.sphere.materials[0]).to({opacity: 0}, 500).start();
+    new TWEEN.Tween(activePano.group.position).to({
+      x: movePos.x, y: movePos.y, z: movePos.z}, 500).onComplete(function() {
+          activePano.remove();
+          targetPano.place();
+
+          activePano = targetPano; //closure scope problem with this.target
+          lat = 0;
+          lon = 0;
+          if(isWebGL) {
+            targetPano.sphere.materials[0].opacity = 0;
+            new TWEEN.Tween(targetPano.sphere.materials[0]).to({opacity: 1}, 500).onComplete(function() {
+              targetPano.placeMarkers();
+            }).start();
+          } else {
+            targetPano.placeMarkers();
+          }
+
+      }).start();
   },
   update: function() {
     var camUnitVector = camera.target.clone().normalize();
@@ -387,6 +419,9 @@ Panorama.prototype = {
         marker.setPosition(p2D.x, p2D.y);
       }
     }
+    //testing:
+    //this.cardString.rotation.y += 0.01;
+    //this.cube.rotation.y = camera.rotation.y;
   }
 
 
@@ -434,7 +469,6 @@ function init() {
   //if (false) {
   if (Detector.webgl) {
     renderer = new THREE.WebGLRenderer();
-    //work around some webgl bug rendering inner face
     rendererInfo.innerHTML = "WebGL Renderer (Fast)";
     isWebGL = true;
   } else {
@@ -558,6 +592,9 @@ function render() {
   camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
   camera.target.y = 500 * Math.cos( phi );
   camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+  var newPos = camera.target.clone().normalize().multiplyScalar(-20);
+  camera.position.set(newPos.x, newPos.y, newPos.z);
 
   camera.lookAt( camera.target );
   
