@@ -163,14 +163,24 @@ var officeData = { 'panorama': [
   
   ],//end panorama
   'people':{
+    'poon': {
+      'name': 'Poon Han Seng',
+      'role': 'Business Development Director',
+      'image': 'img/no_image.jpg'
+    },
     'jane_koh': {
       'name': 'Jane Koh',
       'role': 'Copywriter',
       'image': 'img/people/jane_koh.jpg'
     },
+    'rafiq_lehmann': {
+      'name': 'Rafiq Lehmann',
+      'role': 'Copywriter (Contract)',
+      'image': 'img/no_image.jpg'
+    },
     'jin_cheung': {
       'name': 'Jin Cheung',
-      'role': 'Designer',
+      'role': 'Graphic Designer',
       'image': 'img/people/jin_cheung.jpg'
     },
     'brandon_lee': {
@@ -185,7 +195,7 @@ var officeData = { 'panorama': [
     },
     'justin_buitran': {
       'name': 'Justin Bui Tran',
-      'role': 'Senior Designer',
+      'role': 'Web Designer',
       'image': 'img/people/justin_buitran.jpg'
     },
     'kevin_chong':{
@@ -200,7 +210,7 @@ var officeData = { 'panorama': [
     },
     'viraj_joshi': {
       'name': 'Viraj Joshi',
-      'role': 'Content Development Exec',
+      'role': 'Content Developer',
       'image': 'img/people/viraj_joshi.jpg'
     },
     'allan_lim': {
@@ -210,17 +220,17 @@ var officeData = { 'panorama': [
     },
     'bowie_wong': {
       'name': 'Bowie Wong',
-      'role': '???',
+      'role': 'Brand Communications  Executive',
       'image': 'img/people/bowie_wong.jpg'
     },
     'chin_koh': {
-      'name': 'Chin Koh',
-      'role': '???',
+      'name': 'Koh Chin Hui',
+      'role': 'Retail Operations Executive',
       'image': 'img/people/chin_koh.jpg'
     },
     'christabel_lim': {
       'name': 'Christabel Lim',
-      'role': '???',
+      'role': 'Brand Communications  Executive',
       'image': 'img/people/christabel_lim.jpg'
     },
     'christopher_tay': {
@@ -229,53 +239,58 @@ var officeData = { 'panorama': [
       'image': 'img/people/christopher_tay.jpg'
     },
     'jiayi_chen': {
-      'name': 'Jiayi Chen',
-      'role': '???',
+      'name': 'Chen Jia Yi',
+      'role': 'Brand Communications  Executive',
       'image': 'img/people/jiayi_chen.jpg'
     },
     'nicole_shen': {
       'name': 'Nicole Shen',
-      'role': '???',
+      'role': 'Senior Brand Communications Executive',
       'image': 'img/people/nicole_shen.jpg'
     },
     'noelle_tan': {
       'name': 'Noelle Tan',
-      'role': '???',
+      'role': 'Senior Brand Communications Executive',
       'image': 'img/people/noelle_tan.jpg'
     },
     'raymond_yong': {
       'name': 'Raymond Yong',
-      'role': '???',
+      'role': 'Business Development Senior Manager',
       'image': 'img/people/raymond_yong.jpg'
     },
     'terry_tan': {
       'name': 'Terry Tan',
-      'role': '???',
+      'role': 'Content Developer',
       'image': 'img/people/terry_tan.jpg'
     },
     'yvonne_lee': {
       'name': 'Yvonne Lee',
-      'role': '???',
+      'role': 'Assist. Brand Communications Manager',
       'image': 'img/people/yvonne_lee.jpg'
     },
     'yinghan_chen': {
       'name': 'Ying Han Cheng',
-      'role': '???',
+      'role': 'Digital Marketing Executive',
       'image': 'img/no_image.jpg'
     },
     'darryn_johnston': {
       'name': 'Darryn Johnston',
-      'role': '???',
+      'role': 'Brand Communications Senior Manager',
       'image': 'img/people/darryn_johnston.jpg'
     },
     'evelyn_leong': {
       'name': 'Evelyn Leong',
-      'role': '???',
+      'role': 'Project Manager',
       'image': 'img/people/evelyn_leong.jpg'
     },
     'joanne_lim': {
       'name': 'Joanne Lim',
-      'role': 'Brand Comm. Exec.',
+      'role': 'Brand Communications Executive',
+      'image': 'img/no_image.jpg'
+    },
+      'aung_thiha': {
+      'name': 'Aung Thiha',
+      'role': 'Brand Communications Executive',
       'image': 'img/no_image.jpg'
     },
     'valerie_kwa': {
@@ -285,7 +300,17 @@ var officeData = { 'panorama': [
     },
     'allbright_kim': {
       'name': 'Allbright Kim',
-      'role': 'Brand Comm. Manager',
+      'role': 'Brand Communications Manager',
+      'image': 'img/no_image.jpg'
+    },
+    'eugene_guo': {
+      'name': 'Eugene Guo',
+      'role': 'Marketing Operations Executive',
+      'image': 'img/no_image.jpg'
+    },
+    'rena_lin': {
+      'name': 'Rena Lin',
+      'role': 'Senior Brand Communications Executive',
       'image': 'img/no_image.jpg'
     }
 
