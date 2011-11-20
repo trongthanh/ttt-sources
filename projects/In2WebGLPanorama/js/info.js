@@ -1,7 +1,8 @@
 function toggleInfo() {
-	if (document.getElementById('info').style.display == "block") {
-		document.getElementById('info').style.display = "none";
+  var $info = $('#info');
+	if ($info.css('display') == 'block') {
+		$info.hide(200);
 	} else {
-		document.getElementById('info').style.display = "block";
+		$info.show(200);
 	}
 }

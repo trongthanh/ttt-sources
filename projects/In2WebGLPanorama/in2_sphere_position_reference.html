@@ -79,8 +79,8 @@
         projector = new THREE.Projector();
 
         var rendererInfo = document.getElementById('renderer-info');
-        if (false) {
-        //if (Detector.webgl) {
+        //if (false) {
+        if (Detector.webgl) {
            renderer = new THREE.WebGLRenderer();
            //work around some webgl bug rendering inner face
            rendererInfo.innerHTML = "WebGL Renderer (Fast)";
@@ -93,6 +93,7 @@
         container.appendChild( renderer.domElement );
 
 				//mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2294472375_24a3b8ef46_o.jpg' ) } ) );
+//				var texture = 'textures/in2_pano.jpg';
 				var texture = 'textures/in2_pano_2.jpg';
         if(isWebGL) {
           mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( texture ) } ) );
@@ -111,7 +112,7 @@
         //test interactive
         popout = document.getElementById('popout');
         spriteList = [];
-        var geometry = new THREE.CubeGeometry( 20, 20, 20 );
+        var geometry = new THREE.CubeGeometry( 5, 10, 5);
         
         sprite = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0x00ffff, wireframe: true } ));
         /*
@@ -130,8 +131,6 @@
         var vector = new THREE.Vector3( -143.49673797349618, -97.18085562192277, 490.94395353515745);
         vector.normalize();
         vector.multiplyScalar( 480 );
-
-        sprite.scale.x = sprite.scale.y = 0.25;
         //*/
 
         scene.add(sprite);

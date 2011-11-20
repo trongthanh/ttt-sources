@@ -14,6 +14,11 @@ var officeData = { 'panorama': [
       }
     ],
     'markers': [
+      {'person': 'poon',
+        'x': -70.9979707245509,
+        'y': -47.05415665925719,
+        'z': -492.691784479995
+      },
       { 'person': 'jane_koh',
         x: 494.99702534411864,
         y: -65.26309611002569,
@@ -53,6 +58,11 @@ var officeData = { 'panorama': [
         x: -442.65815168644724,
         y: -37.489363413163815,
         z: 229.45219191895717
+      },
+      { 'person': 'rafiq_lehmann',
+        'x': 405.63015032314047,
+        'y': -41.83892166615767,
+        'z': -289.33317435551635
       }
     ]
     
@@ -83,14 +93,14 @@ var officeData = { 'panorama': [
         'z': -225.8863240880976
       },
       { 'person': 'terry_tan',
-        'x': -498.8007576718064,
-        'y': -26.16797812147181,
-        'z': -22.6504098652974
+        'x': -499.1095071537541,
+        'y': -23.55322535482139,
+        'z': -18.301514804017458
       },
-      { 'person': 'yinghan_chen',
-        'x': -492.35796885103264,
-        'y': -53.99967785301147,
-        'z': -68.32031396778373
+      { 'person': 'yinghan_cheng',
+        'x': -492.93661200002776,
+        'y': -69.58655048003267,
+        'z': -46.59622884122668
       },
       { 'person': 'darryn_johnston',
         'x': -462.18782549266837,
@@ -98,19 +108,19 @@ var officeData = { 'panorama': [
         'z': 190.50007484955572
       },
       { 'person': 'raymond_yong',
-        'x': -358.7039984607444,
-        'y': -36.619098563815754,
-        'z': 346.39642479195396
+        'x': -355.0789736472219,
+        'y': -54.86715554552251,
+        'z': 347.71902121681364
       },
       { 'person': 'evelyn_leong',
-      'x': 281.47296909953633,
-      'y': -22.68149406462678,
-      'z': 412.62394197778656
+        'x': 265.5111111758519,
+        'y': -55.73446610316267,
+        'z': 419.99704657337753
       },
       { 'person': 'yvonne_lee',
-        'x': 427.1877704559152,
-        'y': -6.9810901695725045,
-        'z': 259.7342356196976
+        'x': 416.44513846134737,
+        'y': -24.424884897806635,
+        'z': 275.63902417770635
       },
       { 'person': 'noelle_tan',
         'x': 486.12498076684466,
@@ -133,14 +143,14 @@ var officeData = { 'panorama': [
         'z': 41.83254939573664
       },
       { 'person': 'joanne_lim',
-        'x': 487.4208817606128,
-        'y': -55.73446610316267,
-        'z': -96.51193352069
+        'x': 481.10102837505696,
+        'y': -86.82408883346515,
+        'z': -104.89698801539109
       },
       { 'person': 'chin_koh',
-        'x': 495.377521298425,
-        'y': -26.16797812147181,
-        'z': -62.58073436180372
+        'x': 490.7664935062065,
+        'y': -55.73446610316267,
+        'z': -77.72977640401422
       },
       { 'person': 'christabel_lim',
         'x': 499.0219006899484,
@@ -153,10 +163,26 @@ var officeData = { 'panorama': [
         'z': 156.1481932642225
       },
       { 'person': 'allbright_kim',
-        'x': -431.54517168756473,
-        'y': -26.16797812147181,
-        'z': 251.16528763781116
+        'x': 456.33297647961496,
+        'y': -9.59872119984476,
+        'z': 204.12760501358656
+      },
+      { 'person': 'alexandra_maia',
+        'x': -428.82586149326806,
+        'y': -35.74872216634292,
+        'z': 254.61816388080038
+      },
+      { 'person': 'aung_thiha',
+        'x': 496.3667577636835,
+        'y': -14.833122042555424,
+        'z': -58.3096928275168
+      },
+      { 'person': 'rena_lin',
+        'x': -480.9842151578521,
+        'y': -105.66239822769433,
+        'z': -86.5427199119441
       }
+
 
     ]
   } //end 2nd panorama
@@ -176,7 +202,7 @@ var officeData = { 'panorama': [
     'rafiq_lehmann': {
       'name': 'Rafiq Lehmann',
       'role': 'Copywriter (Contract)',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/rafiq_lehmann.jpg'
     },
     'jin_cheung': {
       'name': 'Jin Cheung',
@@ -200,23 +226,18 @@ var officeData = { 'panorama': [
     },
     'kevin_chong':{
       'name': 'Kevin Chong',
-      'role': 'HR / Admin Manager',
+      'role': 'Finance, HR & Administration Manager',
       'image': 'img/people/kevin_chong.jpg'
     },
     'yanto_gunawan': {
       'name': 'Yanto Gunawan',
       'role': 'Accounts Executive',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/yanto_gunawan.jpg'
     },
     'viraj_joshi': {
       'name': 'Viraj Joshi',
       'role': 'Content Developer',
       'image': 'img/people/viraj_joshi.jpg'
-    },
-    'allan_lim': {
-      'name': 'Allan Lim',
-      'role': '???',
-      'image': 'img/people/allan_lim.jpg'
     },
     'bowie_wong': {
       'name': 'Bowie Wong',
@@ -233,11 +254,6 @@ var officeData = { 'panorama': [
       'role': 'Brand Communications  Executive',
       'image': 'img/people/christabel_lim.jpg'
     },
-    'christopher_tay': {
-      'name': 'Christopher Tay',
-      'role': '???',
-      'image': 'img/people/christopher_tay.jpg'
-    },
     'jiayi_chen': {
       'name': 'Chen Jia Yi',
       'role': 'Brand Communications  Executive',
@@ -245,12 +261,12 @@ var officeData = { 'panorama': [
     },
     'nicole_shen': {
       'name': 'Nicole Shen',
-      'role': 'Senior Brand Communications Executive',
+      'role': 'Senior Brand Comm. Executive',
       'image': 'img/people/nicole_shen.jpg'
     },
     'noelle_tan': {
       'name': 'Noelle Tan',
-      'role': 'Senior Brand Communications Executive',
+      'role': 'Senior Brand Comm. Executive',
       'image': 'img/people/noelle_tan.jpg'
     },
     'raymond_yong': {
@@ -265,17 +281,17 @@ var officeData = { 'panorama': [
     },
     'yvonne_lee': {
       'name': 'Yvonne Lee',
-      'role': 'Assist. Brand Communications Manager',
+      'role': 'Assist. Brand Comm. Manager',
       'image': 'img/people/yvonne_lee.jpg'
     },
-    'yinghan_chen': {
+    'yinghan_cheng': {
       'name': 'Ying Han Cheng',
       'role': 'Digital Marketing Executive',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/yinghan_cheng.jpg'
     },
     'darryn_johnston': {
       'name': 'Darryn Johnston',
-      'role': 'Brand Communications Senior Manager',
+      'role': 'Senior Brand Comm. Manager',
       'image': 'img/people/darryn_johnston.jpg'
     },
     'evelyn_leong': {
@@ -288,7 +304,7 @@ var officeData = { 'panorama': [
       'role': 'Brand Communications Executive',
       'image': 'img/no_image.jpg'
     },
-      'aung_thiha': {
+    'aung_thiha': {
       'name': 'Aung Thiha',
       'role': 'Brand Communications Executive',
       'image': 'img/no_image.jpg'
@@ -296,12 +312,12 @@ var officeData = { 'panorama': [
     'valerie_kwa': {
       'name': 'Valerie Kwa',
       'role': 'Snr. Brand Comm. Manager',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/valerie_kwa.jpg'
     },
     'allbright_kim': {
       'name': 'Allbright Kim',
       'role': 'Brand Communications Manager',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/allbright_kim.jpg'
     },
     'eugene_guo': {
       'name': 'Eugene Guo',
@@ -310,8 +326,13 @@ var officeData = { 'panorama': [
     },
     'rena_lin': {
       'name': 'Rena Lin',
-      'role': 'Senior Brand Communications Executive',
+      'role': 'Senior Brand Comm. Executive',
       'image': 'img/no_image.jpg'
+    },
+    'alexandra_maia': {
+      'name': 'Alexandra Maia',
+      'role': 'Digital Marketing Manager',
+      'image': 'img/people/alexandra_maia.jpg'
     }
 
   } //end people

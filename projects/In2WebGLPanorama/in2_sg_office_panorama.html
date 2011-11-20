@@ -7,6 +7,7 @@
   <meta name="description" content="Equirectangular panorama demo with HTML5 Canvas, WebGL and three.js library by Thanh Tran - Creative Dept. - in2ideas. A modern browser like Firefox, Google Chrome is required. The example is based on a three.js example.
     http://www.in2ideas.com"/>
   <meta name="keywords" content=""/>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script type="text/javascript" src="js/info.js"></script>
 
   <link rel="image_src"
@@ -27,9 +28,10 @@
   <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
     For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
   <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
-  <p><a href="http://www.in2ideas.com" target="_blank">&copy; 2011 In2ideas</a></p>
+  <p><a href="http://www.in2ideas.com" target="_blank">&copy; 2011 In2ideas.com</a></p>
 </div>
 <div id="container"></div>
+<div id="loading-box">Loading...</div>
 <div id="popout">
   <div class="popout-bg"></div>
   <div class="popout-content">
@@ -42,7 +44,6 @@
     </div>
   </div>
 </div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="js/Three.js"></script>
 <script type="text/javascript" src="js/Detector.js"></script>
 <script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
@@ -112,7 +113,7 @@ Popout.prototype = {
 
   },
   show: function(time) {
-    this._$.stop().show(time);
+    if(this.style.display != 'block') this._$.stop().show(time);
   },
   hide: function(time) {
     this._$.stop().hide(time);
@@ -179,7 +180,7 @@ NavMarker.prototype._animateBackground = function (){
   if(!this.visible()) return;
   this.style.backgroundPosition = this._bgX +'px 0px';
   this._bgX += 80;
-  if(this._bgX > 560) this._bgX = 0;
+  if(this._bgX >= 1120) this._bgX = 0;
 };
 
 //factory function to create a PosMarker extends a Div element
@@ -220,12 +221,12 @@ PosMarker.prototype.markerClickHandler = function(e) {
   popout.setPosition(this._scrX, this._scrY);
   popout.targetMarker = this;
   popout.show(200);
-  document.addEventListener('mouseup', this.clickOutsideHandler);
+  $('#container')[0].addEventListener('mouseup', this.clickOutsideHandler);
 };
 PosMarker.prototype.clickOutsideHandler = function (e) {
   popout.hide(200);
   popout.targetMarker = null;
-  document.removeEventListener('mouseup', this.clickOutsideHandler);
+  e.currentTarget.removeEventListener('mouseup', this.clickOutsideHandler);
 };
 //override visible function
 PosMarker.prototype.visible = function(value) {
@@ -250,7 +251,13 @@ function Panorama (panoramaObj, people) {
 
   this.group = new THREE.Object3D();
 
-  var panoMap = THREE.ImageUtils.loadTexture( this.textureFile );
+  var this_obj = this;
+  var panoMap = THREE.ImageUtils.loadTexture( this.textureFile, null, function() {
+    if(typeof this_obj.textureLoadCompleteCallback == 'function') {
+      this_obj.textureLoadCompleteCallback.apply();
+    }
+  });
+
   var sphere;
   if(isWebGL) {
     sphere = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: panoMap, wireframe: false } ) );
@@ -353,6 +360,7 @@ Panorama.prototype = {
 
     var targetPano = panoList[navMarker.target];
     activePano.removeMarkers();
+    needRender = true;
     if(isWebGL) new TWEEN.Tween(activePano.sphere.materials[0]).to({opacity: 0}, 500).start();
     new TWEEN.Tween(activePano.group.position).to({
       x: movePos.x, y: movePos.y, z: movePos.z}, 500).onComplete(function() {
@@ -366,6 +374,7 @@ Panorama.prototype = {
             targetPano.sphere.materials[0].opacity = 0;
             new TWEEN.Tween(targetPano.sphere.materials[0]).to({opacity: 1}, 500).onComplete(function() {
               targetPano.placeMarkers();
+              needRender = false;
             }).start();
           } else {
             targetPano.placeMarkers();
@@ -423,8 +432,6 @@ Panorama.prototype = {
     //this.cardString.rotation.y += 0.01;
     //this.cube.rotation.y = camera.rotation.y;
   }
-
-
 };
 
 //-----------------------------------------  MAIN SCRIPT ----------------------------------
@@ -444,7 +451,8 @@ var fov = 70,
     onPointerDownPointerY,
     onPointerDownLon,
     onPointerDownLat,
-    isWebGL = false;
+    isWebGL = false,
+    needRender = false;
 
 var container, popout, activePano, panoList;
 
@@ -485,6 +493,7 @@ function init() {
   }
 
   activePano = panoList[0];
+  activePano.textureLoadCompleteCallback = panoramaReadyHandler;
   activePano.place();
   activePano.placeMarkers();
 
@@ -499,6 +508,14 @@ function init() {
   document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
   document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
 
+}
+
+function panoramaReadyHandler() {
+  $('#loading-box').hide(500);
+  toggleInfo();
+  needRender = true;
+  render();
+  needRender = false;
 }
 
 function onDocumentMouseDown( event ) {
@@ -521,12 +538,11 @@ function onDocumentMouseMove( event ) {
 
     lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
     lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
-
+    needRender = true;
   }
 
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
 }
 
 function onDocumentMouseUp( event ) {
@@ -540,6 +556,7 @@ function onDocumentMouseUp( event ) {
 
   var intersects = ray.intersectScene( scene );
   //var intersects = ray.intersectObject(mesh );
+  needRender = false;
 
   if ( intersects.length > 0 ) {
 
@@ -623,8 +640,7 @@ function render() {
    camera.position.y = - camera.target.y;
    camera.position.z = - camera.target.z;
    //*/
-
-  renderer.render( scene, camera );
+  if (needRender) renderer.render( scene, camera );
   if(activePano) {
     activePano.update();
   }
@@ -633,7 +649,8 @@ function render() {
 }
 
 //analytics
-var _gaq=[["_setAccount","UA-24761068-1"],["_trackPageview"]];
+//var _gaq=[["_setAccount","UA-24761068-1"],["_trackPageview"]];
+var _gaq=[["_setAccount","UA-XXXXXX-XX"],["_trackPageview"]];
 (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
 g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
 s.parentNode.insertBefore(g,s)}(document,"script"));
