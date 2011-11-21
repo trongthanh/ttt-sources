@@ -289,17 +289,15 @@ function Panorama (panoramaObj, people) {
   }
 
   //testing 3D objects
-  var plane = new THREE.PlaneGeometry(25, 50, 2, 4);
-  var cardStringMat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/card_string.png'), wireframe: false } );
+  var plane = new THREE.PlaneGeometry(120, 80, 2, 4);
+  var cardStringMat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2-logo.png', null, function () {render(true);}), wireframe: false } );
   cardStringMat.transparent = true;
-  this.cardString = new THREE.Mesh(plane, cardStringMat);
-  this.cardString.doubleSided = true;
-  /*this.cardString.rotation.x = 15;
-  this.cardString.rotation.y = 45;
-  this.cardString.rotation.z = 16;*/
-  this.cardString.position.set(Math.random() * 120 - 40, 15, Math.random() * 150 - 40);
+  this.plane3d = new THREE.Mesh(plane, cardStringMat);
+  this.plane3d.doubleSided = true;
+  this.plane3d.rotation.y = -20;
+  this.plane3d.position.set(-397.5065622263535, -0.6981313463592557, -44.587504971790416);
 
-  this.group.add(this.cardString);
+  this.group.add(this.plane3d);
 
   //CUBE
   /*var materials = [];
@@ -513,9 +511,7 @@ function init() {
 function panoramaReadyHandler() {
   $('#loading-box').hide(500);
   toggleInfo();
-  needRender = true;
-  render();
-  needRender = false;
+  render(true);
 }
 
 function onDocumentMouseDown( event ) {
@@ -600,7 +596,7 @@ function animate() {
   TWEEN.update();
 }
 
-function render() {
+function render(forceRender) {
 
   lat = Math.max( - 85, Math.min( 85, lat ) );
   phi = ( 90 - lat ) * Math.PI / 180;
@@ -640,7 +636,7 @@ function render() {
    camera.position.y = - camera.target.y;
    camera.position.z = - camera.target.z;
    //*/
-  if (needRender) renderer.render( scene, camera );
+  if (needRender || forceRender) renderer.render( scene, camera );
   if(activePano) {
     activePano.update();
   }

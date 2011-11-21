@@ -93,8 +93,8 @@
         container.appendChild( renderer.domElement );
 
 				//mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2294472375_24a3b8ef46_o.jpg' ) } ) );
-//				var texture = 'textures/in2_pano.jpg';
-				var texture = 'textures/in2_pano_2.jpg';
+				var texture = 'textures/in2_pano.jpg';
+//				var texture = 'textures/in2_pano_2.jpg';
         if(isWebGL) {
           mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 60, 40 ), new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( texture ) } ) );
         } else {
@@ -204,7 +204,12 @@
 
         if(!isUserDragging) {
           var pos = sprite.position;
-          alert("'x': " + pos.x + ",\n'y': " + pos.y + ",\n'z': " + pos.z);
+          //get a floating pos:
+          pos.normalize();
+          pos.multiplyScalar(400);
+          alert(pos.x + ', ' + pos.y + ', ' + pos.z);
+          //alert("'x': " + pos.x + ",\n'y': " + pos.y + ",\n'z': " + pos.z);
+
         }
         isUserDragging = false;
 			}
