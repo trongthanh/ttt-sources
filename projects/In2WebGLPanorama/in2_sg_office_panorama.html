@@ -13,9 +13,10 @@
   <link rel="image_src"
         href="http://in2ideas.com/labs/html5/webgl/img/In2Ideas_Labs_equirectangular_panorama_demo.jpg"/>
   <link rel="stylesheet" type="text/css" href="css/global.css" />
-  <style type="text/css">
+<!--[if IE]>
+  <link rel="stylesheet" type="text/css" href="css/styles_ie.css" />
+<![endif]-->
 
-  </style>
 </head>
 <body>
 <div id="infobutton">
@@ -24,9 +25,9 @@
 <div id="info">
   <p>In2 Office Walkthrough with Equirectangular Panorama - An experiment by <a href="mailto:thanh.tran@in2ideas.com">Thanh Tran</a><br/>
     The example is based on <a href="http://github.com/mrdoob/three.js" target="_blank" >a three.js example</a>.</p>
-  <p>Usage: Drag the screen to navigate around. Click on named markers for more person info. Click on observer marker to change position</p>
-  <p><strong>Note.</strong> You need a modern browser that supports Canvas for this to run the way it is intended.<br/>
-    For example. <a href="http://www.google.com/chrome" target="_blank">Google Chrome 9+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 4+</a>.</p>
+  <p>Usage: Drag the screen to navigate around. Click on named markers for more person info. Click on observer marker to change position.<br/>List of employees is updated until 11/11/2011</p>
+  <p><strong>Note.</strong> You need a modern browser that supports Canvas and latest Javascript specifications for this to run the way it is intended.<br/>
+    For example, <a href="http://www.google.com/chrome" target="_blank">Google Chrome 14+</a> or <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox 7+</a>.</p>
   <p>This demo will render with WebGL by default. If WebGL is not available for the browser, it will fallback to 2D Canvas rendering which is slower.<br/>Current renderer: <span id="renderer-info">NO CANVAS</span></p>
   <p><a href="http://www.in2ideas.com" target="_blank">&copy; 2011 In2ideas.com</a></p>
 </div>
@@ -252,10 +253,11 @@ function Panorama (panoramaObj, people) {
   this.group = new THREE.Object3D();
 
   var this_obj = this;
-  var panoMap = THREE.ImageUtils.loadTexture( this.textureFile, null, function() {
+  var panoMap = THREE.ImageUtils.loadTexture( this.textureFile, undefined, function() {
     if(typeof this_obj.textureLoadCompleteCallback == 'function') {
       this_obj.textureLoadCompleteCallback.apply();
     }
+    render(true);
   });
 
   var sphere;
@@ -289,13 +291,24 @@ function Panorama (panoramaObj, people) {
   }
 
   //testing 3D objects
-  var plane = new THREE.PlaneGeometry(120, 80, 2, 4);
-  var cardStringMat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2-logo.png', null, function () {render(true);}), wireframe: false } );
+  var plane = new THREE.PlaneGeometry(100, 67, 2, 4);
+  var cardStringMat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/in2-logo.png', undefined, function () {render(true);}), wireframe: false } );
   cardStringMat.transparent = true;
   this.plane3d = new THREE.Mesh(plane, cardStringMat);
   this.plane3d.doubleSided = true;
-  this.plane3d.rotation.y = -20;
-  this.plane3d.position.set(-397.5065622263535, -0.6981313463592557, -44.587504971790416);
+  this.plane3d.overdraw = true;
+  //temporary hardcode
+  if(this.textureFile.indexOf('in2_pano.jpg') > 0) {
+    this.plane3d.rotation.y = 30 * 3.14 / 180; //deg to rad
+    this.plane3d.position.set(-299.0747446024751, 10.5235985097694784, -23.53769286835167);
+  } else {
+    this.plane3d.rotation.y = 0 * 3.14 / 180; //deg to rad
+    this.plane3d.position.set(249.93231648951297, 19.359692475887403, -164.79999842665347);
+  }
+
+
+
+
 
   this.group.add(this.plane3d);
 
@@ -511,7 +524,6 @@ function init() {
 function panoramaReadyHandler() {
   $('#loading-box').hide(500);
   toggleInfo();
-  render(true);
 }
 
 function onDocumentMouseDown( event ) {
@@ -645,8 +657,8 @@ function render(forceRender) {
 }
 
 //analytics
-//var _gaq=[["_setAccount","UA-24761068-1"],["_trackPageview"]];
-var _gaq=[["_setAccount","UA-XXXXXX-XX"],["_trackPageview"]];
+var _gaq=[["_setAccount","UA-24761068-1"],["_trackPageview"]];
+//var _gaq=[["_setAccount","UA-XXXXXX-XX"],["_trackPageview"]];
 (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
 g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
 s.parentNode.insertBefore(g,s)}(document,"script"));
