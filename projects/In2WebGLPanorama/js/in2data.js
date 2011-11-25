@@ -302,7 +302,7 @@ var officeData = { 'panorama': [
     'joanne_lim': {
       'name': 'Joanne Lim',
       'role': 'Brand Communications Executive',
-      'image': 'img/no_image.jpg'
+      'image': 'img/people/joanne_lim.jpg'
     },
     'aung_thiha': {
       'name': 'Aung Thiha',
