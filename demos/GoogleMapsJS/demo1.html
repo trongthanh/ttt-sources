@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map_canvas { height: 100% }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript"
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDR9uahkisIva2aNgKpvkqwrfQpgPd3WV8&sensor=false">
+</script>
+<script type="text/javascript">
+  //define namespace  
+  var jj = {};
+  jj.markerData =
+  [
+  	{
+			'name':'US Office',
+			'description':'',
+			'point': {
+				'lat': -100.1953125,
+        'lng':31.6533814
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'France Office',
+			'description':'',
+			'point': {
+				'lat': 2.8125000,
+        'lng':47.9899217
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'Germany Office',
+			'description':'',
+			'point': {
+				'lat': 10.5468750,
+        'lng':50.2893393
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'Australia Office',
+			'description':'',
+			'point': {
+				'lat': 116.7187500,
+        'lng':-28.9216313
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'SEA Office',
+			'description':'',
+			'point': {
+				'lat': 103.7199605,
+        'lng':1.3324442
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'Vietnam - HCM Office',
+			'description':'',
+			'point': {
+				'lat': 106.5234375,
+        'lng':10.8333060
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'China Shanghai Office',
+			'description':'',
+			'point': {
+				'lat': 121.2890625,
+        'lng':31.2034050
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		},
+		{
+			'name':'Philippines Manila Office',
+			'description':'',
+			'point': {
+				'lat': 121.0253906,
+        'lng':14.6898814
+			}, 
+			'visibleLevel': {
+				'from': 0,
+        'to': 18
+			}
+		}
+  ];
+  
+  
+  jj.markers = [];
+
+  function initialize() {
+    var latlng = new google.maps.LatLng(0, 0);
+    var myOptions = {
+      zoom: 2
+      ,center: latlng
+      ,mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    jj.map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+        
+    for(var i in jj.markerData) {
+      //addMarker(jj.markerData[i]);
+    }
+    addMarker(jj.markerData[4]);
+    addMarker(jj.markerData[5]);
+  }
+
+  function addMarker(markerObj) {
+    
+    var pos = new google.maps.LatLng(markerObj.point.lat, markerObj.point.lng, true);
+    var marker = new google.maps.Marker({
+      position: pos
+      ,map: jj.map
+      ,animation: google.maps.Animation.DROP
+      ,title: markerObj.name
+      //,data: markerObj
+    });
+    jj.markers.push(marker);
+  }
+  // Removes the overlays from the map, but keeps them in the array
+  function clearOverlays() {
+    if (jj.markers) {
+      for (i in jj.markers) {
+        jj.markers[i].setMap(null);
+      }
+    }
+  }
+  
+  // Shows any overlays currently in the array
+  function showOverlays() {
+    if (jj.markers) {
+      for (i in jj.markers) {
+        jj.markers[i].setMap(map);
+      }
+    }
+  }
+  
+  // Deletes all markers in the array by removing references to them
+  function deleteOverlays() {
+    if (jj.markers) {
+      for (i in jj.markers) {
+        jj.markers[i].setMap(null);
+      }
+      jj.markers.length = 0;
+    }
+  }
+  
+  
+
+</script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
+</html>
