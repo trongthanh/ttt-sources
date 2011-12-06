@@ -5,7 +5,8 @@
 <style type="text/css">
   html { height: 100% }
   body { height: 100%; margin: 0; padding: 0 }
-  #map_canvas { height: 100% }
+  .map-container {position: absolute; top: 0; right: 0}
+  #map_canvas {}
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript"
@@ -16,106 +17,133 @@
   var jj = {};
   jj.markerData =
   [
-  	{
+    { //0
+  		'name':'Singapore (Headquarters)',
+			'info':'<strong>Jebsen & Jessen (SEA) Pte Ltd</strong><br/>2 Corporation Road <br/>#03-06 Corporation Place (Main Lobby)<br/>Singapore 618494 <br/>  E-mail: ice_marketing@jjsea.com<br/>',
+			'point': {
+				'lng': 121.0253906,
+        'lat':14.6898814
+			}, 
+			'visibleLevel': {
+				'from': 4,
+        'to': 18
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/lightblue.png' 
+      }
+		},
+    { //0
 			'name':'US Office',
-			'description':'',
+			'info':'just US Office',
 			'point': {
-				'lat': -100.1953125,
-        'lng':31.6533814
+				'lng': -100.1953125,
+        'lat':31.6533814
 			}, 
 			'visibleLevel': {
 				'from': 0,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/blue.png' 
+      }
 		},
-		{
+		{ //1
 			'name':'France Office',
-			'description':'',
+			'info':'just France Office',
 			'point': {
-				'lat': 2.8125000,
-        'lng':47.9899217
+				'lng': 2.8125000,
+        'lat':47.9899217
 			}, 
 			'visibleLevel': {
 				'from': 0,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/blue.png' 
+      }
 		},
-		{
+		{ //2
 			'name':'Germany Office',
-			'description':'',
+			'info':'just Germany Office',
 			'point': {
-				'lat': 10.5468750,
-        'lng':50.2893393
+				'lng': 10.5468750,
+        'lat':50.2893393
 			}, 
 			'visibleLevel': {
 				'from': 0,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/blue.png' 
+      }
 		},
-		{
+		{ //3
 			'name':'Australia Office',
-			'description':'',
+			'info':'just Australia Office',
 			'point': {
-				'lat': 116.7187500,
-        'lng':-28.9216313
+				'lng': 116.7187500,
+        'lat':-28.9216313
 			}, 
 			'visibleLevel': {
 				'from': 0,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/blue.png' 
+      }
 		},
-		{
+		{ //4
 			'name':'SEA Office',
-			'description':'',
+			'info':'just Singapore / SEA office',
 			'point': {
-				'lat': 103.7199605,
-        'lng':1.3324442
+				'lng': 103.7199605,
+        'lat':1.3324442
 			}, 
 			'visibleLevel': {
 				'from': 0,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/blue.png' 
+      }
 		},
-		{
+		{ //5
 			'name':'Vietnam - HCM Office',
-			'description':'',
+			'info':'just HCM office',
 			'point': {
-				'lat': 106.5234375,
-        'lng':10.8333060
+				'lng': 106.5234375,
+        'lat':10.8333060
 			}, 
 			'visibleLevel': {
-				'from': 0,
+				'from': 4,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/lightblue.png' 
+      }
 		},
-		{
+		{ //6
 			'name':'China Shanghai Office',
-			'description':'',
+			'info':'just Shanghai Office',
 			'point': {
-				'lat': 121.2890625,
-        'lng':31.2034050
+				'lng': 121.2890625,
+        'lat':31.2034050
 			}, 
 			'visibleLevel': {
-				'from': 0,
+				'from': 4,
         'to': 18
-			}
+			},
+      'markerImage': {
+        'url': 'http://maps.gstatic.com/mapfiles/ms2/micons/lightblue.png' 
+      }
 		},
-		{
-			'name':'Philippines Manila Office',
-			'description':'',
-			'point': {
-				'lat': 121.0253906,
-        'lng':14.6898814
-			}, 
-			'visibleLevel': {
-				'from': 0,
-        'to': 18
-			}
-		}
+		
   ];
   
   
   jj.markers = [];
+  
+  jj.infoWindow = new google.maps.InfoWindow();
 
   function initialize() {
     var latlng = new google.maps.LatLng(0, 0);
@@ -126,23 +154,27 @@
     };
     jj.map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
-        
+    
+    google.maps.event.addListener(jj.map, 'zoom_changed',showOverlays);
+    
     for(var i in jj.markerData) {
-      //addMarker(jj.markerData[i]);
+      addMarker(jj.markerData[i]);
     }
-    addMarker(jj.markerData[4]);
-    addMarker(jj.markerData[5]);
+    showOverlays();
   }
 
   function addMarker(markerObj) {
-    
     var pos = new google.maps.LatLng(markerObj.point.lat, markerObj.point.lng, true);
     var marker = new google.maps.Marker({
       position: pos
       ,map: jj.map
+      ,icon: markerObj.markerImage.url
       ,animation: google.maps.Animation.DROP
       ,title: markerObj.name
-      //,data: markerObj
+      ,data: markerObj
+    });
+    google.maps.event.addListener(marker, 'click', function() {
+      showInfoWindow(marker);
     });
     jj.markers.push(marker);
   }
@@ -155,11 +187,19 @@
     }
   }
   
+  function showInfoWindow(marker) {
+    jj.infoWindow.setContent(marker.data.description);
+    jj.infoWindow.open(jj.map, marker);
+  }
+  
   // Shows any overlays currently in the array
   function showOverlays() {
+    var mapZoom = jj.map.getZoom();
     if (jj.markers) {
       for (i in jj.markers) {
-        jj.markers[i].setMap(map);
+        var marker = jj.markers[i];
+        marker.setVisible( (mapZoom >= marker.data.visibleLevel.from && 
+                            mapZoom <= marker.data.visibleLevel.to));
       }
     }
   }
@@ -174,11 +214,97 @@
     }
   }
   
-  
-
+  function linkClickHandler(index) {
+    var marker = jj.markers[index];
+    if (marker) {
+      jj.map.setCenter(marker.position);
+      jj.map.setZoom(4);
+      showInfoWindow(marker);
+    }
+    
+  }
 </script>
 </head>
 <body onload="initialize()">
-  <div id="map_canvas" style="width:100%; height:100%"></div>
+  <div class="addresses"><br/>
+    Singapore (Headquarters) <a href="#" onclick="linkClickHandler(0);">[map]</a><br/>
+    Jebsen & Jessen (SEA) Pte Ltd<br/>
+    2 Corporation Road <br/>
+    #03-06 Corporation Place (Main Lobby)<br/>
+    Singapore 618494 <br/>
+    Phone: +65 6305 3888<br/>
+    Fax: +65 6305 3833<br/>
+    E-mail: info@jjsea.com <br/>
+  <br/>
+    *******************************<br/>
+    Cambodia<br/>
+    Jebsen & Jessen (Cambodia) Co Ltd <a href="#" onclick="linkClickHandler(1);">[map]</a><br/>
+    2nd Floor, Delano Center, #144<br/>
+    Street 169, Phnom Penh, Cambodia<br/>
+    Phone: +855 23 992 610<br/>
+    Fax: +855 23 992 613<br/>
+    E-mail: info_jjcb@jjsea.com<br/>
+  <br/>
+    Indonesia<br/>
+    PT Jebsen & Jessen Business Services (I) <a href="#" onclick="linkClickHandler(2);">[map]</a><br/>
+    Graha Inti Fauzi, 7th Floor<br/>
+    No. 22, Jl. Buncit Raya<br/>
+    12510, Jakarta, Indonesia<br/>
+    Phone: +62 21 2753 7088<br/>
+    Fax: +62 21 2753 7099<br/>
+    E-mail: info@jjsea.com<br/>
+  <br/>
+    Malaysia <br/>
+    Jebsen & Jessen Business Services (M) Sdn Bhd <a href="#" onclick="linkClickHandler(3);">[map]</a><br/>
+    16, Jalan 51A/225, 46100 Petaling Jaya <br/>
+    Selangor Darul Ehsan, Malaysia<br/>
+    Phone: +60 37861 6228<br/>
+    Fax: +60 37861 6229<br/>
+    E-mail: info@jjsea.com <br/>
+  <br/>
+  <br/>
+    Myanmar<br/>
+    JJ-Pun (S) Pte Ltd <a href="#" onclick="linkClickHandler(4);">[map]</a><br/>
+    FMI Centre, Room (904), 9th Floor,<br/>
+    No. 380, Bogyoke Aung San Road,<br/>
+    Pabedan Township, Yangon, Myanmar<br/>
+    Tel:  +95 1248061<br/>
+    Fax:  +95 1246882<br/>
+    E-mail: info@jjsea.com <br/>
+  <br/>
+  <br/>
+    Philippines<br/>
+    Jebsen & Jessen Business Services (P) Inc <a href="#" onclick="linkClickHandler(5);">[map]</a> <br/>
+    Unit 704, PhilPans Corporate Centre<br/>
+    #1012 Triangle Drive, Bonifacio Global City<br/>
+    1634, Taguig City, Manila, Philippines<br/>
+    Phone: +63 2786 7700<br/>
+    Fax: +63 2786 7716<br/>
+    E-mail: info@jjsea.com<br/>
+  <br/>
+    Thailand<br/>
+    Jebsen & Jessen Business Services (T) Ltd <a href="#" onclick="linkClickHandler(6);">[map]</a><br/>
+    23/110-117 Sorachai Building, 29th Floor<br/>
+    Soi Sukhumvit 63 (Ekamai) <br/>
+    Sukhumvit Road, Klongton Nua<br/>
+    Wattana, Bangkok 10110, Thailand<br/>
+    Phone: +66 2787 888<br/>
+    Fax: +66 2787 8889<br/>
+    E-mail: info@jjsea.com <br/>
+  <br/>
+  <br/>
+    Vietnam<br/>
+    Jebsen & Jessen Vietnam Co Ltd <a href="#" onclick="linkClickHandler(7);">[map]</a><br/>
+    Unit 1206, 12th Floor Sailing Tower<br/>
+    111A, Pasteur Street, Dist 1<br/>
+    Ho Chi Minh City, Vietnam<br/>
+    Phone: +848 3520 3411<br/>
+    Fax: +848 3827 2677<br/>
+    E-mail: info@jjsea.com<br/>
+  </div>
+  <div class="map-container">
+    <div id="map_canvas" style="width:800px; height:600px;"></div>
+    <div></div>
+  </div>
 </body>
 </html>
