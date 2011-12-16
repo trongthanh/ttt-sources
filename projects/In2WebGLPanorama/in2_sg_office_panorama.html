@@ -46,6 +46,7 @@
   </div>
 </div>
 <script type="text/javascript" src="js/Three.js"></script>
+<script type="text/javascript" src="js/Snow.js"></script>
 <script type="text/javascript" src="js/Detector.js"></script>
 <script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
 <script type="text/javascript" src="js/Tween.js"></script>
@@ -59,6 +60,7 @@ function Ticker() {
   this.contextObjs = [];
   this._lft = new Date().getTime();
   this.frameRate = 15;
+  this.frameTime = 1000/this.frameRate;
 }
 
 Ticker.prototype = {
@@ -79,7 +81,7 @@ Ticker.prototype = {
   },
   tick: function() {
     var now = new Date().getTime();
-    if((now - this._lft) > 1000/this.frameRate) {
+    if((now - this._lft) > this.frameTime) {
       this._lft = now;
       for (var i = 0; i < this.handlers.length; ++i) {
         this.handlers[i].call(this.contextObjs[i]);
@@ -467,6 +469,11 @@ var fov = 70,
 
 var container, popout, activePano, panoList;
 
+//snow
+var particles = []; 
+var particleImage = new Image();/*THREE.ImageUtils.loadTexture( "img/ParticleSmoke.png" );*/
+particleImage.src = 'img/ParticleSmoke.png'; 
+
 //testing
 var targetPos = {x:0, y:0, z:0};
 
@@ -485,6 +492,11 @@ function init() {
   projector = new THREE.Projector();
 
   var rendererInfo = document.getElementById('renderer-info');
+
+  if (!Detector.canvas) {
+    document.getElementById('loading-box').innerHTML = 'Your browser doesn\'t support <br/>HTML5 Canvas.';
+  }
+  
   //if (false) {
   if (Detector.webgl) {
     renderer = new THREE.WebGLRenderer();
@@ -495,6 +507,33 @@ function init() {
     rendererInfo.innerHTML = "2D Canvas Renderer (Slow)";
   }
   renderer.setSize( window.innerWidth, window.innerHeight );
+
+  
+  var snowTexture = new THREE.Texture(particleImage);
+  var snowMat = new THREE.ParticleBasicMaterial( { map: snowTexture} );
+
+  var pCount = (isWebGL)? 500: 100
+  for (var j = 0; j < pCount; j++) {
+
+    if(isWebGL) {
+      particle = new Particle3DWebGL(THREE.ImageUtils.loadTexture( "img/ParticleSmoke.png" ) );
+    } else {  
+      particle = new Particle3DCanvas(snowMat );
+    }
+    particle.position.x = Math.random() * 700 - 350;
+    particle.position.y = Math.random() * 700 - 350;
+    particle.position.z = Math.random() * 700 - 350;
+    particle.scale.x = particle.scale.y =  0.3;
+    //particle.uvScale.set( 0.5, 0.5 );
+		//particle.uvOffset.set( -0.5, -0.5 );
+
+    scene.add( particle );
+    
+    particles[j] = particle; 
+  }
+
+  Ticker.instance.add(this, renderSnow);
+
   container.appendChild( renderer.domElement );
 
   panoList = [];
@@ -608,7 +647,7 @@ function animate() {
   TWEEN.update();
 }
 
-function render(forceRender) {
+function render(forceRender) {  
 
   lat = Math.max( - 85, Math.min( 85, lat ) );
   phi = ( 90 - lat ) * Math.PI / 180;
@@ -654,6 +693,24 @@ function render(forceRender) {
   }
   //call ticker
   Ticker.instance.tick();
+}
+
+function renderSnow() {
+    //animating snow:
+  var len = particles.length
+  for(var i = 0; i < len; i++) {
+
+    var particle = particles[i]; 
+    particle.updatePhysics(); 
+
+    var pos = particle.position;
+    if(pos.y<-350) pos.y+=700; 
+    if(pos.x>350) pos.x-=700; 
+    else if(pos.x<-350) pos.x+=700; 
+    if(pos.z>350) pos.z-=700; 
+    else if(pos.z<-350) pos.z+=700; 
+  }
+  renderer.render( scene, camera );
 }
 
 //analytics
