@@ -1,76 +1,20 @@
-Index: External/Plugins/ProjectManager/Controls/FDMenus.cs
+Index: PluginCore/PluginCore/Controls/WinFormUtils.cs
 ===================================================================
---- External/Plugins/ProjectManager/Controls/FDMenus.cs	(revision 2044)
-+++ External/Plugins/ProjectManager/Controls/FDMenus.cs	(working copy)
-@@ -74,8 +74,19 @@
-             ConfigurationSelector.FlatStyle = PluginBase.MainForm.Settings.ComboBoxFlatStyle;
-             ConfigurationSelector.Font = PluginBase.Settings.DefaultFont;
-             toolBar.Items.Add(ConfigurationSelector);
-+            //WineMod: added
-+            toolBar.Layout += new LayoutEventHandler(toolBar_Layout);
-         }
+--- PluginCore/PluginCore/Controls/WinFormUtils.cs	(revision 2188)
++++ PluginCore/PluginCore/Controls/WinFormUtils.cs	(working copy)
+@@ -45,7 +45,8 @@
+ 				rtb.ScrollBars = richTextBox.ScrollBars;
  
-+        /// 
-+        /// WineMod: for some strange reason, ConfigurationSelector visible is set to false when main form is minimized or 
-+        /// the toolBar is resized to the width smaller than right bound of ConfigurationSelector
-+        /// below fix is to cure that
-+        void toolBar_Layout(object sender, LayoutEventArgs e)
-+        {
-+            ConfigurationSelector.Visible = true;
-+        }
-+
-         public bool DisabledForBuild
-         {
-             get { return !TestMovie.Enabled; }
-Index: FlashDevelop/Docking/TabbedDocument.cs
-===================================================================
---- FlashDevelop/Docking/TabbedDocument.cs	(revision 2044)
-+++ FlashDevelop/Docking/TabbedDocument.cs	(working copy)
-@@ -39,9 +39,23 @@
-             this.BackColor = Color.White;
-             this.useCustomIcon = false;
-             this.StartBackupTiming();
-+            
- 		}
- 
-         /// <summary>
-+        /// WineMod: set children ClientSize to force them resize correctly
-+        /// </summary>
-+        /// <param name="e"></param>
-+        protected override void OnResize(EventArgs e)
-+        {
-+            base.OnResize(e);
-+            foreach (Control item in Controls)
-+            {
-+                item.ClientSize = this.ClientSize;
-+            }
-+        }
-+
-+        /// <summary>
-         /// Disables the automatic update of the icon
-         /// </summary>
-         public Boolean UseCustomIcon
-Index: FlashDevelop/MainForm.cs
-===================================================================
---- FlashDevelop/MainForm.cs	(revision 2044)
-+++ FlashDevelop/MainForm.cs	(working copy)
-@@ -784,6 +784,13 @@
-             this.toolStrip.Padding = new Padding(0, 1, 0, 0);
-             this.toolStrip.Size = new Size(500, 26);
-             this.toolStrip.Stretch = true;
-+            //WineMod: below codes will magically make the tool strip appear 
-+            //however it will appear above the menu 
-+            menuStrip.Stretch = true;
-+            toolStrip.Dock = DockStyle.None;
-+            toolStripPanel.AutoSize = false;
-+            toolStripPanel.Height = 48;
-+            //end WineMod
-             // 
-             // openFileDialog
-             //
+ 			outSize.Height = rtb.GetPositionFromCharIndex(rtb.TextLength).Y;
+-
++			outSize.Height += 15; //WineMod: add one more line to correct tooltip height
++			
+ 			lastIdx = -1;
+ 			int maxW = rtb.GetPositionFromCharIndex(rtb.TextLength).X;
+ 			int currW = 0;
 Index: PluginCore/PluginCore/Controls/RichToolTip.cs
 ===================================================================
---- PluginCore/PluginCore/Controls/RichToolTip.cs	(revision 2044)
+--- PluginCore/PluginCore/Controls/RichToolTip.cs	(revision 2188)
 +++ PluginCore/PluginCore/Controls/RichToolTip.cs	(working copy)
 @@ -117,7 +117,7 @@
  				maxW = maxWidth;
@@ -102,17 +46,69 @@ Index: PluginCore/PluginCore/Controls/RichToolTip.cs
  			toolTipRTB.WordWrap = false;
  
  			rtfCacheList.Add(bbcodeText);
-Index: PluginCore/PluginCore/Controls/WinFormUtils.cs
+Index: FlashDevelop/MainForm.cs
 ===================================================================
---- PluginCore/PluginCore/Controls/WinFormUtils.cs	(revision 2044)
-+++ PluginCore/PluginCore/Controls/WinFormUtils.cs	(working copy)
-@@ -45,7 +45,8 @@
- 				rtb.ScrollBars = richTextBox.ScrollBars;
+--- FlashDevelop/MainForm.cs	(revision 2188)
++++ FlashDevelop/MainForm.cs	(working copy)
+@@ -822,6 +822,13 @@
+             this.toolStrip.Padding = new Padding(0, 1, 0, 0);
+             this.toolStrip.Size = new Size(500, 26);
+             this.toolStrip.Stretch = true;
++            //WineMod: below codes will magically make the tool strip appear 
++            //however it will appear above the menu 
++            menuStrip.Stretch = true;
++            toolStrip.Dock = DockStyle.None;
++            toolStripPanel.AutoSize = false;
++            toolStripPanel.Height = 48;
++            //end WineMod
+             // 
+             // openFileDialog
+             //
+Index: FlashDevelop/Docking/TabbedDocument.cs
+===================================================================
+--- FlashDevelop/Docking/TabbedDocument.cs	(revision 2188)
++++ FlashDevelop/Docking/TabbedDocument.cs	(working copy)
+@@ -42,6 +42,19 @@
+ 		}
  
- 			outSize.Height = rtb.GetPositionFromCharIndex(rtb.TextLength).Y;
--
-+			outSize.Height += 15; //WineMod: add one more line to correct tooltip height
-+			
- 			lastIdx = -1;
- 			int maxW = rtb.GetPositionFromCharIndex(rtb.TextLength).X;
- 			int currW = 0;
+         /// <summary>
++        /// WineMod: set children ClientSize to force them resize correctly
++        /// </summary>
++        /// <param name="e"></param>
++        protected override void OnResize(EventArgs e)
++        {
++            base.OnResize(e);
++            foreach (Control item in Controls)
++            {
++                item.ClientSize = this.ClientSize;
++            }
++        }
++
++        /// <summary>
+         /// Disables the automatic update of the icon
+         /// </summary>
+         public Boolean UseCustomIcon
+Index: External/Plugins/ProjectManager/Controls/FDMenus.cs
+===================================================================
+--- External/Plugins/ProjectManager/Controls/FDMenus.cs	(revision 2188)
++++ External/Plugins/ProjectManager/Controls/FDMenus.cs	(working copy)
+@@ -74,8 +74,19 @@
+             ConfigurationSelector.FlatStyle = PluginBase.MainForm.Settings.ComboBoxFlatStyle;
+             ConfigurationSelector.Font = PluginBase.Settings.DefaultFont;
+             toolBar.Items.Add(ConfigurationSelector);
++            //WineMod: added
++            toolBar.Layout += new LayoutEventHandler(toolBar_Layout);
+         }
+ 
++        /// 
++        /// WineMod: for some strange reason, ConfigurationSelector visible is set to false when main form is minimized or 
++        /// the toolBar is resized to the width smaller than right bound of ConfigurationSelector
++        /// below fix is to cure that
++        void toolBar_Layout(object sender, LayoutEventArgs e)
++        {
++            ConfigurationSelector.Visible = true;
++        }
++
+         public bool DisabledForBuild
+         {
+             get { return !TestMovie.Enabled; }

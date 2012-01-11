@@ -8,6 +8,10 @@ I guarantee no virus and malware in my compilation. However, I will take no resp
 ---------------------------------------------------------------------------------------------------------
 							CHANGES LOG
 ---------------------------------------------------------------------------------------------------------
+2012-01-09 FD4 RTM r2188
+- Improve installation script
+- Build current WineMod against FD4 RTM r2188
+
 2011-08-22 FD r2044
 - Create installation script
 - Build current WineMod against FD4 Beta 2 r2044
@@ -103,20 +107,20 @@ What have been patched/fixed:
 - Fix document editor resize issue (when you resize the main windows or just start FD, the opened documents don’t update with new size)
 - Open native command prompts (on tool bar)
 - Explore folders with Nautilus (can open from tool bar and project manager)
+- Fix if FD is minimized and restored, the combobox Debug/Release on tool bar disappear
+- Create new folders via folder tree view dialog (Actually, this was fixed by the latest Wine itself)
 
 What doesn’t work / known issues:
 Of course there are a lot of issues when running on non-native environment. Below are just some remarkable:
 - Docking panels on main windows (That why I detach all of them via LayoutData.fdl)
 - Scrolling for long tool tips (because the patch deliberately disables scroll bars of tool tip)
 - Shell menu (DO NOT try to access it)
-- Create new folders via folder tree view dialog (this is Wine’s incomplete component)
 (What features are not listed here can be considered not tested yet)
 - If FD is minimized for a while and then restored, the floating panels doesn’t seem to remember its last normal size and appear very small.
 
 ---------------------------------------------------------------------------------------------------------
 
 Plan for next patches:
-- Write automate script to reduce hassle of setting up for newbie.
 - Try to fix some of the above know issues.
 - Investigate if ToirtoseSVN & source control plugin work 
 - Investigate ways to improve project manager’s folder and file handling. (May consider using Linux bridge)

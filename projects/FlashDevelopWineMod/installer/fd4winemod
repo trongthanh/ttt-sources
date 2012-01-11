@@ -2,23 +2,21 @@
 
 #DEFINE VARIABLES AND CONSTANTS
 tempdir="./~fd4winemod"
-export WINEPREFIX="$HOME/.winefdtest"
+export WINEPREFIX="$HOME/.winefd"
 
-fd4_ver="4.0.0 Beta2 R2044"
-fd4_exe="FlashDevelop-4.0.0-Beta2.exe"
-#fd4_base_url="http://www.flashdevelop.org/downloads/releases/"
-fd4_base_url="http://localhost:8080/projects/fd4winemod/"
+fd4_ver="4.0.0 RTM R2188"
+fd4_exe="FlashDevelop-4.0.0-RTM.exe"
+fd4_base_url="http://www.flashdevelop.org/downloads/releases/"
+fd4_bak_url="http://localhost:8080/projects/fd4winemod/"
 
-fd4mod_tar="fd4r2044_winemod.tar.bz2"
-#fd4mod_base_url="http://thanhtran-sources.googlecode.com/files/"
-fd4mod_base_url="http://localhost:8080/projects/fd4winemod/"
+fd4mod_tar="fd4r2188_winemod.tar.bz2"
+fd4mod_base_url="http://thanhtran-sources.googlecode.com/files/"
 fd4mod_dir="$tempdir/mod"
 
 fd4_w_dir="C:\\Program Files\\FlashDevelop"
 fd4_x_dir="$WINEPREFIX/dosdevices/c:/Program Files/FlashDevelop"
 
-#jre_url="http://thanhtran-sources.googlecode.com/files/jre_portable.zip"
-jre_url="http://localhost:8080/projects/fd4winemod/jre_portable.zip"
+jre_url="http://thanhtran-sources.googlecode.com/files/jre_portable.zip"
 
 #FUNCTIONS
 
@@ -54,10 +52,20 @@ prepare_dirs()
 	echo "(To change the WINEPREFIX, edit this installer with gedit)"
 	echo ""
 
+  #TODO: back up old settings
 	if [ -d "$WINEPREFIX" ]
 	then
-		#rm -f -R $WINEPREFIX	
-		echo "Warning: wineprefix $WINEPREFIX already exists. Conflict may occurs.";
+		echo "Warning: wineprefix $WINEPREFIX already exists. Conflict may occurs."
+    echo ""
+    echo -n "Do you want the installer to remove the old WinePrefix for you (y/n) "
+    read rm_wineprefix
+    if [ $rm_wineprefix = "y" ]
+    then
+      rm -f -R $WINEPREFIX
+      echo "Old WinePrefix $WINEPREFIX removed"
+    else
+      echo "Keeping old WinePrefix $WINEPREFIX"
+    fi	
 	fi
 
 	#TODO: prompt user to let them copy the FD4 installer and JRE zip in temp folder to skipp download
@@ -74,23 +82,34 @@ prepare_wine()
 
 download_fd4() 
 {
-
-	
 	echo "- Downloading FlashDevelop $fd4_ver ..."
 
 	wget -P "$tempdir" "$fd4_base_url$fd4_exe"
+
+  if [ ! -f "$tempdir/$fd4_exe" ]; then
+    echo "Download FD4 from original source failed. Trying backup source..."
+    echo ""
+    wget -P "$tempdir" "$fd4mod_base_url$fd4_exe"
+  fi
+
+  # FD4 cannot be found
+  if [ ! -f "$tempdir/$fd4_exe" ]; then
+    echo "FD4 cannot be download. Please check the download URL in the script file."
+    exit
+  fi
 }
 
 install_fd4() 
 {
 	echo ""
 	echo "- Installing FlashDevelop"
-	echo "  What you should do during FD installer:"
-	echo "    - Ignore Flash Player ActiveX warning"
- 	echo "    - Ignore Java Runtime warning (you'll have option to install later)"
-	echo "    - Install FD as stand-alone/portable is recommended" 
-	echo "    - If you want FD's file type association, then check Registry modification"
-	echo -n "Enter to continue..."
+	echo "NOTE:"
+  echo ". During installation, just ignore Flash ActiveX & Java Runtime warning."
+  echo ". When asked to Choose Components, please select only:"
+  echo "     + Registry Modification: to open FD4 project files directly from Linux"
+  echo "     + Standalone/Portable: FOR THIS MOD TO WORK"
+  echo ""
+  echo -n "Enter to continue..."
 	read n;
 	echo ""
 
@@ -180,6 +199,21 @@ config_jre()
 
 }
 
+copy_extras()
+{
+  echo ""
+	echo "- Installing extra plugins"
+	echo ""
+	echo -n "Do you want to install trace plugin (y/n) "
+	read trace_plugin;
+	
+	if [ $trace_plugin = "y" ]
+  then
+    cp -v "$tempdir/mod/extra/Trace.dll" "$fd4_x_dir/Plugins/"
+	fi
+  echo ""
+}
+
 
 post_installation_config()
 {
@@ -206,7 +240,8 @@ _EOF_
 
 	chmod +x $shortcut
 
-	#TODO: create file handler for FD files
+  # copying extra files
+  copy_extras
 }
 
 clean_up()
@@ -231,7 +266,7 @@ fakefn()
 
 echo "------------------------------------------------------"
 echo "FlashDevelop 4 WineMod for Linux by trongthanh@gmail.com"
-echo "Installer v0.1.0"
+echo "Installer v0.2.0"
 echo "------------------------------------------------------"
 echo ""
 echo "This will install FlashDevelop $fd4_ver and FD4WineMod for Linux"
@@ -269,7 +304,10 @@ then
 	echo ""
 
 	download_fd4mod
-	install_fd4mod 	
+  if install_fd4mod
+  then
+    exit
+  fi
 
 	echo "\n"
 	echo "------------------------------------------------------"
@@ -289,6 +327,8 @@ then
 	echo ""
 	echo "------------------------------------------------------"
 	echo "FINISHED"
+  echo "You can start FD from the shortcut on desktop or command:"
+  echo "env WINEPREFIX=""/home/thanh/.winefd"" wine ""C:\Program Files\FlashDevelop\FlashDevelop.exe"""
 else
 	exit
 fi
