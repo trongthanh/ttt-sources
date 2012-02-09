@@ -204,9 +204,9 @@
 
         if(!isUserDragging) {
           var pos = sprite.position;
-          //get a floating pos:
-          pos.normalize();
-          pos.multiplyScalar(300);
+          //get a closer position not on the sphere surface:
+          //pos.normalize();
+          //pos.multiplyScalar(300);
           alert(pos.x + ', ' + pos.y + ', ' + pos.z);
           //alert("'x': " + pos.x + ",\n'y': " + pos.y + ",\n'z': " + pos.z);
 
