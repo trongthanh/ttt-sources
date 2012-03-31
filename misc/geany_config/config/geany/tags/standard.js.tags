@@ -1,432 +1,217 @@
 # format=pipe
+## global objects
 Array|||
-Boolean||(object o)|
-Date|date|(year, month, day [, hour, minute, second, millisecond ])|
+ArrayBuffer|||
+Boolean|||
+Date|||
+decodeURI|||
+decodeURIComponent|||
+encodeURI|||
+encodeURIComponent|||
+Error|||
+eval|||
+EvalError|||
+Float32Array|||
+Float64Array|||
 Function|||
-Iterator|||
-Math|||
-Object|||
-RegExp||(pattern [, flags])|
-E|||
-Form|||
 Infinity|||
-LN10|||
-LN2|||
-LOG10E|||
-LOG2E|||
+Int16Array|||
+Int32Array|||
+Int8Array|||
+isFinite|||
+isNaN|||
+Iterator|||
+JSON|||
+Math|||
 NaN|||
-Number|number|(object o)|
-PI|||
-Positioning|||
-Property|||
-SQRT2|||
-String|string|(object o)|
-URL|||
-UTC|int|(int year, int month, int day, int hours, int minutes, int seconds, int ms)|
-aLink|||
-abbr|||
-abs|float|(float x)|
-accept|||
-acceptCharset|||
-accessKey|||
-acos|float|(float x)|
-action|||
-add||(option o[, int before])|
-alert||(mixed value)|
-align|||
-alt|||
-altKey|||
-appCodeName|||
-appName|||
-appVersion|||
-appendChild|node|(node n)|
-archive|||
-asin|float|(float x)|
-assign||(string url)|
-atan|float|(float x)|
-atan2|float|(float y, float x)|
-attributes|||
-availHeight|||
-availWidth|||
-axis|||
-background|||
-backgroundAttachment|||
-backgroundColor|||
-backgroundImage|||
-backgroundPosition|||
-backgroundPositionX|||
-backgroundPositionY|||
-backgroundRepeat|||
-bgColor|||
-border|||
-borderBottom|||
-borderBottomColor|||
-borderBottomStyle|||
-borderBottomWidth|||
-borderCollapse|||
-borderColor|||
-borderLeft|||
-borderLeftColor|||
-borderLeftStyle|||
-borderLeftWidth|||
-borderRight|||
-borderRightColor|||
-borderRightStyle|||
-borderRightWidth|||
-borderSpacing|||
-borderStyle|||
-borderTop|||
-borderTopColor|||
-borderTopStyle|||
-borderTopWidth|||
-borderWidth|||
-bottom|||
-bubbles|||
-button|||
-cancelable|||
-caption|||
-captionSide|||
-ceil|int|(float x)|
-cellIndex|||
-cellPadding|||
-cellSpacing|||
-cells|||
-ch|||
-chOff|||
-charAt|string|(int index)|
-charCodeAt|int|(int index)|
-charset|||
-checked|||
-childNodes|||
-className|||
-clear|||
-clearInterval||(int id)|
-clearTimeout||(int id)|
-clientHeight|||
-clientWidth|||
-clientX|||
-clientY|||
-clip|||
-cloneNode|node|(bool deep)|
-closed|||
-code|||
-codeBase|||
-codeType|||
-colSpan|||
-color|||
-colorDepth|||
-cols|||
-compile|regexp|(regexp r,[ string modifier])|
-complete|||
-concat|string|(string s1, string s2[, ...])|
-confirm|bool|(string message)|
-constructor|||
-content|||
-contentDocument|||
-contentWindow|||
-cookie|||
-cookieEnabled|||
-coords|||
-cos|float|(float x)|
-counterIncrement|||
-counterReset|||
-cssFloat|||
-cssText|||
-ctrlKey|||
-currentTarget|||
-cursor|||
-data|||
-declare|||
-defaultChecked|||
-defaultSelected|||
-defaultStatus|||
-defaultValue|||
-deleteCell||(int index)|
-deleteRow||(int index)|
-dir|||
-direction|||
-disabled|||
-display|||
-document|||
-documentMode|||
-domain|||
-elements|||
-emptyCells|||
-enctype|||
-escape|string|(string str)|
-eval|mixed|(string code)|
-eventPhase|||
-exec|mixed|(string str)|
-exp|float|(float x)|
-firstChild|||
-floor|int|(float x)|
-font|||
-fontFamily|||
-fontSize|||
-fontSizeAdjust|||
-fontStretch|||
-fontStyle|||
-fontVariant|||
-fontWeight|||
-form|||
-frame|||
-frameBorder|||
-frames|||
-fromCharCode|string|(int c1[, int c2[, ...]])|
-getAttribute|mixed|(string name)|
-getElementById|mixed|(string id)|
-getElementsByName|array|(string name)|
-getElementsByTagName|array|(string tagname)|
-global|||
-go||(mixed value)|
-hash|||
-headers|||
-height|||
-history|||
-host|||
-hostname|||
-href|||
-hreflang|||
-hspace|||
-httpEquiv|||
-id|||
-ignoreCase|||
-index|||
-indexOf|int|(string search[, int start])|
-innerHTML|||
-innerHeight|||
-innerWidth|||
-insertBefore|node|(node newnode[, node refnode])|
-insertCell||(int index)|
-insertRow||(int index)|
-isFinite|bool|(mixed var)|
-isNaN|bool|(mixed var)|
-item|node|(int index)|
-join|string|(string separator)|
-label|||
-lang|||
-lastChild|||
-lastIndex|||
-lastIndexOf|int|(string search[, int start])|
-lastModified|||
-left|||
-length|||
-letterSpacing|||
-lineHeight|||
-link|||
-listStyle|||
-listStyleImage|||
-listStylePosition|||
-listStyleType|||
-location|||
-log|float|(float x)|
-longDesc|||
-lowsrc|||
-margin|||
-marginBottom|||
-marginHeight|||
-marginLeft|||
-marginRight|||
-marginTop|||
-marginWidth|||
-markerOffset|||
-marks|||
-match|bool|(regexp r)|
-max|float|(float f1[, float f2[, ...]])|
-maxHeight|||
-maxLength|||
-maxWidth|||
-media|||
-metaKey|||
-method|||
-min|float|(float f1[, float f2[, ...]])|
-minHeight|||
-minWidth|||
-moveBy||(int x, int y)|
-moveTo||(int x, int y)|
-multiline|||
-multiple|||
-name|||
-navigator|||
-nextSibling|||
-noHref|||
-noResize|||
-nodeName|||
-nodeType|||
-nodeValue|||
-offsetHeight|||
-offsetLeft|||
-offsetParent|||
-offsetTop|||
-offsetWidth|||
-onabort|||
-onblur|||
-onchange|||
-onclick|||
-ondblclick|||
-onerror|||
-onfocus|||
-onkeydown|||
-onkeypress|||
-onkeyup|||
-onload|||
-onmousedown|||
-onmousemove|||
-onmouseout|||
-onmouseover|||
-onmouseup|||
-onresize|||
-onselect|||
-onunload|||
-open||([string url[, string name[, string specs[, bool replace]]]])|
-opener|||
-options|||
-orphans|||
-outerHeight|||
-outerWidth|||
-outline|||
-outlineColor|||
-outlineStyle|||
-outlineWidth|||
-overflow|||
-ownerDocument|||
-padding|||
-paddingBottom|||
-paddingLeft|||
-paddingRight|||
-paddingTop|||
-page|||
-pageBreakAfter|||
-pageBreakBefore|||
-pageBreakInside|||
-pageXOffset|||
-pageYOffset|||
-parent|||
-parentNode|||
-parse|int|(string date)|
-parseFloat|float|(string str)|
-parseInt|int|(string str)|
-pathname|||
-pixelDepth|||
-platform|||
-port|||
-position|||
-pow|float|(float x, float y)|
-previousSibling|||
-prompt|string|(string message, string default)|
-protocol|||
-prototype|||
-push||(mixed value)|
-quotes|||
-readOnly|||
-readyState|||
-referrer|||
-rel|||
-relatedTarget|||
-remove||(int index)|
-removeAttribute||(string name)|
-removeChild||(node child)|
-replace|string|(regexp r, string newstring)|
-replaceChild|node|(node oldnode, node newnode)|
-resizeBy||(int width, int height)|
-resizeTo||(int width, int height)|
-rev|||
-right|||
-round|int|(float x)|
-rowIndex|||
-rowSpan|||
-rows|||
-rules|||
-scope|||
-screen|||
-screenLeft|||
-screenTop|||
-screenX|||
-screenY|||
-scrollBy||(int x, int y)|
-scrollHeight|||
-scrollLeft|||
-scrollTo||(int x, int y)|
-scrollTop|||
-scrollWidth|||
-scrolling|||
-search|int|(regexp r)|
-sectionRowIndex|||
-selected|||
-selectedIndex|||
-self|||
-setAttribute||(string name, mixed value)|
-setDate||(int day)|
-setFullYear||(int year)|
-setHours||(int hours)|
-setInterval|int|(mixed code, int millisec[, string language])|
-setMilliseconds||(int milliseconds)|
-setMinutes||(int minutes)|
-setMonth||(int month)|
-setSeconds||(int seconds)|
-setTime||(int timestamp)|
-setTimeout|int|(mixed code, int millisec[, string language])|
-setUTCDate||(int day)|
-setUTCFullYear||(int year)|
-setUTCHours||(int hour)|
-setUTCMilliseconds||(int milliseconds)|
-setUTCMinutes||(int minutes)|
-setUTCMonth||(int month)|
-setUTCSeconds||(int seconds)|
-setYear||(int year)|
-shape|||
-shiftKey|||
-sin|float|(float x)|
-size|||
-slice|string|(int begin[, int end])|
-sort|array|([function sortfunc])|
-source|||
-splice|array|(int index, int count[, mixed el1[, mixed el2[, ...]]])|
-split|array|([string separator[, int limit]])|
-sqrt|float|(float x)|
-src|||
-standby|||
-status|||
-style|||
-substr|string|(int start[, int length])|
-substring|string|(int from[, int to])|
-summary|||
-tBodies|||
-tFoot|||
-tHead|||
-tabIndex|||
-tableLayout|||
-tagName|||
-tan|float|(float x)|
-target|||
-test|bool|(string str)|
-text|||
-textAlign|||
-textDecoration|||
-textIndent|||
-textShadow|||
-textTransform|||
-timeStamp|||
-title|||
-toExponential|string|(int digits)|
-toFixed|string|(int digits)|
-toPrecision|string|(int digits)|
-top|||
-type|||
+Number|||
+Object|||
+parseFloat|||
+parseInt|||
+RangeError|||
+ReferenceError|||
+RegExp|||
+StopIteration|||
+String|||
+SyntaxError|||
+TypeError|||
+Uint16Array|||
+Uint32Array|||
+Uint8Array|||
+Uint8ClampedArray|||
 undefined|||
-unescape|string|(string str)|
-unicodeBidi|||
-unshift|int|(mixed el1[, mixed el2[, ...]])|
-useMap|||
-userAgent|||
-vAlign|||
-value|||
-verticalAlign|||
-visibility|||
-vspace|||
-whiteSpace|||
-widows|||
-width|||
-write||(mixed e1[, mixed e2[, ...]])|
-writeln||(mixed e1[, mixed e2[, ...]])|
-zIndex|||
+uneval|||
+URIError|||
+## Array
+Array.isArray|||[Requires JavaScript 1.8.5] Return true if a variable is an array, if not false.
+length|||Reflects the number of elements in an array.
+pop|||Removes the last element from an array and returns that element.
+push|||Adds one or more elements to the end of an array and returns the new length of the array.
+reverse|||Reverses the order of the elements of an array -- the first becomes the last, and the last becomes the first.
+shift|||Removes the first element from an array and returns that element.
+sort|||Sorts the elements of an array.
+splice|||Adds and/or removes elements from an array.
+unshift|||Adds one or more elements to the front of an array and returns the new length of the array.
+concat|||Returns a new array comprised of this array joined with other array(s) and/or value(s).
+join|||Joins all elements of an array into a string.
+slice|||Extracts a section of an array and returns a new array.
+indexOf|||[Requires JavaScript 1.6]Returns the first (least) index of an element within the array equal to the specified value, or -1 if none is found.
+lastIndexOf|||[Requires JavaScript 1.6]Returns the last (greatest) index of an element within the array equal to the specified value, or -1 if none is found.
+filter|||[Requires JavaScript 1.6]Creates a new array with all of the elements of this array for which the provided filtering function returns true.
+forEach|||[Requires JavaScript 1.6]Calls a function for each element in the array.
+every|||[Requires JavaScript 1.6]Returns true if every element in this array satisfies the provided testing function.
+map|||[Requires JavaScript 1.6]Creates a new array with the results of calling a provided function on every element in this array.
+some|||[Requires JavaScript 1.6]Returns true if at least one element in this array satisfies the provided testing function.
+reduce|||[Requires JavaScript 1.8] Apply a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value.
+reduceRight|||[Requires JavaScript 1.8] Apply a function simultaneously against two values of the array (from right-to-left) as to reduce it to a single value.
+## Date
+Date.now|||Returns the numeric value corresponding to the current time.
+Date.parse|||Parses a string representation of a JavaScript date, and returns the number of milliseconds since January 1, 1970, 00:00:00, local time.
+Date.UTC|||Accepts the same parameters as the longest form of the constructor, and returns the number of milliseconds in a JavaScript Date object since January 1, 1970, 00:00:00, universal time.
+getDate|||Returns the day of the month (1-31) for the specified date according to local time.
+getDay|||Returns the day of the week (0-6) for the specified date according to local time.
+getFullYear|||Returns the year (4 digits for 4-digit years) of the specified date according to local time.
+getHours|||Returns the hour (0-23) in the specified date according to local time.
+getMilliseconds|||Returns the milliseconds (0-999) in the specified date according to local time.
+getMinutes|||Returns the minutes (0-59) in the specified date according to local time.
+getMonth|||Returns the month (0-11) in the specified date according to local time.
+getSeconds|||Returns the seconds (0-59) in the specified date according to local time.
+getTime|||Returns the numeric value of the specified date as the number of milliseconds since January 1, 1970, 00:00:00 UTC (negative for prior times).
+getTimezoneOffset|||Returns the time-zone offset in minutes for the current locale.
+getUTCDate|||Returns the day (date) of the month (1-31) in the specified date according to universal time.
+getUTCDay|||Returns the day of the week (0-6) in the specified date according to universal time.
+getUTCFullYear|||Returns the year (4 digits for 4-digit years) in the specified date according to universal time.
+getUTCHours|||Returns the hours (0-23) in the specified date according to universal time.
+getUTCMilliseconds|||Returns the milliseconds (0-999) in the specified date according to universal time.
+getUTCMinutes|||Returns the minutes (0-59) in the specified date according to universal time.
+getUTCMonth|||Returns the month (0-11) in the specified date according to universal time.
+getUTCSeconds|||Returns the seconds (0-59) in the specified date according to universal time.
+getYear|||[Deprecated] Returns the year (usually 2-3 digits) in the specified date according to local time. Use getFullYear instead.
+setDate|||Sets the day of the month (1-31) for a specified date according to local time.
+setFullYear|||Sets the full year (4 digits for 4-digit years) for a specified date according to local time.
+setHours|||Sets the hours (0-23) for a specified date according to local time.
+setMilliseconds|||Sets the milliseconds (0-999) for a specified date according to local time.
+setMinutes|||Sets the minutes (0-59) for a specified date according to local time.
+setMonth|||Sets the month (0-11) for a specified date according to local time.
+setSeconds|||Sets the seconds (0-59) for a specified date according to local time.
+setTime|||Sets the Date object to the time represented by a number of milliseconds since January 1, 1970, 00:00:00 UTC, allowing for negative numbers for times prior.
+setUTCDate|||Sets the day of the month (1-31) for a specified date according to universal time.
+setUTCFullYear|||Sets the full year (4 digits for 4-digit years) for a specified date according to universal time.
+setUTCHours|||Sets the hour (0-23) for a specified date according to universal time.
+setUTCMilliseconds|||Sets the milliseconds (0-999) for a specified date according to universal time.
+setUTCMinutes|||Sets the minutes (0-59) for a specified date according to universal time.
+setUTCMonth|||Sets the month (0-11) for a specified date according to universal time.
+setUTCSeconds|||Sets the seconds (0-59) for a specified date according to universal time.
+setYear|||[Deprecated] Sets the year (usually 2-3 digits) for a specified date according to local time. Use setFullYear instead.
+toDateString|||Returns the "date" portion of the Date as a human-readable string.
+toISOString|||Converts a date to a string following the ISO 8601 Extended Format.
+toJSON Requires JavaScript 1.8.5|||Returns a string encapsulating the Date object in JSON format.
+toGMTString|||[Deprecated] Converts a date to a string, using the Internet GMT conventions. Use toUTCString instead.
+toLocaleDateString|||Returns the "date" portion of the Date as a string, using the current locale's conventions.
+toLocaleFormat|||[Non-standard] Converts a date to a string, using a format string.
+toLocaleString|||Converts a date to a string, using the current locale's conventions. Overrides the Object.toLocaleString method.
+toLocaleTimeString|||Returns the "time" portion of the Date as a string, using the current locale's conventions.
+toSource|||[Non-standard] Returns a string representing the source for an equivalent Date object; you can use this value to create a new object. Overrides the Object.prototype.toSource method.
+toString|||Returns a string representing the specified Date object. Overrides the Object.prototype.toString method.
+toTimeString|||Returns the "time" portion of the Date as a human-readable string.
+toUTCString|||Converts a date to a string, using the universal time convention.
+## Function
+arguments|||[Deprecated] An array corresponding to the arguments passed to a function. This is deprecated as property of Function, use the arguments object available within the function instead.
+caller|||[Non-standard] Specifies the function that invoked the currently executing function.
+apply|||Applies the method of another object in the context of a different object (the calling object); arguments can be passed as an Array object.
+bind|||[Requires JavaScript 1.8.5] Creates a new function which, when called, itself calls this function in the context of the provided value, with a given sequence of arguments preceding any provided when the new function was called.
+call|||Calls (executes) a method of another object in the context of a different object (the calling object); arguments can be passed as they are.
+isGenerator|||[Requires JavaScript 1.8.6] Returns true if the function is a generator; otherwise returns false.
+## Math
+Math.E|||Euler's constant and the base of natural logarithms, approximately 2.718.
+Math.LN2|||Natural logarithm of 2, approximately 0.693.
+Math.LN10|||Natural logarithm of 10, approximately 2.302.
+Math.LOG2E|||Base 2 logarithm of E, approximately 1.442.
+Math.LOG10E|||Base 10 logarithm of E, approximately 0.434.
+Math.PI|||Ratio of the circumference of a circle to its diameter, approximately 3.14159.
+Math.SQRT1_2|||Square root of 1/2; equivalently, 1 over the square root of 2, approximately 0.707.
+Math.SQRT2|||Square root of 2, approximately 1.414.
+abs|||Returns the absolute value (modulus) of a number.
+acos|||Returns the arccosine of a number.
+asin|||Returns the arcsine of a number.
+atan|||Returns the arctangent of a number.
+atan2|||Returns the arctangent of the quotient of its arguments.
+ceil|||Returns the smallest integer greater than or equal to a number.
+cos|||Returns the cosine of a number.
+exp|||Returns Enumber, where number is the argument, and E is Euler's constant (2.718...), the base of the natural logarithm.
+floor|||Returns the largest integer less than or equal to a number.
+log|||Returns the natural logarithm (loge, also ln) of a number.
+max|||Returns the largest of zero or more numbers.
+min|||Returns the smallest of zero or more numbers.
+pow|||Returns base to the exponent power, that is, baseexponent.
+random|||Returns a pseudo-random number between 0 and 1.
+round|||Returns the value of a number rounded to the nearest integer.
+sin|||Returns the sine of a number.
+sqrt|||Returns the positive square root of a number.
+tan|||Returns the tangent of a number.
+## Number
+Number.MAX_VALUE|||The largest positive representable number.  The largest negative representable number is -MAX_VALUE.
+Number.MIN_VALUE|||The smallest positive representable number -- that is, the positive number closest to zero (without actually being zero).  The smallest negative representable number is -MIN_VALUE.
+NaN|||Special "not a number" value.
+Number.NEGATIVE_INFINITY|||Special value representing negative infinity; returned on overflow.
+Number.POSITIVE_INFINITY|||Special value representing infinity; returned on overflow.
+toExponential|||Returns a string representing the number in exponential notation.
+toFixed|||Returns a string representing the number in fixed-point notation.
+toLocaleString|||Returns a human readable string representing the number using the locale of the environment. Overrides the Object.prototype.toLocaleString method.
+toPrecision|||Returns a string representing the number to a specified precision in fixed-point or exponential notation.
+## Object
+Object.create|||[Requires JavaScript 1.8.5] Creates a new object with the specified prototype object and properties.
+Object.defineProperty|||[Requires JavaScript 1.8.5] Adds the named property described by a given descriptor to an object.
+Object.defineProperties|||[Requires JavaScript 1.8.5] Adds the named properties described by the given descriptors to an object.
+Object.getOwnPropertyDescriptor|||[Requires JavaScript 1.8.5] Returns a property descriptor for a named property on an object.
+Object.keys|||[Requires JavaScript 1.8.5] Returns an array containing the names of all of the given object's own enumerable properties.
+Object.getOwnPropertyNames|||[Requires JavaScript 1.8.5] Returns an array containing the names of all of the given object's own enumerable and non-enumerable properties.
+Object.getPrototypeOf|||[Requires JavaScript 1.8.1] Returns the prototype of the specified object.
+Object.preventExtensions|||[Requires JavaScript 1.8.5] Prevents any extensions of an object.
+Object.isExtensible|||[Requires JavaScript 1.8.5] Determine if extending of an object is allowed.
+Object.seal|||[Requires JavaScript 1.8.5] Prevents other code from deleting properties of an object.
+Object.isSealed|||[Requires JavaScript 1.8.5] Determine if an object is sealed.
+Object.freeze|||[Requires JavaScript 1.8.5] Freezes an object: other code can't delete or change any properties.
+Object.isFrozen|||[Requires JavaScript 1.8.5] Determine if an object was frozen.
+constructor|||Specifies the function that creates an object's prototype.
+hasOwnProperty|||Returns a boolean indicating whether an object contains the specified property as a direct property of that object and not inherited through the prototype chain.
+isPrototypeOf|||Returns a boolean indication whether the specified object is in the prototype chain of the object this method is called upon.
+propertyIsEnumerable|||Returns a boolean indicating if the internal ECMAScript DontEnum attribute is set.
+toSource|||[Non-standard] Returns string containing the source of an object literal representing the object that this method is called upon; you can use this value to create a new object.
+toLocaleString|||Calls toString.
+toString|||Returns a string representation of the object.
+unwatch|||[Non-standard] Removes a watchpoint from a property of the object.
+valueOf|||Returns the primitive value of the specified object.
+watch|||[Non-standard] Adds a watchpoint to a property of the object.
+## RegExp
+RegExp.global|||Whether to test the regular expression against all possible matches in a string, or only against the first.
+RegExp.ignoreCase|||Whether to ignore case while attempting a match in a string.
+RegExp.lastIndex|||The index at which to start the next match.
+RegExp.multiline|||Whether or not to search in strings across multiple lines.
+exec|||Executes a search for a match in its string parameter.
+test|||Tests for a match in its string parameter.
+## String
+String.fromCharCode|||Returns a string created by using the specified sequence of Unicode values.
+charAt|||Returns the character at the specified index.
+charCodeAt|||Returns a number indicating the Unicode value of the character at the given index.
+concat|||Combines the text of two strings and returns a new string.
+indexOf|||Returns the index within the calling String object of the first occurrence of the specified value, or -1 if not found.
+lastIndexOf|||Returns the index within the calling String object of the last occurrence of the specified value, or -1 if not found.
+localeCompare|||Returns a number indicating whether a reference string comes before or after or is the same as the given string in sort order.
+match|||Used to match a regular expression against a string.
+quote|||[Non-standard] Wraps the string in double quotes (""").
+replace|||Used to find a match between a regular expression and a string, and to replace the matched substring with a new substring.
+search|||Executes the search for a match between a regular expression and a specified string.
+slice|||Extracts a section of a string and returns a new string.
+split|||Splits a String object into an array of strings by separating the string into substrings.
+substr|||Returns the characters in a string beginning at the specified location through the specified number of characters.
+substring|||Returns the characters in a string between two indexes into the string.
+toLocaleLowerCase|||The characters within a string are converted to lower case while respecting the current locale. For most languages, this will return the same as toLowerCase.
+toLocaleUpperCase|||The characters within a string are converted to upper case while respecting the current locale. For most languages, this will return the same as toUpperCase.
+toLowerCase|||Returns the calling string value converted to lower case.
+toSource|||[Non-standard] Returns an object literal representing the specified object; you can use this value to create a new object. Overrides the Object.prototype.toSource method.
+toString|||Returns a string representing the specified object. Overrides the Object.prototype.toString method.
+toUpperCase|||Returns the calling string value converted to uppercase.
+trim|||[Requires JavaScript 1.8.1] Trims whitespace from the beginning and end of the string. Part of the ECMAScript 5 standard.
+trimLeft|||[Requires JavaScript 1.8.1 Non-standard] Trims whitespace from the left side of the string.
+trimRight|||[Requires JavaScript 1.8.1 Non-standard] Trims whitespace from the right side of the string.
