@@ -1,0 +1,99 @@
+<!--   
+   Copyright 2012 Thanh Tran <trongthanh@gmail.com>
+   
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+   MA 02110-1301, USA.
+   
+   
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/b/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Realistic CSS3 Waterfall</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    .waterfall {
+      width: 960px;
+      height: 801px;
+      background-image: url("img/waterfall.jpg");
+    }
+
+    .waterfall > div {
+      position: absolute;
+    }
+
+    .waterfall-loop {
+      left: 381px;
+      top: 108px;
+      width: 195px;
+      height: 600px;
+      background: url("img/waterfall-loop.png") 0 0 repeat-y;
+      -moz-animation: waterfallloop 5s infinite linear;
+      -webkit-animation: waterfallloop 5s infinite linear;
+      -ms-animation: waterfallloop 5s infinite linear;
+      -o-animation: waterfallloop 5s infinite linear;
+      
+    }
+
+    @-moz-keyframes waterfallloop {
+      0% { background-position:0 0; }
+      100% { background-position: 0 1112px; }
+    }
+
+    @-webkit-keyframes waterfallloop {
+      0% { background-position:0 0; }
+      100% { background-position: 0 1112px; }
+    }
+
+    @-ms-keyframes waterfallloop {
+      0% { background-position:0 0; }
+      100% { background-position: 0 1112px; }
+    }
+
+    @-o-keyframes waterfallloop {
+      0% { background-position:0 0; }
+      100% { background-position: 0 1112px; }
+    }
+
+    .waterfall-mask {
+      width: 960px;
+      height: 801px;
+      background: url("img/waterfall-mask.png") 367px 87px no-repeat;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="waterfall">
+    <div class="waterfall-loop"></div>
+    <div class="waterfall-mask"></div>
+  </div>
+	
+</body>
+
+</html>
