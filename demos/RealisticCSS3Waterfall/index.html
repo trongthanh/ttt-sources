@@ -36,7 +36,16 @@
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
+    /**
+     * Realistic CSS3 Waterfall
+     * (c) Thanh Tran - int3ractive.com
+     *
+     * Image courtesy: http://wolffanticy.webs.com/waterfallcavepack.htm
+     */
+
+    /* Container with the static waterfall background image */
     .waterfall {
+      position: relative;
       width: 960px;
       height: 801px;
       background-image: url("img/waterfall.jpg");
@@ -46,21 +55,31 @@
       position: absolute;
     }
 
+    /* The waterfall loop
+    Key ingredients:
+    - Vertically seamless bitmap
+    - Background repeat Y
+    - Infinite animation which shifts background position vertically
+     */
     .waterfall-loop {
-      left: 381px;
-      top: 108px;
-      width: 195px;
-      height: 600px;
+      /* offset x of the mask */
+      left: 367px;
+      /* offset y of the mask */
+      top: 87px;
+      /* width of the mask */
+      width: 221px;
+      /* height of the mask */
+      height: 620px;
       background: url("img/waterfall-loop.png") 0 0 repeat-y;
       -moz-animation: waterfallloop 5s infinite linear;
       -webkit-animation: waterfallloop 5s infinite linear;
       -ms-animation: waterfallloop 5s infinite linear;
       -o-animation: waterfallloop 5s infinite linear;
-      
     }
 
     @-moz-keyframes waterfallloop {
       0% { background-position:0 0; }
+      /* the end position y must equal bitmap's height */
       100% { background-position: 0 1112px; }
     }
 
@@ -79,6 +98,7 @@
       100% { background-position: 0 1112px; }
     }
 
+    /* The mask overlay to soften borders */
     .waterfall-mask {
       width: 960px;
       height: 801px;
