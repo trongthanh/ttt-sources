@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/b/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Wordle Tag Cloud</title>
+  <meta name="description" content="">
+  <meta name="author" content="Thanh Tran">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="page-header">
+    <div id="debug">
+      <span class="line1">debug line 1</span><br/>
+      <span class="line2">debug line 2</span><br/>
+      <span class="line3">debug line 3</span>
+    </div>
+  </header>
+  <div role="main" class="main-container">
+    <canvas id="drawing-canvas" width="1280" height="1024" >Your browser don't support canvas</canvas>
+  </div>
+  <footer>
+
+  </footer>
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's Mootools, with a protocol relative URL; fall back to local if offline -->
+  <script src="//ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
+  <script>window.MooTools || document.write('<script src="js/libs/mootools-core-1.4.5-full-compat.js"><\/script>');</script>
+  <!-- some external library -->
+
+  <!-- scripts concatenated and minified via build script -->
+  <script src="js/RequestAnimationFrame.js"></script>
+  <script src="js/Wordle.js"></script>
+  <!-- end scripts -->
+
+
+  <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
+       mathiasbynens.be/notes/async-analytics-snippet 
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31108160-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>-->
+
+</body>
+</html>
