@@ -28,6 +28,20 @@ WORDLEJS.WordRectangle.prototype = {
   
   getBottom: function () {
     return this.y + this.height;
+  },
+  
+  getCenterX: function () {
+    return this.x + (this.width / 2);
+  },
+  
+  getCenterY: function () {
+    return this.y + (this.height / 2);
+  },
+  
+  intersects: function (otherRect) {
+    
+    
+    return null;
   }
   
 };
@@ -36,13 +50,13 @@ WORDLEJS.WordRectangle.prototype = {
  * World class
  */
 WORDLEJS.Word = function (initObj) {
-  if(!initObj) throw new Error("bad Word init");
+  if(!initObj) throw new Error('bad Word init');
 
-  this.text = initObj.text || ""; 
+  this.text = initObj.text || ''; 
 	this.weight = initObj.weight; 
 
-  this.fontFamily = initObj.fontFamily;
-  this.fontSize = initObj.fontSize;
+  this.fontFamily = initObj.fontFamily || 'sans-serif';
+  this.fontSize = initObj.fontSize || 10;
   this.fillColor = initObj.fillColor; //Color
   this.strokeColor = initObj.strokeColor; //Color
   this.url = initObj.url;
@@ -76,7 +90,7 @@ WORDLEJS.Word.prototype = {
     ctx.save();
     
     ctx.fillStyle = fillColor;
-    ctx.font= fontSize + "pt " + fontFamily;
+    ctx.font= fontSize + 'pt ' + fontFamily;
     
     textMetrics = ctx.measureText(text);
     
@@ -126,6 +140,13 @@ WORDLEJS.Wordle.prototype = {
   doSortType: -1,
   allowRotate: Boolean = true,
   ctx = null,
+  center = null,
+  current = null,
+	first = null,
+  wl = 0,
+  startTime = 0,
+  runTime = 0,
+	curIdx = 0,
 
   //methods
   constructor: WORDLEJS.Wordle,
@@ -136,11 +157,11 @@ WORDLEJS.Wordle.prototype = {
     for (var i = 0; i < maxium; ++i) {
       var wordObject = arr[i];
       if (i > maxium || !wordObject) {
-        trace( "words limit : " + i );
+        trace( 'words limit : ' + i );
         break;
       }
       
-      //trace( "wordObject : " + wordObject.text, wordObject.count );
+      //trace( 'wordObject : ' + wordObject.text, wordObject.count );
       
       var w  = {
         text: wordObject.text, 
@@ -201,9 +222,8 @@ WORDLEJS.Wordle.prototype = {
         break;
         
       }
-    //trace( "words : " + words );
-    var first = words[0],
-        high = - Number.MAX_VALUE,
+    //trace( 'words : ' + words );
+    var high = - Number.MAX_VALUE,
         low = Number.MAX_VALUE,
         w,
         wl = words.length,
@@ -224,110 +244,109 @@ WORDLEJS.Wordle.prototype = {
     }
 
     //start position
-    center = {x: 0, y: 0};
-    curIdx = 0;
+    this.center = {x: 0, y: 0};
+    this.curIdx = 0;
     
-    layoutNextWord();
-    addEventListener(Event.ENTER_FRAME, layoutNextWord);
+    this.layoutNextWord();
+    
     
   }
   
   layoutNextWord: function (e: Event = null): void {
+    var i,
+        wl = this.wl,
+        curIdx = this.curIdx;
+    
     if (curIdx >= wl) {
-      //finish layout
-      removeEventListener(Event.ENTER_FRAME, layoutNextWord);
       
       //final touch AND/OR debug (if any)
-      for (var i: int = 0; i < wl; i++) {
+      for (i = 0; i < wl; i++) {
         //w = words[i];
         //addChild(w.sprite);
         //debug bounds:
         //drawBound(w);
       }
       
-      runTime = getTimer() - startTime;
-      trace("run time: " + runTime);
+      //runTime = getTimer() - startTime;
+      //trace('run time: ' + runTime);
       
-      _layoutComplete.dispatch(runTime);
+      //_layoutComplete.dispatch(runTime);
       
       return;
     }
     
-    current = this.words[curIdx];
+    var words = this.words,
+        current = words[curIdx],
+        first = words[0],
+        totalWeight = 0.0,
+        prev, wPrev;    
     //calculate current center
     center.x=0;
     center.y=0;
-    var totalWeight: uint = 0.0;
-    var prev: int;
+    
     //NOT UNDERSTAND
     for (prev = 0; prev < curIdx;++prev) {
-      var wPrev: Word = this.words[prev];
-      center.x += wPrev.bounds.centerX * wPrev.weight;
-      center.y += wPrev.bounds.centerY * wPrev.weight;
+      wPrev = words[prev];
+      center.x += wPrev.bounds.getCenterX() * wPrev.weight;
+      center.y += wPrev.bounds.getCenterY() * wPrev.weight;
       totalWeight+=wPrev.weight;
     }
     center.x /= (totalWeight);
     center.y /= (totalWeight);
-    //trace( "center : " + center );
+    //trace( 'center : ' + center );
     
-    var bounds: WordleRectangle = current.bounds;
-    var done: Boolean = false;
-    var radius: Number = 0.5 * Math.min(first.bounds.width, first.bounds.height);
+    var bounds = current.bounds,
+        done = false,
+        radius = 0.5 * Math.min(first.bounds.width, first.bounds.height),
+        startDeg,
+        prev_x,
+        prev_y,
+        deg, rad,
+        dDeg = this.dDeg,
+        candidateBounds;
     
-    var loopPrevent: uint = 0;
+    var loopPrevent = 0;
     
     while (!done) {
       loopPrevent ++;
       if (loopPrevent > 100000) {
-        trace("maximum loop reach");
+        log('maximum loop reach');
         break;
       }
       
-      var startDeg: int = Random.getRandomInt(0, 359);
+      startDeg = Math.floor(Math.random() * 360);
       //loop over spiral
-      var prev_x: int = -1;
-      var prev_y: int = -1;
+      prev_x = -1;
+      prev_y = -1;
       
-      for(var deg: int = startDeg; deg < startDeg + 360; deg+= dDeg) {
-        var rad: Number= (deg/Math.PI)*180.0;
-        var cx: int=(center.x+radius*Math.cos(rad));
-        var cy: int=(center.y+radius*Math.sin(rad));
+      for(deg = startDeg; deg < startDeg + 360; deg+= dDeg) {
+        rad = (deg/Math.PI)*180.0;
+        cx = Math.floor(center.x + radius * Math.cos(rad));
+        cy = Math.floor(center.y + radius * Math.sin(rad));
         
         if(prev_x==cx && prev_y==cy) continue;
         
         prev_x = cx;
         prev_y = cy;
-        //trace( "cx,cy : " + cx,cy );
+        //trace( 'cx,cy : ' + cx,cy );
         //test:
         //graphics.beginFill(0xFF0000, 0.5);
         //graphics.drawCircle(cx, cy, 0.5);
 
-        var candidateBounds: WordleRectangle = new WordleRectangle (	
+        candidateBounds = new WORDLEJS.WordRectangle(	
           current.bounds.x + cx,
           current.bounds.y + cy,
           current.bounds.width,
           current.bounds.height
         )
-        
-        if (pixelPerfect)	{
-          current.sprite.x = candidateBounds.centerX;
-          current.sprite.y = candidateBounds.centerY;
-        }
+        //stop HERE
         //any collision ?
-        prev=0;
-        for(prev=0;prev< curIdx;++prev) {
-          if (pixelPerfect) {
-            if (CollisionDetection.checkForCollision(current.sprite, words[prev].sprite)) {
-            //if (SkyCollisionDetection.bitmapHitTest(current.sprite, words[prev].sprite)) {
-              //trace( "current.sprite : " + current.sprite.x, current.sprite.y );
-              break;
-            }
-          } else {
-            if (candidateBounds.intersects(words[prev].bounds)) {
-              break;
-            }
+        for(prev = 0 ;prev < curIdx; ++prev) {
+          if (candidateBounds.intersects(words[prev].bounds)) {
+            break;
           }
         }
+        
         //no collision: we're done
         if (prev == curIdx) {
           current.bounds = candidateBounds;
@@ -342,6 +361,8 @@ WORDLEJS.Wordle.prototype = {
     }
     _layoutProgress.dispatch(current);
     curIdx++;
+    
+    requestAnimationFrame(this.layoutNextWord.bind(this));
   }
   
   
@@ -354,7 +375,7 @@ var main = (function (win) {
   //global
   var doc = win.document;
   //member
-  var testStr = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consete"
+  var testStr = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consete'
   
   var sortResult = TextUtil.countWordOccurence(testStr);
   
@@ -391,8 +412,8 @@ var main = (function (win) {
   function drawText(text, isVertical) {
       ctx.save();
 
-      ctx.fillStyle = "blue";
-      ctx.font= h + "pt Ubuntu";
+      ctx.fillStyle = 'blue';
+      ctx.font= h + 'pt Ubuntu';
       tm = ctx.measureText(text);
       
       if (isVertical) {
@@ -406,20 +427,20 @@ var main = (function (win) {
       }
       ctx.fillText(text, 0, 0);
 
-      var rect = doc.createElement("div");
-      rect.className = "rect";
-      rect.style.backgroundColor = "#" + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-      rect.style.height = rectBounds.height + "px";//"30px";
-      rect.style.width =  rectBounds.width + "px"; //tm.width + "px";
+      var rect = doc.createElement('div');
+      rect.className = 'rect';
+      rect.style.backgroundColor = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+      rect.style.height = rectBounds.height + 'px';//'30px';
+      rect.style.width =  rectBounds.width + 'px'; //tm.width + 'px';
       container.appendChild(rect);
       
       ctx.restore();
   }
 
-  drawText("Thanh");
-  drawText("Thao", true);
+  drawText('Thanh');
+  drawText('Thao', true);
 
-  trace(1, "width: " + rectBounds.width);
+  trace(1, 'width: ' + rectBounds.width);
 
 }(this)); */
 
