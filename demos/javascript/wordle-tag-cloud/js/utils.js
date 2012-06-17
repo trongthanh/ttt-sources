@@ -19,3 +19,66 @@ window.log = function(){
 window.trace = function(line, str) {
   window.document.getElementById('line' + line).innerHTML = str;
 };
+
+/**
+ * TextUtil
+ */
+var TextUtil = {
+  countWordOccurance: function (text) {
+    // Remove punctuations, non-word characters...
+    //note: this case also remove Vietnamese unicode characters, improve later when needed			
+    text = text.replace(/[^A-Za-z0-9_\-\s]/g, '');
+    
+    var words = text.split(/\s+/);
+    
+    var i, il, w,
+        wordsObject = {};
+    
+    for (i = words.length; i >= 0; i--) {
+      w = words[i];
+      
+      if (wordsObject[w] && typeof(wordsObject[w]) === 'number') {
+        wordsObject[w] ++;
+      } else {
+        wordsObject[w] = 1;
+      }
+    }
+    
+    //tranfer to array in order to sort
+    var result = [];
+    for (var item in wordsObject) {
+      if(wordsObject.hasOwnProperty(item) {
+        result.push({ text: i, count:wordsObject[i] });
+      }
+    }
+    
+    //bigger count stay at top
+    result.sort(function (wordA, wordB) {
+      return wordB.count - wordA.count;
+    });
+    
+    return result;
+  }
+};
+
+/**
+ * Random util
+ */
+var Random = {
+    /**
+		 * Creates a randomized boolean
+		 * @return
+		 */
+		getRandomBoolean: function () {
+			return Math.random() >= 0.5;
+		},
+    
+    /**
+     * Return random color number
+     */
+    getRandomColor: function () {
+      return Math.floor(Math.random() * 0xFFFFFF);
+    }
+  
+};
+
