@@ -180,7 +180,7 @@ var WORDLEJS = WORDLEJS || {};
     WORDLEJS.Wordle.prototype = {
         //member
         biggestSize: 80,
-        smallestSize: 14,
+        smallestSize: 12,
         words: [],
         dRadius: 10.0,
         dDeg: 10,
@@ -197,7 +197,6 @@ var WORDLEJS = WORDLEJS || {};
 
         //methods
         constructor: WORDLEJS.Wordle,
-
 
         setWords: function (arr, maxium) {
             maxium = maxium || 100;
@@ -427,8 +426,11 @@ var WORDLEJS = WORDLEJS || {};
             this.curIdx++;
 
             requestAnimationFrame(this.layoutNextWord.bind(this));
-        }
+        },
 
+        dispose: function () {
+               
+        }
 
 
     };
