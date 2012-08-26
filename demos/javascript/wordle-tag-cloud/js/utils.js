@@ -26,37 +26,37 @@ window.trace = function(line, str) {
 var TextUtil = {
   countWordOccurance: function (text) {
     // Remove punctuations, non-word characters...
-    //note: this case also remove Vietnamese unicode characters, improve later when needed			
+    //note: this case also remove Vietnamese unicode characters, improve later when needed
     text = text.replace(/[^A-Za-z0-9_\-\s]/g, '');
-    
+
     var words = text.split(/\s+/);
-    
+
     var i, il, w,
         wordsObject = {};
-    
-    for (i = words.length; i >= 0; i--) {
+
+    for (i = 0, il = words.length; i < il; i++) {
       w = words[i];
-      
+
       if (wordsObject[w] && typeof(wordsObject[w]) === 'number') {
         wordsObject[w] ++;
       } else {
         wordsObject[w] = 1;
       }
     }
-    
+
     //tranfer to array in order to sort
     var result = [];
     for (var item in wordsObject) {
-      if(wordsObject.hasOwnProperty(item) {
-        result.push({ text: i, count:wordsObject[i] });
+      if(wordsObject.hasOwnProperty(item)) {
+        result.push({ text: item, count:wordsObject[item] });
       }
     }
-    
+
     //bigger count stay at top
     result.sort(function (wordA, wordB) {
       return wordB.count - wordA.count;
     });
-    
+
     return result;
   }
 };
@@ -66,19 +66,19 @@ var TextUtil = {
  */
 var Random = {
     /**
-		 * Creates a randomized boolean
-		 * @return
-		 */
+     * Creates a randomized boolean
+     * @return
+     */
 		getRandomBoolean: function () {
 			return Math.random() >= 0.5;
 		},
-    
+
     /**
      * Return random color number
      */
     getRandomColor: function () {
       return Math.floor(Math.random() * 0xFFFFFF);
     }
-  
+
 };
 
