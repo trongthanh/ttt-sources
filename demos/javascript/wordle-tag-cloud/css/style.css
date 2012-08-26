@@ -212,10 +212,12 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Author: Thanh Tran - trongthanh@gmail.com
    ========================================================================== */
-
+body {
+  background-color: #000;
+  color: #fff;
+}
 .page-header {
-  position: absolute;
-  left: 400px;
+  position: fixed;
 }
 
 #main-container {
@@ -223,9 +225,10 @@ td { vertical-align: top; }
   height: 100%;
 }
 
-.rect {
+.rectAnchor {
+  display: block;
   position: absolute;
-  background: #ff00ff;
+  background: transparent;
   width: 10px;
   height: 10px;
   left: 0;

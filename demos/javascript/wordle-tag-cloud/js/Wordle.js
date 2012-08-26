@@ -3,7 +3,6 @@
  * Author: Thanh Tran - trongthanh@gmail.com
  */
 
-/* ====================== main scripts ========================= */
 /*
  * WORDLEJS namespace
  */
@@ -48,7 +47,9 @@ var WORDLEJS = WORDLEJS || {};
         }
 
     };
+})();
 
+(function () {
     /*
      * World class
      */
@@ -80,8 +81,8 @@ var WORDLEJS = WORDLEJS || {};
             //
             var fontFamily = this.fontFamily,
                 fontSize = this.fontSize,
-                strokeColor = this.strokeColor,
-                fillColor = this.fillColor,
+                // strokeColor = this.strokeColor,
+                // fillColor = this.fillColor,
                 text = this.text,
                 textMetrics,
                 bounds,
@@ -92,7 +93,8 @@ var WORDLEJS = WORDLEJS || {};
 
             ctx.save();
 
-            ctx.fillStyle = fillColor;
+            // ctx.fillStyle = fillColor;
+            // ctx.strokeStyle = strokeColor;
             ctx.font= fontSize + 'pt ' + fontFamily;
 
             textMetrics = ctx.measureText(text);
@@ -110,7 +112,7 @@ var WORDLEJS = WORDLEJS || {};
                 w = textMetrics.width;
                 h = fontSize;
                 tx = -w/2;
-                ty = h/2; //register point at bottom left
+                ty = -h/2;
             }
 
             bounds = new WORDLEJS.WordRectangle(tx, ty, w, h);
@@ -122,28 +124,40 @@ var WORDLEJS = WORDLEJS || {};
         },
 
         drawText: function (ctx) {
-            var bounds = this.bounds;
+            var bounds = this.bounds,
+                text = this.text,
+                viewCenterX = window.innerWidth / 2,
+                viewCenterY = window.innerHeight / 2;
             ctx.save();
 
             ctx.fillStyle = this.fillColor;
-            ctx.font= this.fontSize + 'pt Helvetica';
-            ctx.translate(window.innerWidth / 2, window.innerHeight / 2); //draw at center
+            ctx.strokeStyle = this.strokeColor;
+            ctx.font= this.fontSize + 'pt ' + this.fontFamily;
+            ctx.translate(viewCenterX, viewCenterY); //draw at center
 
             if (this._rotated) {
                 ctx.translate(bounds.x, bounds.y);
                 ctx.rotate(90*Math.PI/180);
             } else {
-                ctx.translate(bounds.x, bounds.y + bounds.height);
+                ctx.translate(bounds.x, bounds.y + bounds.height); //register point at bottom
                 ctx.rotate(0);
             }
-            ctx.fillText(this.text, 0, 0);
+            ctx.fillText(text, 0, 0);
+            //no need for now
+            //ctx.strokeText(text, 0, 0);
 
-            /*var rect = doc.createElement('div');
-            rect.className = 'rect';
-            rect.style.backgroundColor = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-            rect.style.height = rectBounds.height + 'px';//'30px';
-            rect.style.width =    rectBounds.width + 'px'; //tm.width + 'px';
-            container.appendChild(rect);*/
+
+            var rectAnchor = document.createElement('a');
+            rectAnchor.className = 'rectAnchor';
+            /*rectAnchor.style.backgroundColor = '#' + this.fillColor;*/
+            rectAnchor.style.left = (viewCenterX + bounds.x) + 'px';
+            rectAnchor.style.top = (viewCenterY + bounds.y) + 'px';
+            rectAnchor.style.height = bounds.height + 'px';//'30px';
+            rectAnchor.style.width =    bounds.width + 'px'; //tm.width + 'px';
+            rectAnchor.href = this.url;
+            rectAnchor.target = '_blank';
+
+            container.appendChild(rectAnchor);
 
             ctx.restore();
     },
@@ -285,6 +299,11 @@ var WORDLEJS = WORDLEJS || {};
 
             //draw first word at the center
             words[0].drawText(ctx);
+            //DEBUG: draw center point
+            ctx.save();
+            ctx.fillStyle = 'red';
+            ctx.fillRect(window.innerWidth / 2, window.innerHeight / 2, 2,2);
+            ctx.restore();
 
             //DEBUG: disabled
             this.layoutNextWord();
@@ -414,79 +433,3 @@ var WORDLEJS = WORDLEJS || {};
 
     };
 })();
-
-
-/* ============ MAIN SCRIPT ============== */
-var main = (function (win) {
-    //global
-    var doc = win.document,
-        canvas = doc.getElementById('drawing-canvas'),
-        ctx = canvas.getContext('2d');
-
-    //make canvas full viewport
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    //member
-    var testStr = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consete';
-
-    var sortResult = TextUtil.countWordOccurance(testStr);
-
-    var wordle = new WORDLEJS.Wordle(ctx);
-
-    wordle.setWords(sortResult, 200);
-
-    wordle.doLayout();
-
-}(this));
-
-
-/* TESTING
-var main = (function (win) {
-    //global
-    var doc = win.document;
-
-    var canvas = doc.getElementById('drawing-canvas'),
-            ctx = canvas.getContext('2d'),
-            output = doc.getElementById('output'),
-            container = doc.getElementById('main-container'),
-            rect,
-            h = 50,
-            tm, rectBounds; //TextMeasure
-
-
-    function drawText(text, isVertical) {
-            ctx.save();
-
-            ctx.fillStyle = 'blue';
-            ctx.font= h + 'pt Ubuntu';
-            tm = ctx.measureText(text);
-
-            if (isVertical) {
-                ctx.translate(0, 0);
-                ctx.rotate(90*Math.PI/180);
-                rectBounds = {width: h, height: tm.width};
-            } else {
-                ctx.translate(0, h);
-                ctx.rotate(0);
-                rectBounds = {width: tm.width, height: h};
-            }
-            ctx.fillText(text, 0, 0);
-
-            var rect = doc.createElement('div');
-            rect.className = 'rect';
-            rect.style.backgroundColor = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-            rect.style.height = rectBounds.height + 'px';//'30px';
-            rect.style.width =    rectBounds.width + 'px'; //tm.width + 'px';
-            container.appendChild(rect);
-
-            ctx.restore();
-    }
-
-    drawText('Thanh');
-    drawText('Thao', true);
-
-    trace(1, 'width: ' + rectBounds.width);
-
-}(this)); */
-

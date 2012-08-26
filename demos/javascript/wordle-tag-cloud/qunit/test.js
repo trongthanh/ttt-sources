@@ -35,6 +35,36 @@ test("Test Random.getRandomBoolean", function () {
 	ok(falseCount > 450);
 });
 
+test("Test Random.getRandomInt", function () {
+	var from = 10,
+		to = 20,
+		valObj = {},
+		val,
+		outOfRange,
+		valSkipped;
+
+	//random must return all FROM - TO and no number outside
+	for (var i = 0; i < 10000; i++) {
+		val = Random.getRandomInt(from, to);
+		valObj[val] = true;
+
+		if (val < from || val > to) {
+			outOfRange = true;
+			break;
+		}
+	}
+
+	for (var j = from; j <= to; j++) {
+		if (valObj[j] === undefined) {
+			valSkipped = true;
+			break;
+		}
+	}
+
+	ok(!outOfRange, 'no value out of range');
+	ok(!valSkipped, 'no value skipped');
+});
+
 module("Facility Classes");
 
 test("Test WordRectangle", function () {

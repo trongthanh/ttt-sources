@@ -35,26 +35,26 @@ var TextUtil = {
         wordsObject = {};
 
     for (i = 0, il = words.length; i < il; i++) {
-      w = words[i];
+        w = words[i];
 
-      if (wordsObject[w] && typeof(wordsObject[w]) === 'number') {
-        wordsObject[w] ++;
-      } else {
-        wordsObject[w] = 1;
-      }
+        if (wordsObject[w] && typeof(wordsObject[w]) === 'number') {
+            wordsObject[w] ++;
+        } else {
+            wordsObject[w] = 1;
+        }
     }
 
     //tranfer to array in order to sort
     var result = [];
     for (var item in wordsObject) {
-      if(wordsObject.hasOwnProperty(item)) {
-        result.push({ text: item, count:wordsObject[item] });
-      }
+        if(wordsObject.hasOwnProperty(item)) {
+            result.push({ text: item, count:wordsObject[item] });
+        }
     }
 
     //bigger count stay at top
     result.sort(function (wordA, wordB) {
-      return wordB.count - wordA.count;
+        return wordB.count - wordA.count;
     });
 
     return result;
@@ -69,16 +69,28 @@ var Random = {
      * Creates a randomized boolean
      * @return
      */
-		getRandomBoolean: function () {
-			return Math.random() >= 0.5;
-		},
+    getRandomBoolean: function () {
+        return Math.random() >= 0.5;
+    },
 
     /**
-     * Return random color number as hex string
+     * Return random color number as hex string; avoid dark color
      */
     getRandomColor: function () {
-      return Math.floor(Math.random() * 0xFFFFFF).toString(16);
+      return (
+        this.getRandomInt(0x11, 0xff) * 0x10000 +
+        this.getRandomInt(0x11, 0xff) * 0x100 +
+        this.getRandomInt(0x11, 0xff)
+      ).toString(16);
+    },
+
+    /**
+     * Return a integer value within min - max (inclusive)
+     */
+    getRandomInt: function (min, max) {
+        return min + Math.floor(Math.random() * (max - min + 1));
     }
+    
 
 };
 
