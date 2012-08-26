@@ -74,10 +74,10 @@ var Random = {
 		},
 
     /**
-     * Return random color number
+     * Return random color number as hex string
      */
     getRandomColor: function () {
-      return Math.floor(Math.random() * 0xFFFFFF);
+      return Math.floor(Math.random() * 0xFFFFFF).toString(16);
     }
 
 };

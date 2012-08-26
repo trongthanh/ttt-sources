@@ -125,14 +125,15 @@ var WORDLEJS = WORDLEJS || {};
             var bounds = this.bounds;
             ctx.save();
 
-            ctx.fillStyle = 'blue'; // TODO: use fill color
+            ctx.fillStyle = this.fillColor;
             ctx.font= this.fontSize + 'pt Helvetica';
+            ctx.translate(window.innerWidth / 2, window.innerHeight / 2); //draw at center
 
             if (this._rotated) {
-                ctx.translate(bounds.x + 250, bounds.y + 250);
+                ctx.translate(bounds.x, bounds.y);
                 ctx.rotate(90*Math.PI/180);
             } else {
-                ctx.translate(bounds.x + 250, bounds.y + bounds.height + 250);
+                ctx.translate(bounds.x, bounds.y + bounds.height);
                 ctx.rotate(0);
             }
             ctx.fillText(this.text, 0, 0);
@@ -279,8 +280,11 @@ var WORDLEJS = WORDLEJS || {};
 
             //start position
             this.center = {x: 0, y: 0};
-            this.curIdx = 0;
+            this.curIdx = 1;
             this.wl = wl;
+
+            //draw first word at the center
+            words[0].drawText(ctx);
 
             //DEBUG: disabled
             this.layoutNextWord();
@@ -401,7 +405,7 @@ var WORDLEJS = WORDLEJS || {};
                 radius+=this.dRadius;
             }
             //_layoutProgress.dispatch(current);
-            curIdx++;
+            this.curIdx++;
 
             requestAnimationFrame(this.layoutNextWord.bind(this));
         }
@@ -418,10 +422,15 @@ var main = (function (win) {
     var doc = win.document,
         canvas = doc.getElementById('drawing-canvas'),
         ctx = canvas.getContext('2d');
+
+    //make canvas full viewport
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     //member
     var testStr = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consete';
 
-    var sortResult = TextUtil.countWordOccurance('one two three four, four three! four two three four.');
+    var sortResult = TextUtil.countWordOccurance(testStr);
 
     var wordle = new WORDLEJS.Wordle(ctx);
 
