@@ -11,17 +11,17 @@ var WORDLEJS = WORDLEJS || {};
 (function () {
 
     /*
-     * WordRectangle class
+     * Rectangle class
      */
-    WORDLEJS.WordRectangle = function (x, y, w, h) {
+    WORDLEJS.Rectangle = function (x, y, w, h) {
         this.x = x;
         this.y = y;
         this.width = w;
         this.height = h;
     };
 
-    WORDLEJS.WordRectangle.prototype = {
-        constructor: WORDLEJS.WordRectangle,
+    WORDLEJS.Rectangle.prototype = {
+        constructor: WORDLEJS.Rectangle,
 
         getRight: function () {
             return this.x + this.width;
@@ -44,6 +44,10 @@ var WORDLEJS = WORDLEJS || {};
                     r2.getRight() < this.x ||
                     r2.y > this.getBottom() ||
                     r2.getBottom() < this.y);
+        },
+
+        toString: function () {
+            return 'Rect: ' + this.x + 'x' + this.y + ':' + this.width + 'x' + this.height;
         }
 
     };
@@ -51,7 +55,7 @@ var WORDLEJS = WORDLEJS || {};
 
 (function () {
     /*
-     * World class
+     * Word class
      */
     WORDLEJS.Word = function (initObj) {
         if(!initObj) throw new Error('bad Word init');
@@ -67,7 +71,7 @@ var WORDLEJS = WORDLEJS || {};
 
         this.sprite = null; //considered later
         this.bounds = null; //bounds of the rendered text
-        this._rotated = false;
+        this._rotated = initObj.rotated;
 
     };
 
@@ -81,8 +85,6 @@ var WORDLEJS = WORDLEJS || {};
             //
             var fontFamily = this.fontFamily,
                 fontSize = this.fontSize,
-                // strokeColor = this.strokeColor,
-                // fillColor = this.fillColor,
                 text = this.text,
                 textMetrics,
                 bounds,
@@ -91,75 +93,67 @@ var WORDLEJS = WORDLEJS || {};
                 tx = 0, //translate x;
                 ty = 0; //translate y;
 
-            ctx.save();
-
-            // ctx.fillStyle = fillColor;
-            // ctx.strokeStyle = strokeColor;
-            ctx.font= fontSize + 'pt ' + fontFamily;
+            ctx.font= fontSize + 'px ' + fontFamily;
 
             textMetrics = ctx.measureText(text);
+            //log(text + ': ' + textMetrics.width);
 
-            if (Random.getRandomBoolean()) { // half chances of rotation
+            if (this._rotated) {
                 //case vertical
-                this._rotated = true;
                 w = fontSize;
                 h = textMetrics.width;
-                tx = -w/2;
-                ty = -h/2;
             } else {
                 //case horizontal
-                this._rotated = false;
                 w = textMetrics.width;
                 h = fontSize;
-                tx = -w/2;
-                ty = -h/2;
             }
+            //register point offset to center of rectangle
+            tx = -w/2;
+            ty = -h/2;
 
-            bounds = new WORDLEJS.WordRectangle(tx, ty, w, h);
-
-            ctx.restore();
-
-
+            bounds = new WORDLEJS.Rectangle(tx, ty, w, h);
+            
             this.bounds = bounds;
         },
 
-        drawText: function (ctx) {
+        renderText: function (container) {
             var bounds = this.bounds,
-                text = this.text,
-                viewCenterX = window.innerWidth / 2,
-                viewCenterY = window.innerHeight / 2;
-            ctx.save();
+                text = this.text;
 
-            ctx.fillStyle = this.fillColor;
-            ctx.strokeStyle = this.strokeColor;
-            ctx.font= this.fontSize + 'pt ' + this.fontFamily;
-            ctx.translate(viewCenterX, viewCenterY); //draw at center
-
+            var anchor = document.createElement('a'),
+                s = anchor.style,
+                xPos = bounds.x,
+                yPos = bounds.y,
+                fillColor = this.fillColor;
+            anchor.href = this.url;
+            anchor.target = '_blank';
+            anchor.textContent = text;
+            anchor.className = 'word';
+            s.color = '#' + fillColor;
+            s.font = 'normal normal ' + this.fontSize + 'px/' + this.fontSize + 'px ' + this.fontFamily;
+            
             if (this._rotated) {
-                ctx.translate(bounds.x, bounds.y);
-                ctx.rotate(90*Math.PI/180);
-            } else {
-                ctx.translate(bounds.x, bounds.y + bounds.height); //register point at bottom
-                ctx.rotate(0);
+                //transform will be soon standardized
+                /*
+                s.webkitTransform = 'rotate(90deg)';
+                s.MozTransform = 'rotate(90deg)';
+                s.oTransform = 'rotate(90deg)';
+                s.msTransform = 'rotate(90deg)';
+                s.transform = 'rotate(90deg)';
+                */
+                //using CSS is safer since the property names in each browser are too different
+                anchor.className += ' rotated';
+
+                //object is rotated at its center
+                xPos = xPos - bounds.height/2 + bounds.width/2;
+                yPos = yPos + bounds.height/2 - bounds.width/2;
             }
-            ctx.fillText(text, 0, 0);
-            //no need for now
-            //ctx.strokeText(text, 0, 0);
+            s.left = xPos + 'px';
+            s.top = yPos + 'px';
+            //DEBUG:
+            //s.background = 'rgba(99,0,99,0.5)';
 
-
-            var rectAnchor = document.createElement('a');
-            rectAnchor.className = 'rectAnchor';
-            /*rectAnchor.style.backgroundColor = '#' + this.fillColor;*/
-            rectAnchor.style.left = (viewCenterX + bounds.x) + 'px';
-            rectAnchor.style.top = (viewCenterY + bounds.y) + 'px';
-            rectAnchor.style.height = bounds.height + 'px';//'30px';
-            rectAnchor.style.width =    bounds.width + 'px'; //tm.width + 'px';
-            rectAnchor.href = this.url;
-            rectAnchor.target = '_blank';
-
-            container.appendChild(rectAnchor);
-
-            ctx.restore();
+            container.appendChild(anchor);
     },
 
         toString: function () {
@@ -173,20 +167,29 @@ var WORDLEJS = WORDLEJS || {};
     /*
      * Wordle class
      */
-    WORDLEJS.Wordle = function (context2d) {
-        this.ctx = context2d;
+    WORDLEJS.Wordle = function (elContainer) {
+        var container = document.createElement('div');
+        container.className = 'wordle';
+        elContainer.appendChild(container);
+        
+        var canvas = document.createElement('canvas');
+
+        this.ctx = canvas.getContext('2d'); //canvas used to measure text only
+        this.parent = elContainer;
+        this.container = container;
     };
 
     WORDLEJS.Wordle.prototype = {
         //member
         biggestSize: 80,
         smallestSize: 12,
-        words: [],
+        words: null,
         dRadius: 10.0,
         dDeg: 10,
-        doSortType: -1,
+        sortType: '', 
         allowRotate: true,
         ctx: null,
+        container: null,
         center: null,
         current: null,
         first: null,
@@ -194,17 +197,20 @@ var WORDLEJS = WORDLEJS || {};
         startTime: 0,
         runTime: 0,
         curIdx: 0,
+        keepCenter: false,
+        urlPrefix: 'http://google.com/search?q=',
 
         //methods
         constructor: WORDLEJS.Wordle,
 
         setWords: function (arr, maxium) {
+            var urlPrefix = this.urlPrefix;
             maxium = maxium || 100;
-
-            for (var i = 0; i < maxium; ++i) {
+            this.words = [];
+            
+            for (var i = 0, il = arr.length; i < il; ++i) {
                 var wordObject = arr[i];
-                if (i > maxium || !wordObject) {
-                    trace(1, 'words limit : ' + i );
+                if (i >= maxium) {
                     break;
                 }
 
@@ -213,14 +219,16 @@ var WORDLEJS = WORDLEJS || {};
                 var w    = {
                     text: wordObject.text,
                     weight: wordObject.count,
-                    url: 'http://www.google.com/search?q=' + wordObject.text,
-                    strokeColor: Random.getRandomColor(),
-                    fillColor: Random.getRandomColor(),
-                    fontFamily: Random.getRandomBoolean() ? 'sans-serif' : 'serif'
+                    url: urlPrefix + wordObject.text,
+                    //strokeColor: Random.getRandomColor(), //no use
+                    fillColor: Random.getRandomColor(0x44, 0xff),
+                    fontFamily: Random.getRandomBoolean() ? 'sans-serif' : 'serif',
+                    rotated: Random.getRandomBoolean() // half chances of rotation
                 };
 
                 this.words.push(new WORDLEJS.Word(w));
             }
+            trace(1, 'Number of words: ' +  this.words.length);
         },
 
         /**
@@ -228,7 +236,12 @@ var WORDLEJS = WORDLEJS || {};
          */
         doLayout: function () {
             var words = this.words,
-                ctx = this.ctx;
+                ctx = this.ctx,
+                high = - Number.MAX_VALUE,
+                low = Number.MAX_VALUE,
+                w,
+                wl = words.length,
+                i;
 
             if (words.length <= 0) {
                 log('no word to render');
@@ -237,22 +250,22 @@ var WORDLEJS = WORDLEJS || {};
 
             //startTime = getTimer();
 
-            switch(this.doSortType) {
-                case 1:
+            switch(this.sortType) {
+                case 'a':
                     // sort from biggest to smallest
                     words.sort(function (w1, w2) {
                         return w2.weight - w1.weight;
                     });
                     break;
 
-                case 2:
+                case 'b':
                     //sort from smallest to biggest
                     words.sort(function (w1, w2) {
                         return w1.weight - w2.weight;
                     });
 
                     break;
-                case 3:
+                case 'c':
                     //sort by alphabet
                     words.sort(function (w1, w2) {
                         if (w1.text.toLowerCase() < w2.text.toLowerCase()) {
@@ -265,17 +278,23 @@ var WORDLEJS = WORDLEJS || {};
                     });
 
                     break;
-                default:
-                    //TODO: implement shuffle array
+                case 'd':
+                    //shuffle array
+                    var randomSeq = Random.getRandomSequence(0, words.length - 1),
+                        newArr = [];
+                    for (i = 0; i < wl; i++) {
+                        newArr[i] = words[randomSeq[i]];
+                    }
+
+                    this.words = words = newArr; //be careful with changing the variable pointer
                     break;
+
+                default:
+                    //use the order in the words array
 
                 }
             //trace( 'words : ' + words );
-            var high = - Number.MAX_VALUE,
-                low = Number.MAX_VALUE,
-                w,
-                wl = words.length,
-                i;
+
 
             for (i = 0; i < wl; i++) {
                 w = words[i];
@@ -296,18 +315,9 @@ var WORDLEJS = WORDLEJS || {};
             this.curIdx = 1;
             this.wl = wl;
 
-            //draw first word at the center
-            words[0].drawText(ctx);
-            //DEBUG: draw center point
-            ctx.save();
-            ctx.fillStyle = 'red';
-            ctx.fillRect(window.innerWidth / 2, window.innerHeight / 2, 2,2);
-            ctx.restore();
+            words[0].renderText(this.container);
 
-            //DEBUG: disabled
             this.layoutNextWord();
-
-
         },
 
         layoutNextWord: function () {
@@ -316,19 +326,7 @@ var WORDLEJS = WORDLEJS || {};
                 curIdx = this.curIdx;
 
             if (curIdx >= wl) {
-
-                //final touch AND/OR debug (if any)
-                for (i = 0; i < wl; i++) {
-                    //w = words[i];
-                    //addChild(w.sprite);
-                    //debug bounds:
-                    //drawBound(w);
-                }
-
-                //runTime = getTimer() - startTime;
-                //trace('run time: ' + runTime);
-
-                //_layoutComplete.dispatch(runTime);
+                //TODO: maybe do some benchmark here
 
                 return;
             }
@@ -343,7 +341,7 @@ var WORDLEJS = WORDLEJS || {};
             center.x=0;
             center.y=0;
 
-            //NOT UNDERSTAND
+            //calculate the mass center of the wordle so far
             for (prev = 0; prev < curIdx;++prev) {
                 wPrev = words[prev];
                 center.x += wPrev.bounds.getCenterX() * wPrev.weight;
@@ -363,7 +361,7 @@ var WORDLEJS = WORDLEJS || {};
                 deg, rad,
                 dDeg = this.dDeg,
                 candidateBounds,
-                ctx = this.ctx;
+                container = this.container;
 
             var loopPrevent = 0;
 
@@ -375,7 +373,7 @@ var WORDLEJS = WORDLEJS || {};
                 }
 
                 startDeg = Math.floor(Math.random() * 360);
-                log('startDeg ' + startDeg);
+                //log('startDeg ' + startDeg);
                 //loop over spiral
                 prev_x = -1;
                 prev_y = -1;
@@ -394,7 +392,7 @@ var WORDLEJS = WORDLEJS || {};
                     //graphics.beginFill(0xFF0000, 0.5);
                     //graphics.drawCircle(cx, cy, 0.5);
 
-                    candidateBounds = new WORDLEJS.WordRectangle(
+                    candidateBounds = new WORDLEJS.Rectangle(
                         current.bounds.x + cx,
                         current.bounds.y + cy,
                         current.bounds.width,
@@ -411,12 +409,16 @@ var WORDLEJS = WORDLEJS || {};
                     //no collision: we're done
                     if (prev == curIdx) {
                         current.bounds = candidateBounds;
-                        //TODO: draw the text to canvas
-                        trace(2, 'draw word: ' + current.bounds );
-                        current.drawText(ctx);
+                        current.renderText(container);
 
-                        //current.sprite.visible = true;
-                        done=true;
+                        trace(2, 'Word rendered: ' + current );
+                        trace(3, 'Mass center: ' + parseInt(center.x, 10) + 'x' + parseInt(center.y, 10) );
+                        if (this.keepCenter) {
+                            container.style.marginLeft = - center.x + 'px';
+                            container.style.marginTop = - center.y + 'px';
+                        }
+
+                        done = true;
                         break;
                     }
                 }
@@ -424,12 +426,16 @@ var WORDLEJS = WORDLEJS || {};
             }
             //_layoutProgress.dispatch(current);
             this.curIdx++;
-
+            
             requestAnimationFrame(this.layoutNextWord.bind(this));
         },
 
-        dispose: function () {
-               
+        reset: function () {
+            var container = this.container;
+            container.innerHTML = '';
+            container.style.marginLeft = '0';
+            container.style.marginTop = '0';
+            this.words = null;
         }
 
 

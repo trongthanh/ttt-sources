@@ -11,30 +11,28 @@
   <meta name="description" content="">
   <meta name="author" content="Thanh Tran">
 
+  <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
   <header class="page-header">
-    <div id="debug">
+    <div id="debug" class='debug-content'>
       <span id="line1">debug line 1</span><br/>
       <span id="line2">debug line 2</span><br/>
-      <span id="line3">debug line 3</span>
+      <span id="line3"></span>
     </div>
   </header>
-  <div role="main" id="main-container">
-    <canvas id="drawing-canvas" width="500" height="500" >Your browser don't support canvas</canvas>
-  </div>
+  <div id='wordle-container' class='container'></div>
+  <div class="center" style='display: none'></div>
+  
   <footer>
-
+    Ported from my <a href="http://int3ractive.com" target="_blank">WordleAS3 experiment</a>
+    <br>&copy; 2012 Thanh Tran - <a href="http://int3ractive.com" target="_blank">int3ractive.com</a>
   </footer>
 
 
   <!-- JavaScript at the bottom for fast page loading -->
-
-  <!-- Grab Google CDN's Mootools, with a protocol relative URL; fall back to local if offline 
-  <script src="//ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
-  <script>window.MooTools || document.write('<script src="js/libs/mootools-core-1.4.5-full-compat.js"><\/script>');</script> -->
   <!-- some external library -->
 
   <!-- scripts concatenated and minified via build script -->

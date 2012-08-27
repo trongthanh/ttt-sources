@@ -1,32 +1,23 @@
 /* ============ MAIN SCRIPT ============== */
-var main = (function (win) {
+(function (win) {
     //global
     var doc = win.document,
-        canvas = doc.getElementById('drawing-canvas'),
-        ctx = canvas.getContext('2d');
+        container = doc.getElementById('wordle-container'),
+        wordle = new WORDLEJS.Wordle(container);
 
-    //make canvas full viewport
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    //debug
-    window.container = doc.getElementById('main-container');
-
-    //member
-    this.text = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consete';
-
+    //text to render
+    this.testText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras elementum ipsum et mi imperdiet venenatis. Duis pellentesque turpis eu libero adipiscing mollis. Curabitur sagittis volutpat placerat. Maecenas fermentum nunc non dui varius sodales. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent augue lacus, consectetur at laoreet eget, semper vitae diam. Cras quis facilisis risus. Fusce a nibh justo, a sollicitudin orci. Ut in est et lectus vestibulum eleifend eget vel dolor. Nulla varius ullamcorper orci, vitae auctor lacus sollicitudin quis. In vestibulum dictum sapien. Vestibulum ac justo non metus porttitor vestibulum. Pellentesque urna dui, bibendum eu euismod quis, viverra in eros. Nulla viverra diam at magna fermentum eget pretium odio cursus. Integer tempor arcu id urna sodales eget dapibus massa congue. Donec porta libero auctor felis pretium a vehicula odio suscipit. Vestibulum pulvinar, ipsum et condimentum tristique, ligula dolor aliquet arcu, vel hendrerit erat metus nec tellus.';
+    //this.text = 'five one two five three four, four five three! five four two three four. five';
+    this.wordsLimit = 200;
+    
     this.renderWordle = function () {
-        var wordle = this.wordle,
-            sortResult = TextUtil.countWordOccurance(this.text);
-        if (typeof(wordle) !== 'undefined') {
-            wordle.dispose();
-        } 
-        wordle = new WORDLEJS.Wordle(ctx);
-        wordle.setWords(sortResult, 200);
+        var sortResult = TextUtil.countWordOccurance(this.testText);
+
+        wordle.reset();
+        wordle.setWords(sortResult, this.wordsLimit);
+        log('wordle sortType: ' + wordle.sortType);
 
         wordle.doLayout();
-
-        this.wordle = wordle;
     };
     
     // var sortResult = TextUtil.countWordOccurance('one two three four, four three! four two three four.');
@@ -34,9 +25,12 @@ var main = (function (win) {
     
 
     var gui = new dat.GUI();
-    gui.add(this, 'text');
+    gui.add(this, 'testText');
+    gui.add(this, 'wordsLimit', [10, 50, 100, 200]);
+    gui.add(wordle, 'urlPrefix');
+    gui.add(wordle, 'keepCenter');
+    gui.add(wordle, 'sortType', {'default': '', 'big -> small': 'a', 'small -> big': 'b', 'A -> Z': 'c', 'shuffle': 'd' });
     gui.add(this, 'renderWordle');
-    // gui.add(text, 'displayOutline');
-    // gui.add(text, 'explode');
 
-}(this));
+    this.renderWordle();
+})(window);

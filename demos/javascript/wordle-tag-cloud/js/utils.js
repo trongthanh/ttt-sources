@@ -29,10 +29,9 @@ var TextUtil = {
     //note: this case also remove Vietnamese unicode characters, improve later when needed
     text = text.replace(/[^A-Za-z0-9_\-\s]/g, '');
 
-    var words = text.split(/\s+/);
-
-    var i, il, w,
-        wordsObject = {};
+    var words = text.split(/\s+/),
+        wordsObject = {},
+        i, il, w;
 
     for (i = 0, il = words.length; i < il; i++) {
         w = words[i];
@@ -76,12 +75,10 @@ var Random = {
     /**
      * Return random color number as hex string; avoid dark color
      */
-    getRandomColor: function () {
-      return (
-        this.getRandomInt(0x11, 0xff) * 0x10000 +
-        this.getRandomInt(0x11, 0xff) * 0x100 +
-        this.getRandomInt(0x11, 0xff)
-      ).toString(16);
+    getRandomColor: function (componentMin, componentMax) {
+      return (this.getRandomInt(componentMin, componentMax).toString(16) +
+              this.getRandomInt(componentMin, componentMax).toString(16) +
+              this.getRandomInt(componentMin, componentMax).toString(16));
     },
 
     /**
@@ -89,8 +86,41 @@ var Random = {
      */
     getRandomInt: function (min, max) {
         return min + Math.floor(Math.random() * (max - min + 1));
+    },
+
+    /**
+     * Get a random sequence
+     */
+    getRandomSequence: function (min, max) {
+        var o = [], //original seq
+            r = [], //result
+            c, //child item
+            l; //length
+        if (min > max) {
+            var tmp = max;
+            max = min;
+            min = tmp;
+        }
+
+        l = Math.abs(max - min) + 1;
+        //log ('max: ' + max);
+        //log('length: ' + l);
+        //original sequence
+        for (var i = 0; i < l; i ++) {
+          o[i] = min + i;
+          //log(o[i]);
+        }
+        
+        while (true) {
+            l = o.length;
+            if (l > 0) {
+                c = o.splice(this.getRandomInt(0,l - 1),1)[0];
+                r.push(c);
+            } else {
+                break;
+            }
+        }
+        log (r);
+        return r;
     }
-    
-
 };
-
