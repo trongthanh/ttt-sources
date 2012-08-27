@@ -1,6 +1,7 @@
 /**
  * Copyright: 2012 (c) int3ractive.com
  * Author: Thanh Tran - trongthanh@gmail.com
+ * MIT License
  */
 
 /*
