@@ -10,6 +10,7 @@
   <title>Wordle Tag Cloud</title>
   <meta name="description" content="">
   <meta name="author" content="Thanh Tran">
+  <meta property="og:image" content="http://labs.int3ractive.com/javascript/effects/wordle-tag-cloud/img/preview.jpg"/>
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
@@ -18,8 +19,8 @@
 <body>
   <header class="page-header">
     <div id="debug" class='debug-content'>
-      <span id="line1">debug line 1</span><br/>
-      <span id="line2">debug line 2</span><br/>
+      <span id="line1"></span><br/>
+      <span id="line2"></span><br/>
       <span id="line3"></span>
     </div>
   </header>
@@ -28,7 +29,7 @@
   
   <footer>
     Ported from my <a href="http://blog.int3ractive.com/2011/02/as3-wordle-tag-cloud.html" target="_blank">WordleAS3</a>. 
-    Introduction <a href="http://blog.int3ractive.com/" target="_blank">blog post</a>.
+    Introduction <a href="http://blog.int3ractive.com/2012/08/html5-wordle-tag-cloud.html" target="_blank">blog post</a>.
     Source code on <a href="https://github.com/trongthanh/trongthanh.github.com/tree/master/javascript/effects/wordle-tag-cloud" target="_blank">Github</a>.
     <br>&copy; 2012 Thanh Tran - <a href="http://int3ractive.com" target="_blank">int3ractive.com</a>
   </footer>
@@ -38,7 +39,6 @@
   <!-- some external library -->
 
   <!-- scripts concatenated and minified via build script -->
-  <script src="js/RequestAnimationFrame.js"></script>
   <script src="js/dat.gui.min.js"></script>
   
   <script src="js/utils.js" ></script>
@@ -46,6 +46,10 @@
   <script src="js/script.js"></script>
   <!-- end scripts -->
 
+  <!-- Prompt IE 6,7,8 users. -->
+  <!--[if lt IE 9 ]>
+    <p class="unsupport">Your browser is not supported. This demo requires Canvas and CSS3's transform</p>
+  <![endif]-->
 
   <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
        mathiasbynens.be/notes/async-analytics-snippet -->

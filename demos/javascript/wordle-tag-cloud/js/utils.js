@@ -143,7 +143,7 @@ var Random = {
                 break;
             }
         }
-        log (r);
+        
         return r;
     }
 };

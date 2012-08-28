@@ -65,10 +65,64 @@ test("Test Random.getRandomInt", function () {
 	ok(!valSkipped, 'no value skipped');
 });
 
+test("Test Random.getRandomSequence", function () {
+	var from = 7,
+		to = 17,
+    orderedSeq,
+		valArr,
+    val,
+		result,
+    inOrder,
+		outOfRange,
+		valSkipped;
+
+	//number of trials
+	for (var trial = 0; trial < 5; trial++) {
+    //random must return all FROM - TO and no number outside
+		result = Random.getRandomSequence(from, to);
+
+    //get normal order seq
+    orderedSeq = [];
+    for (var o = from; o <= to; o++) {
+      orderedSeq.push(o); 
+    }
+
+    if (result.join('') === orderedSeq.join('')) {
+      inOrder = true;
+      break;
+    }
+
+    valArr = [];
+    for (var i = 0; i < result.length; i++) {
+      val = result[i];
+
+      valArr[val] = true; //for value in range checking later
+      
+      if (val < from || val > to) {
+        outOfRange = true;
+        break;
+      }
+		}
+
+    for (var j = from; j <= to ; j++) {
+      if (typeof(valArr[j]) === 'undefined') {
+        valSkipped = true;
+        break;
+      }
+    }
+
+    
+  }
+
+  ok(!inOrder, 'sequence is in order (should not)');
+	ok(!outOfRange, 'value out of range');
+	ok(!valSkipped, 'value skipped');
+});
+
 module("Facility Classes");
 
-test("Test WordRectangle", function () {
-	var rect = new WORDLEJS.WordRectangle(10, 20, 30, 40);
+test("Test Rectangle", function () {
+	var rect = new WORDLEJS.Rectangle(10, 20, 30, 40);
 
 	deepEqual(rect.x, 10);
 	deepEqual(rect.y, 20);
@@ -81,9 +135,9 @@ test("Test WordRectangle", function () {
 });
 
 test("Test WordRectangle.intersect", function () {
-	var rect1 = new WORDLEJS.WordRectangle(20, 20, 40, 40),
-		collideRect = new WORDLEJS.WordRectangle(30, 30, 60, 40),
-		nonCollideRect = new WORDLEJS.WordRectangle(70, 70, 30, 20);
+	var rect1 = new WORDLEJS.Rectangle(20, 20, 40, 40),
+		collideRect = new WORDLEJS.Rectangle(30, 30, 60, 40),
+		nonCollideRect = new WORDLEJS.Rectangle(70, 70, 30, 20);
 
 	deepEqual(rect1.intersects(collideRect), true);
 	deepEqual(rect1.intersects(nonCollideRect), false);
@@ -97,14 +151,3 @@ test("Test Word", function () {
 		word = new WORDLEJS.Word(initObj);
 	ok(true);
 });
-
-
-
-
-
-
-
-
-
-
-
